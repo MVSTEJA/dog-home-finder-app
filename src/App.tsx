@@ -12,7 +12,7 @@ const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
 const Layout: React.FC = () => {
   return (
-    <Container>
+    <Container maxWidth="xl" sx={{ p: '0 !important' }}>
       <ResponsiveAppBar />
       <Outlet />
     </Container>
@@ -53,7 +53,6 @@ const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* <Route index element={<Home />} /> */}
         <Route
           index
           path="signin"

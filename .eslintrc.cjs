@@ -30,5 +30,7 @@ module.exports = {
         unnamedComponents: 'arrow-function',
       },
     ],
+    'no-return-await': 'off',
+    '@typescript-eslint/return-await': 'off',
   },
 };

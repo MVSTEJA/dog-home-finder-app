@@ -50,7 +50,9 @@ export interface AllDogsResponse {
 export async function findAllDogs({
   nextQuery,
   filter,
-  paginate,
+  paginate = {
+    from: 0,
+  },
 }: {
   nextQuery: string;
   filter?: Filter | undefined;
@@ -64,6 +66,7 @@ export async function findAllDogs({
         breeds: filter?.filterBreeds,
         sort: `${paginate?.sort?.by}:${paginate?.sort?.id}`,
         from: paginate?.from,
+        size: 25,
       },
     };
   }
@@ -73,8 +76,7 @@ export async function findAllDogs({
     queryURL,
     queryConfig
   );
-
-  const { data } = await client.post<Dog[], AxiosError>('/dogs', resultIds);
+  const { data } = await client.post<Dog[]>('/dogs', resultIds);
   return {
     response: data,
     next,
@@ -88,7 +90,7 @@ export async function findAllBreeds(): Promise<Breed[]> {
   );
 
   return data.map((breed) => ({
-    value: breed.toLowerCase(),
+    value: breed,
     label: breed,
   }));
 }

@@ -3,7 +3,14 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box, CardActionArea, Checkbox, Grid, Skeleton } from '@mui/material';
+import {
+  Box,
+  CardActionArea,
+  Checkbox,
+  Grid,
+  Paper,
+  Skeleton,
+} from '@mui/material';
 import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 import Highlighter from 'react-highlight-words';
@@ -29,11 +36,23 @@ const DogCard: React.FC<DogCardProps> = ({
   searchValue,
 }: DogCardProps) => {
   const [imageLoaded, setimageLoaded] = React.useState<boolean>(false);
+  const [imageHoverState, setImageHoverState] = React.useState(false);
+
+  const cardSelected = checked?.indexOf(value) !== -1;
+
   return (
-    <Card sx={{ minWidth: 50 }}>
+    <Card
+      component={Paper}
+      variant="outlined"
+      onMouseEnter={() => setImageHoverState(true)}
+      onMouseLeave={() => setImageHoverState(false)}
+    >
       <CardActionArea
         onClick={() => {
           handleToggle?.(value);
+        }}
+        sx={{
+          backgroundColor: `${cardSelected ? 'rgba(137, 0, 117, 0.24)' : ''}`,
         }}
       >
         {checked && (
@@ -45,9 +64,12 @@ const DogCard: React.FC<DogCardProps> = ({
           >
             <Checkbox
               edge="start"
-              checked={checked?.indexOf(value) !== -1}
+              checked={cardSelected}
               tabIndex={-1}
               disableRipple
+              sx={{
+                zIndex: 1,
+              }}
               inputProps={{ 'aria-labelledby': name }}
               icon={<CheckCircleOutlineSharpIcon />}
               checkedIcon={<CheckCircleSharpIcon />}
@@ -58,9 +80,12 @@ const DogCard: React.FC<DogCardProps> = ({
         <CardMedia
           component="img"
           sx={{
-            maxWidth: '100%',
-            maxHeight: '100%',
+            maxWidth: '250px',
             visibility: imageLoaded ? 'visible' : 'hidden',
+            transform:
+              imageHoverState && !cardSelected ? 'scale(1.05)' : 'scale(1)',
+            transition: 'transform 330ms ease-in',
+            aspectRatio: 1,
           }}
           image={img}
           onLoad={() => setimageLoaded(true)}
@@ -71,7 +96,7 @@ const DogCard: React.FC<DogCardProps> = ({
           <Skeleton
             variant="rectangular"
             sx={{
-              minHeight: '150px',
+              minHeight: '15vw',
               maxWidth: '100%',
               maxHeight: '100%',
             }}
@@ -90,7 +115,7 @@ const DogCard: React.FC<DogCardProps> = ({
               highlightClassName="YourHighlightClass"
               searchWords={[searchValue]}
               autoEscape
-              textToHighlight={age.toString()}
+              textToHighlight={age?.toString()}
             />
             )
           </Typography>
@@ -133,6 +158,38 @@ const DogCard: React.FC<DogCardProps> = ({
     </Card>
   );
 };
+
+// const DogCardHover = () => {
+//   return (
+//     <Paper
+//       // href={ROUTES.showcase}
+//       variant="outlined"
+//       sx={{ p: 2, height: '100%' }}
+//     >
+//       <Typography variant="body2" fontWeight="bold" sx={{ mb: 0.5 }}>
+//         Showcase
+//       </Typography>
+//       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+//         Check out some great examples of MUI&apos;s products in action.
+//       </Typography>
+//       <Typography
+//         color="primary"
+//         variant="body2"
+//         fontWeight="bold"
+//         sx={{
+//           '& > svg': { transition: '0.2s' },
+//           '&:hover > svg': { transform: 'translateX(2px)' },
+//         }}
+//       >
+//         Learn more{' '}
+//         <KeyboardArrowRightRounded
+//           fontSize="small"
+//           sx={{ verticalAlign: 'middle' }}
+//         />
+//       </Typography>
+//     </Paper>
+//   );
+// };
 DogCard.defaultProps = {
   checked: [''],
   handleToggle: () => {},

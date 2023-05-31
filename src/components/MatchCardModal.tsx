@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 
 import { Box, Card, CardContent, CircularProgress } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import { findMatch } from '../api';
 import DogCard from './DogCard';
 import { Dog } from '../types';
@@ -28,6 +29,12 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
 }: MatchCardModalProps) => {
   const { data, mutate, isLoading } = useMutation({
     mutationFn: (checked: string[]) => findMatch(checked),
+
+    onError: (err: any) => {
+      toast.error(
+        err.response ? `${err.response} request.` : 'No credentials provided'
+      );
+    },
   });
 
   const handleMutate = React.useCallback(() => {
@@ -52,11 +59,6 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
       open={modalOpen}
       maxWidth="xs"
       fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 4,
-        },
-      }}
     >
       <DialogContent
         dividers
@@ -82,12 +84,7 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
           </Box>
         )}
 
-        <Card
-          variant="outlined"
-          sx={{
-            borderRadius: 4,
-          }}
-        >
+        <Card variant="outlined">
           <CardContent>
             {matchCardData ? (
               <>

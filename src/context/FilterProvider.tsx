@@ -20,7 +20,6 @@ function filterReducer(filter: Filter, action: FilterAction): Filter {
     }
 
     default: {
-      console.error(`Unknown action: ${action.type}`);
       return filter;
     }
   }

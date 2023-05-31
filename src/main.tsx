@@ -6,7 +6,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeOptions, ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,17 +19,16 @@ import App from './App';
 import queryClient from './queryClient';
 import { FilterProvider } from './context/FilterProvider';
 import { PaginateProvider } from './context/PaginateProvider';
+import themeOptions from './theme';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+// const themeOptions: ThemeOptions = {};
+const darkTheme = createTheme(themeOptions);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider theme={darkTheme}>
+        {/* <ThemeComponent> */}
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
           <FilterProvider>
@@ -39,6 +38,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             </PaginateProvider>
           </FilterProvider>
         </QueryClientProvider>
+        {/* </ThemeComponent> */}
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>

@@ -27,14 +27,14 @@ export interface MultipleSelectChipProps {
 }
 const menuHeaderStyle = {
   padding: '8px 12px',
-  background: 'rgba(255, 255, 255, 0.16)',
+  background: 'rgba(0, 0, 0, 0.16)',
   color: 'white',
 };
 
 const MenuList = ({ children, ...props }: MenuListProps) => {
   return (
     <components.MenuList {...props}>
-      <div style={menuHeaderStyle}>Custom Menu List</div>
+      {/* <div style={menuHeaderStyle}>Custom Menu List</div> */}
       {children}
     </components.MenuList>
   );
@@ -59,13 +59,10 @@ export const ExternalSelect = ({
       onChange={handleChnage}
       theme={(theme) => ({
         ...theme,
-        borderRadius: 4,
+        borderRadius: 12,
         colors: {
           ...theme.colors,
-          primary25: 'rgba(255, 255, 255, 0.08)',
-          primary: 'rgba(144, 202, 249, 0.16)',
-          neutral0: 'rgba(255, 255, 255, 0.02)',
-          neutral10: 'rgba(255, 255, 255, 0.16)',
+          primary: '#890075',
         },
       })}
     />
@@ -160,13 +157,7 @@ const Filter: React.FC = () => {
   return (
     <>
       <Box>
-        <IconButton
-          sx={{
-            backgroundColor: 'grey',
-          }}
-          onClick={handleClickListItem}
-          size="small"
-        >
+        <IconButton onClick={handleClickListItem} size="small">
           <FilterListIcon />
         </IconButton>
       </Box>

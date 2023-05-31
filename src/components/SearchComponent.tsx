@@ -3,16 +3,16 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import { OutlinedInput } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: theme.shape.borderRadius * 2,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
+  minHeight: 42,
+  borderRadius: theme.shape.borderRadius * 12,
+  display: 'flex',
   marginLeft: 0,
   width: '100%',
+  borderColor: 'white',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
     width: 'auto',
@@ -20,7 +20,7 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+  padding: theme.spacing(0, 0, 0, 1),
   height: '100%',
   position: 'absolute',
   pointerEvents: 'none',
@@ -29,13 +29,22 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
   color: 'inherit',
   width: '100%',
+  height: '100%',
+  alignSelf: 'center',
+  borderColor: 'transparent',
+  boxShadow:
+    'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 2px 10px 0px',
+  borderRadius: theme.shape.borderRadius * 12,
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'transparent',
+  },
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+
+    paddingLeft: `calc(1em + ${theme.spacing(3)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -64,6 +73,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           value={searchValue}
           onChange={handleChange}
           inputProps={{ 'aria-label': 'search' }}
+          autoFocus
         />
       </Search>
     </Box>

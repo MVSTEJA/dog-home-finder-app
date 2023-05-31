@@ -71,7 +71,6 @@ function paginateReducer(paginate: Paginate, action: PaginateAction): Paginate {
       };
     }
     default: {
-      console.error(`Unknown action: ${action.type}`);
       return paginate;
     }
   }

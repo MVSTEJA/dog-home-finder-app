@@ -15,6 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { useLocalStorage } from 'usehooks-ts';
+import { toast } from 'react-toastify';
 import { createLogin } from '../api';
 import { User } from '../types';
 
@@ -40,8 +41,10 @@ const SignInSide: React.FC = () => {
 
   const { mutate } = useMutation<string, Error, User>({
     mutationFn: createLogin,
-    onError: () => {
-      // navigate('/dashboard');
+    onError: (err) => {
+      toast.error(
+        err?.response ? `${err?.response} request.` : 'No credentials provided'
+      );
     },
     onSuccess: () => {
       setIsLoggedIn(true);
@@ -53,14 +56,14 @@ const SignInSide: React.FC = () => {
     event.preventDefault();
     const target = event.target as typeof event.target & {
       email: { value: string };
-      password: { value: string };
+      name: { value: string };
     };
     const email = target.email.value;
-    const password = target.password.value;
+    const name = target.name.value;
 
     mutate({
       email,
-      name: email,
+      name,
     });
   };
 
@@ -76,13 +79,29 @@ const SignInSide: React.FC = () => {
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light'
-              ? t.palette.grey[50]
+              ? t.palette.grey[500]
               : t.palette.grey[900],
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          borderTopRightRadius: 6,
         }}
       />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid
+        item
+        xs={12}
+        sm={8}
+        md={5}
+        component={Paper}
+        elevation={6}
+        square
+        sx={{
+          backgroundColor: (t) =>
+            t.palette.mode === 'light'
+              ? t.palette.grey[100]
+              : t.palette.grey[900],
+          boxShadow: 'none',
+        }}
+      >
         <Box
           sx={{
             my: 8,
@@ -108,22 +127,23 @@ const SignInSide: React.FC = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              name="name"
+              label="Name"
+              type="name"
+              id="name"
+              autoComplete="current-name"
               autoFocus
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
             />
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
@@ -139,7 +159,7 @@ const SignInSide: React.FC = () => {
             {/* <Grid container>
               <Grid item xs>
                 <Link href="" variant="body2">
-                  Forgot password?
+                  Forgot name?
                 </Link>
               </Grid>
               <Grid item>

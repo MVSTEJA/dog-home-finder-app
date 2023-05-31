@@ -67,6 +67,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
       <DialogTitle>Sort by breed</DialogTitle>
       <DialogContent dividers>
         <CustomizedMenus sortSelected={sortBy} sortMenu={['breed']} />
+
         <RadioGroup
           ref={radioGroupRef}
           aria-label="ringtone"
@@ -124,7 +125,6 @@ const Sorting: React.FC = () => {
           onClick={handleClickListItem}
           sx={{
             transform: 'rotate(90deg)',
-            backgroundColor: 'grey',
           }}
         >
           <SyncAltIcon />

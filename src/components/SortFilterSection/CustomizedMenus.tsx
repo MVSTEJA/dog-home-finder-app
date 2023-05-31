@@ -13,24 +13,23 @@ const CustomizedMenus: React.FC<CustomizedMenusProps> = ({
   const handleChange = () => {};
 
   return (
-    <div>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={sortSelected}
-          label="Sort By"
-          onChange={handleChange}
-        >
-          {sortMenu?.map((item) => (
-            <MenuItem key={item} value={item} disableRipple>
-              {item}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl fullWidth sx={{ mb: 1 }}>
+      <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={sortSelected}
+        label="Sort By"
+        onChange={handleChange}
+        size="small"
+      >
+        {sortMenu?.map((item) => (
+          <MenuItem key={item} value={item} disableRipple>
+            {item}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 

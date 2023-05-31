@@ -58,10 +58,10 @@ interface Sort {
   by?: string;
 }
 interface Paginate {
-  fromCount: number;
-  size: number;
-  from: number;
-  sort: Sort;
+  fromCount?: number;
+  size?: number;
+  from?: number;
+  sort?: Sort;
 }
 
 interface Filter {
