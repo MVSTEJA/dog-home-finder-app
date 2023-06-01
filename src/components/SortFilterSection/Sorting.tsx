@@ -10,7 +10,8 @@ import Dialog from '@mui/material/Dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { IconButton } from '@mui/material';
+import { IconButton, SelectChangeEvent } from '@mui/material';
+
 import {
   usePaginate,
   usePaginateDispatch,
@@ -37,7 +38,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
   const { onClose, value: valueProp, open, sortBy, ...other } = props;
   const [value, setValue] = React.useState<string>(valueProp);
   const radioGroupRef = React.useRef<HTMLElement>(null);
-
+  const [sortByValue, setSortByValue] = React.useState<string>(sortBy);
   const handleEntering = () => {
     if (radioGroupRef.current != null) {
       radioGroupRef.current.focus();
@@ -49,13 +50,17 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
   };
 
   const handleOk = () => {
-    onClose(value, sortBy);
+    onClose(value, sortByValue);
+  };
+
+  const handleSortByChange = (evt: SelectChangeEvent<string>) => {
+    setSortByValue(evt.target.value);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
-
+  console.log({ sortByValue });
   return (
     <Dialog
       sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
@@ -64,9 +69,13 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
       open={open}
       {...other}
     >
-      <DialogTitle>Sort by breed</DialogTitle>
+      <DialogTitle>Sort by {sortBy}</DialogTitle>
       <DialogContent dividers>
-        <CustomizedMenus sortSelected={sortBy} sortMenu={['breed']} />
+        <CustomizedMenus
+          handleChange={handleSortByChange}
+          sortSelected={sortByValue}
+          sortMenu={['breed', 'age', 'name']}
+        />
 
         <RadioGroup
           ref={radioGroupRef}
@@ -141,5 +150,4 @@ const Sorting: React.FC = () => {
     </>
   );
 };
-
 export default Sorting;

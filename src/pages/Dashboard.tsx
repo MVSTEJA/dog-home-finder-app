@@ -34,13 +34,13 @@ const CardSkeleton: React.FC = () => {
   return (
     <>
       {Array.from({ length: 9 }, (item: string) => (
-        <Grid key={item} item xs={6} sm={4}>
-          <Card sx={{ minWidth: 50 }}>
+        <Grid key={item} item xs={12} sm={1}>
+          <Card sx={{ minWidth: '250px' }}>
             <CardActionArea>
               <Skeleton
                 variant="rectangular"
                 sx={{
-                  minHeight: '150px',
+                  minHeight: '250px',
                   maxWidth: '100%',
                   maxHeight: '100%',
                 }}
@@ -176,8 +176,6 @@ const Dashboard: React.FC = () => {
     >
       <Toolbar sx={{ minHeight: '0 !important' }} id="back-to-top-anchor" />
       <Container maxWidth="xl" sx={{ mb: 4 }}>
-        {isFetching && <CircularProgress />}
-
         <MatchCardModal
           cardChecked={checked}
           handleClose={handleClose}
@@ -205,10 +203,11 @@ const Dashboard: React.FC = () => {
                 sx={{
                   display: 'flex',
                   justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
                 <SortFilterSection />
-                <Box>
+                <Box display="flex">
                   <Button
                     variant="outlined"
                     size="small"
@@ -218,7 +217,7 @@ const Dashboard: React.FC = () => {
                     Clear selection
                   </Button>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     size="small"
                     sx={{ m: 2 }}
                     onClick={handleClickOpen}
@@ -287,7 +286,6 @@ const Dashboard: React.FC = () => {
             )}
           </Grid>
         </Grid>
-        {/* </Grid> */}
         <Copyright sx={{ pt: 4 }} />
       </Container>
       <BackToTop

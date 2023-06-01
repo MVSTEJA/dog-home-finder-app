@@ -1,5 +1,6 @@
 import FilterListIcon from '@mui/icons-material/FilterList';
 
+import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -158,7 +159,7 @@ const Filter: React.FC = () => {
     <>
       <Box>
         <IconButton onClick={handleClickListItem} size="small">
-          <FilterListIcon />
+          <FilterAltTwoToneIcon />
         </IconButton>
       </Box>
       <ConfirmationDialogRaw

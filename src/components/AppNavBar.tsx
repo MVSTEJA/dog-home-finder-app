@@ -28,7 +28,7 @@ const ButtonAppBar: React.FC = () => {
         <AppBar
           position="static"
           sx={{
-            boxShadow: '0',
+            boxShadow: 0,
           }}
         >
           <Toolbar>

@@ -76,12 +76,12 @@ const DogCard: React.FC<DogCardProps> = ({
             />
           </Box>
         )}
-
         <CardMedia
           component="img"
           sx={{
-            maxWidth: '250px',
-            visibility: imageLoaded ? 'visible' : 'hidden',
+            width: '250px',
+            height: '250px',
+            display: imageLoaded ? 'block' : 'none',
             transform:
               imageHoverState && !cardSelected ? 'scale(1.05)' : 'scale(1)',
             transition: 'transform 330ms ease-in',
@@ -92,11 +92,13 @@ const DogCard: React.FC<DogCardProps> = ({
           alt={name}
           loading="lazy"
         />
+        {console.log({ imageLoaded })}
         {!imageLoaded && (
           <Skeleton
             variant="rectangular"
             sx={{
-              minHeight: '15vw',
+              minHeight: '250px',
+              minWidth: '250px',
               maxWidth: '100%',
               maxHeight: '100%',
             }}

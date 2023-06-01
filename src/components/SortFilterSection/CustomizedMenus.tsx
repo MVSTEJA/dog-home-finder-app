@@ -1,17 +1,22 @@
 import MenuItem from '@mui/material/MenuItem';
-import { FormControl, InputLabel, Select } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 
 interface CustomizedMenusProps {
   sortSelected: string;
   sortMenu: string[];
+  handleChange: (evt: SelectChangeEvent<string>) => void;
 }
 
 const CustomizedMenus: React.FC<CustomizedMenusProps> = ({
   sortSelected,
   sortMenu,
+  handleChange,
 }: CustomizedMenusProps) => {
-  const handleChange = () => {};
-
   return (
     <FormControl fullWidth sx={{ mb: 1 }}>
       <InputLabel id="demo-simple-select-label">Sort By</InputLabel>

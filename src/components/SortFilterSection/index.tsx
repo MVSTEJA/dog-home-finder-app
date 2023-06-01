@@ -15,6 +15,7 @@ const SortFilterSection: React.FC = () => {
         border: '1px solid grey',
         borderRadius: '12px',
         p: 1,
+        alignItems: 'center',
       }}
     >
       <Filter />
