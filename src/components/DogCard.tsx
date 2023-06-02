@@ -4,15 +4,15 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import {
-  Box,
   CardActionArea,
   Checkbox,
   Grid,
+  IconButton,
   Paper,
-  Skeleton,
+  useMediaQuery,
 } from '@mui/material';
 import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
-import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import Highlighter from 'react-highlight-words';
 
 import { Dog } from '../types';
@@ -35,31 +35,27 @@ const DogCard: React.FC<DogCardProps> = ({
   age,
   searchValue,
 }: DogCardProps) => {
-  const [imageLoaded, setimageLoaded] = React.useState<boolean>(false);
-  const [imageHoverState, setImageHoverState] = React.useState(false);
-
   const cardSelected = checked?.indexOf(value) !== -1;
 
+  const matches = useMediaQuery('(min-width:600px)');
+
   return (
-    <Card
-      component={Paper}
-      variant="outlined"
-      onMouseEnter={() => setImageHoverState(true)}
-      onMouseLeave={() => setImageHoverState(false)}
-    >
+    <Card component={Paper} variant="elevation">
       <CardActionArea
         onClick={() => {
           handleToggle?.(value);
         }}
         sx={{
           backgroundColor: `${cardSelected ? 'rgba(137, 0, 117, 0.24)' : ''}`,
+          display: matches ? 'flex' : 'block',
         }}
       >
         {checked && (
-          <Box
+          <IconButton
             sx={{
               position: 'absolute',
               right: 0,
+              top: 0,
             }}
           >
             <Checkbox
@@ -69,42 +65,42 @@ const DogCard: React.FC<DogCardProps> = ({
               disableRipple
               sx={{
                 zIndex: 1,
+                padding: 0,
+                m: 1,
+                borderRadius: '50% !important',
+                borderColor: 'transparent',
               }}
               inputProps={{ 'aria-labelledby': name }}
-              icon={<CheckCircleOutlineSharpIcon />}
+              icon={<CircleOutlinedIcon />}
               checkedIcon={<CheckCircleSharpIcon />}
             />
-          </Box>
+          </IconButton>
         )}
         <CardMedia
           component="img"
           sx={{
+            m: 1,
             width: '250px',
             height: '250px',
-            display: imageLoaded ? 'block' : 'none',
-            transform:
-              imageHoverState && !cardSelected ? 'scale(1.05)' : 'scale(1)',
             transition: 'transform 330ms ease-in',
             aspectRatio: 1,
+            '&:hover': {
+              transform: 'scale(1.05)',
+            },
           }}
           image={img}
-          onLoad={() => setimageLoaded(true)}
           alt={name}
           loading="lazy"
         />
-        {console.log({ imageLoaded })}
-        {!imageLoaded && (
-          <Skeleton
-            variant="rectangular"
-            sx={{
-              minHeight: '250px',
-              minWidth: '250px',
-              maxWidth: '100%',
-              maxHeight: '100%',
-            }}
-          />
-        )}
-        <CardContent>
+
+        <CardContent
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignSelf: 'flex-start',
+            marginTop: matches ? '30px' : 0,
+          }}
+        >
           <Typography gutterBottom variant="h5" component="div">
             <Highlighter
               highlightClassName="YourHighlightClass"

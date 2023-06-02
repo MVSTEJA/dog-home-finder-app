@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import SortByAlphaRoundedIcon from '@mui/icons-material/SortByAlphaRounded';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -10,13 +10,14 @@ import Dialog from '@mui/material/Dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { IconButton, SelectChangeEvent } from '@mui/material';
+import { SelectChangeEvent, Typography } from '@mui/material';
 
 import {
   usePaginate,
   usePaginateDispatch,
 } from '../../context/PaginateProvider';
 import CustomizedMenus from './CustomizedMenus';
+import CustomIconBtn from '../common/ActionableBtns';
 
 const options = [
   { name: 'Ascending', id: 'asc' },
@@ -26,7 +27,7 @@ const options = [
 export interface ConfirmationDialogRawProps {
   id: string;
   keepMounted: boolean;
-  value: string;
+  value: string | undefined;
   open: boolean;
   onClose: (value?: string, sortBy?: string) => void;
   sortBy: string;
@@ -60,7 +61,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
-  console.log({ sortByValue });
+
   return (
     <Dialog
       sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
@@ -69,8 +70,18 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
       open={open}
       {...other}
     >
-      <DialogTitle>Sort by {sortBy}</DialogTitle>
-      <DialogContent dividers>
+      <DialogTitle>
+        <Typography
+          gutterBottom
+          component="div"
+          display="flex"
+          alignItems="center"
+        >
+          <SortByAlphaRoundedIcon sx={{ mr: 1 }} />
+          <Box>Sort by </Box>
+        </Typography>
+      </DialogTitle>
+      <DialogContent sx={{ pt: '5px !important' }}>
         <CustomizedMenus
           handleChange={handleSortByChange}
           sortSelected={sortByValue}
@@ -94,11 +105,11 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
           ))}
         </RadioGroup>
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCancel}>
-          Cancel
+      <DialogActions sx={{ mr: 1, mb: 1 }}>
+        <Button onClick={handleCancel}>Cancel</Button>
+        <Button variant="contained" onClick={handleOk}>
+          Submit
         </Button>
-        <Button onClick={handleOk}>Ok</Button>
       </DialogActions>
     </Dialog>
   );
@@ -128,17 +139,13 @@ const Sorting: React.FC = () => {
 
   return (
     <>
-      <Box>
-        <IconButton
-          size="small"
-          onClick={handleClickListItem}
-          sx={{
-            transform: 'rotate(90deg)',
-          }}
-        >
-          <SyncAltIcon />
-        </IconButton>
-      </Box>
+      <CustomIconBtn
+        iconState={sortValue?.id !== ''}
+        handleClick={handleClickListItem}
+      >
+        <SortByAlphaRoundedIcon />
+      </CustomIconBtn>
+
       <ConfirmationDialogRaw
         id="ringtone-menu"
         keepMounted

@@ -14,6 +14,7 @@ import {
   CircularProgress,
   Skeleton,
   Toolbar,
+  useMediaQuery,
 } from '@mui/material';
 import Link from '@mui/material/Link';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -31,11 +32,12 @@ import { usePaginate } from '../context/PaginateProvider';
 import BackToTop from '../components/common/BackToTop';
 
 const CardSkeleton: React.FC = () => {
+  const matches = useMediaQuery('(min-width:600px)');
   return (
     <>
       {Array.from({ length: 9 }, (item: string) => (
         <Grid key={item} item xs={12} sm={1}>
-          <Card sx={{ minWidth: '250px' }}>
+          <Card sx={{ minWidth: '250px', display: matches ? 'flex' : 'block' }}>
             <CardActionArea>
               <Skeleton
                 variant="rectangular"
@@ -160,6 +162,8 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const matches = useMediaQuery('(min-width:600px)');
+
   return (
     <Box
       component="main"
@@ -209,19 +213,13 @@ const Dashboard: React.FC = () => {
                 <SortFilterSection />
                 <Box display="flex">
                   <Button
-                    variant="outlined"
-                    size="small"
-                    sx={{ m: 2 }}
+                    variant="text"
+                    sx={{ mr: 1 }}
                     onClick={handleClearSelection}
                   >
                     Clear selection
                   </Button>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    sx={{ m: 2 }}
-                    onClick={handleClickOpen}
-                  >
+                  <Button variant="contained" onClick={handleClickOpen}>
                     Find match
                   </Button>
                 </Box>

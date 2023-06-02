@@ -1,6 +1,3 @@
-import FilterListIcon from '@mui/icons-material/FilterList';
-
-import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,69 +5,20 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import * as React from 'react';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
-import { IconButton } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-
-import ReactSelect, {
-  components,
-  MenuListProps,
-  MultiValue,
-} from 'react-select';
 
 import { findAllBreeds } from '../../api';
 import { useFilter, useFilterDispatch } from '../../context/FilterProvider';
-import { Breed } from '../../types';
+import BreedSelect from './BreedSelect';
+import LocationSelect from './LocationSelect';
+import CustomIconBtn from '../common/ActionableBtns';
 
-export interface MultipleSelectChipProps {
-  options: Breed[] | undefined;
-  setPersonName: React.Dispatch<React.SetStateAction<string[]>>;
-}
-const menuHeaderStyle = {
-  padding: '8px 12px',
-  background: 'rgba(0, 0, 0, 0.16)',
-  color: 'white',
-};
-
-const MenuList = ({ children, ...props }: MenuListProps) => {
-  return (
-    <components.MenuList {...props}>
-      {/* <div style={menuHeaderStyle}>Custom Menu List</div> */}
-      {children}
-    </components.MenuList>
-  );
-};
-
-export const ExternalSelect = ({
-  options,
-  setPersonName,
-}: MultipleSelectChipProps) => {
-  const handleChnage = (newValue: MultiValue<unknown>) => {
-    setPersonName(newValue.map((str: any) => str.value));
-  };
-  return (
-    <ReactSelect
-      isMulti
-      name="colors"
-      options={options}
-      className="basic-multi-select"
-      classNamePrefix="select"
-      closeMenuOnSelect={false}
-      components={{ MenuList }}
-      onChange={handleChnage}
-      theme={(theme) => ({
-        ...theme,
-        borderRadius: 12,
-        colors: {
-          ...theme.colors,
-          primary: '#890075',
-        },
-      })}
-    />
-  );
-};
-
-export interface ConfirmationDialogRawProps {
+export interface FilterDialogContainerProps {
   id: string;
   keepMounted: boolean;
   filterValue: string[];
@@ -78,7 +26,9 @@ export interface ConfirmationDialogRawProps {
   onClose: (value?: string[]) => void;
 }
 
-const ConfirmationDialogRaw = (props: ConfirmationDialogRawProps) => {
+const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
+  props: FilterDialogContainerProps
+) => {
   const { onClose, filterValue, open, ...other } = props;
   const { data: options } = useQuery({
     queryKey: ['findAllBreeds'],
@@ -116,21 +66,44 @@ const ConfirmationDialogRaw = (props: ConfirmationDialogRawProps) => {
       open={open}
       {...other}
     >
-      <DialogTitle>Filter by breed</DialogTitle>
+      <DialogTitle>
+        <Box display="flex" alignItems="center" mb={2}>
+          <TuneRoundedIcon sx={{ mr: 1 }} />
+          <Box>Filter</Box>
+        </Box>
+      </DialogTitle>
       <DialogContent
-        dividers
         sx={{
-          minHeight: '200px',
           overflow: 'visible',
         }}
       >
-        <ExternalSelect options={options} setPersonName={setPersonName} />
+        <Typography
+          gutterBottom
+          component="div"
+          display="flex"
+          alignItems="center"
+        >
+          <PetsRoundedIcon sx={{ mr: 1 }} />
+          <Box>Breeds</Box>
+        </Typography>
+        <BreedSelect options={options} setPersonName={setPersonName} />
+        <br />
+        <Typography
+          gutterBottom
+          component="div"
+          display="flex"
+          alignItems="center"
+        >
+          <MapOutlinedIcon sx={{ mr: 1 }} />
+          <Box>Location</Box>
+        </Typography>
+        <LocationSelect />
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCancel}>
-          Cancel
+      <DialogActions sx={{ mr: 1, mb: 1 }}>
+        <Button onClick={handleCancel}>Cancel</Button>
+        <Button variant="contained" onClick={handleOk}>
+          Submit
         </Button>
-        <Button onClick={handleOk}>Ok</Button>
       </DialogActions>
     </Dialog>
   );
@@ -157,12 +130,20 @@ const Filter: React.FC = () => {
 
   return (
     <>
-      <Box>
-        <IconButton onClick={handleClickListItem} size="small">
-          <FilterAltTwoToneIcon />
-        </IconButton>
-      </Box>
-      <ConfirmationDialogRaw
+      {/* <Box
+        sx={{
+          bgcolor: theme.palette.secondary.light,
+          borderRadius: theme.shape.borderRadius / 2,
+        }}
+      > */}
+      <CustomIconBtn
+        iconState={filterValue.filterBreeds.length > 0}
+        handleClick={handleClickListItem}
+      >
+        <TuneRoundedIcon />
+      </CustomIconBtn>
+      {/* </Box> */}
+      <FilterDialogContainer
         id="ringtone-menu"
         keepMounted
         open={open}

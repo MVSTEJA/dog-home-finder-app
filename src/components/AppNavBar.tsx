@@ -6,60 +6,66 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material';
-import { grey } from '@mui/material/colors';
 
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: grey[100],
-    },
-  },
-});
+import { useLocalStorage } from 'usehooks-ts';
+import ConfirmationDialog from './common/ConfirmationDialog';
 
 const ButtonAppBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [openConfim, setOpenConfim] = React.useState(false);
+  const [, setIsLoggedIn] = useLocalStorage('login', true);
+  const handleClose = () => {
+    setOpenConfim(false);
+  };
+
+  const handleSubmit = () => {
+    setIsLoggedIn(false);
+    handleClose();
+    navigate('/signin');
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <ThemeProvider theme={lightTheme}>
-        <AppBar
-          position="static"
-          sx={{
-            boxShadow: 0,
-          }}
-        >
-          <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1 }}
-              onClick={() => {
-                navigate('/dashboard');
-              }}
-            >
-              Home for shelter dogs
-            </Typography>
+      <ConfirmationDialog
+        open={openConfim}
+        onSubmit={handleSubmit}
+        onClose={handleClose}
+        variant="danger"
+        title="Do you want to exit the application ?"
+      />
+      <AppBar
+        position="static"
+        sx={{
+          boxShadow: 0,
+        }}
+      >
+        <Toolbar>
+          <Typography
+            variant="h6"
+            sx={{ flexGrow: 1, color: 'black' }}
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            Home for shelter dogs
+          </Typography>
+          {!location.pathname.includes('/signin') && (
             <Button
-              color="inherit"
+              variant="text"
               sx={{
                 textTransform: 'initial',
               }}
               onClick={() => {
-                if (location.pathname.includes('/signin')) {
-                  navigate('/dashboard');
-                } else {
-                  navigate('/signin');
-                }
+                setOpenConfim(true);
               }}
             >
-              {location.pathname.includes('/signin') ? 'Login' : 'Logout'}
+              Logout
             </Button>
-          </Toolbar>
-        </AppBar>
-      </ThemeProvider>
+          )}
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 };

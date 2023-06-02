@@ -29,18 +29,25 @@ const ConfirmationDialog = ({
 }: ConfirmationDialogProps) => {
   return (
     <Dialog open={open}>
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      <DialogTitle fontSize="14px" id="alert-dialog-title">
+        {title}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>{description}</DialogContentText>
       </DialogContent>
       <DialogActions>
         {variant === 'danger' && (
           <>
-            <Button color="primary" onClick={onSubmit}>
-              Yes, I agree
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={onClose}
+              autoFocus
+            >
+              Cancel
             </Button>
-            <Button color="primary" onClick={onClose} autoFocus>
-              CANCEL
+            <Button color="primary" onClick={onSubmit}>
+              Yes
             </Button>
           </>
         )}

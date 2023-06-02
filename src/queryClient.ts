@@ -6,6 +6,7 @@ export default new QueryClient({
     queries: {
       retry: false,
       refetchOnWindowFocus: false, // default: true
+      refetchOnMount: false,
     },
   },
 });

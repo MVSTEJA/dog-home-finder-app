@@ -31,9 +31,7 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
     mutationFn: (checked: string[]) => findMatch(checked),
 
     onError: (err: any) => {
-      toast.error(
-        err.response ? `${err.response} request.` : 'No credentials provided'
-      );
+      toast.error(err.response ? `${err.response} request.` : err);
     },
   });
 

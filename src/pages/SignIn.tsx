@@ -48,7 +48,7 @@ const SignInSide: React.FC = () => {
     },
     onSuccess: () => {
       setIsLoggedIn(true);
-      navigate('/dashboard');
+      navigate('/');
     },
   });
 
@@ -156,18 +156,7 @@ const SignInSide: React.FC = () => {
             >
               Sign In
             </Button>
-            {/* <Grid container>
-              <Grid item xs>
-                <Link href="" variant="body2">
-                  Forgot name?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="" variant="body2">
-                  Don't have an account? Sign Up
-                </Link>
-              </Grid>
-            </Grid> */}
+
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>

@@ -19,14 +19,11 @@ const CustomizedMenus: React.FC<CustomizedMenusProps> = ({
 }: CustomizedMenusProps) => {
   return (
     <FormControl fullWidth sx={{ mb: 1 }}>
-      <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
       <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
+        labelId="select-label"
+        id="select"
         value={sortSelected}
-        label="Sort By"
         onChange={handleChange}
-        size="small"
       >
         {sortMenu?.map((item) => (
           <MenuItem key={item} value={item} disableRipple>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 
 import Sorting from './Sorting';
 import Filter from './Filter';
@@ -9,16 +9,16 @@ const SortFilterSection: React.FC = () => {
     <Box
       sx={{
         m: 1,
-        width: '120px',
+        minWidth: '120px',
         display: 'flex',
         justifyContent: 'space-between',
-        border: '1px solid grey',
-        borderRadius: '12px',
+
         p: 1,
         alignItems: 'center',
       }}
     >
       <Filter />
+      <Divider flexItem sx={{ bgcolor: 'lightgrey' }} orientation="vertical" />
       <Sorting />
     </Box>
   );

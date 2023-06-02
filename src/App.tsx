@@ -4,6 +4,7 @@ import { Routes, Route, Outlet, Link, Navigate } from 'react-router-dom';
 import { CircularProgress, Container } from '@mui/material';
 import { useReadLocalStorage } from 'usehooks-ts';
 
+import { toast } from 'react-toastify';
 import SignInSide from './pages/SignIn';
 import ResponsiveAppBar from './components/AppNavBar';
 
@@ -40,6 +41,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
 }: ProtectedRouteProps) => {
   if (!isLoggedIn) {
+    toast.error('Please provide credentials in login to continue. ', {
+      toastId: 'redirectPath',
+    });
     return <Navigate to={redirectPath} replace />;
   }
 
@@ -50,6 +54,7 @@ ProtectedRoute.defaultProps = {
 };
 const App: React.FC = () => {
   const loggedIn: boolean | null = useReadLocalStorage('login');
+  console.log({ loggedIn });
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -63,7 +68,7 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="dashboard/*"
+          path="/"
           element={
             <ProtectedRoute isLoggedIn={loggedIn}>
               <React.Suspense fallback={<CircularProgress />}>
