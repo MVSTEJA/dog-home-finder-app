@@ -11,32 +11,31 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CircularProgress,
   Skeleton,
+  Theme,
   Toolbar,
   useMediaQuery,
 } from '@mui/material';
-import Link from '@mui/material/Link';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-import { useTheme } from '@emotion/react';
+import { useTheme, Theme as ITheme } from '@emotion/react';
+import CloseIcon from '@mui/icons-material/Close';
 import { findAllDogs } from '../api';
 import DogCard from '../components/DogCard';
 import SearchInput from '../components/SearchComponent';
 
 import MatchCardModal from '../components/MatchCardModal';
 import SortFilterSection from '../components/SortFilterSection';
-import { useFilter } from '../context/FilterProvider';
-import { usePaginate } from '../context/PaginateProvider';
 import BackToTop from '../components/common/BackToTop';
+import { useFilter, usePaginate } from '../context/hooks';
 
 const CardSkeleton: React.FC = () => {
   const matches = useMediaQuery('(min-width:600px)');
   return (
     <>
-      {Array.from({ length: 9 }, (item: string) => (
-        <Grid key={item} item xs={12} sm={1}>
+      {Array.from({ length: 9 }, (item: string, key) => (
+        <Grid key={item + key.toString()} item xs={12} sm={1}>
           <Card sx={{ minWidth: '250px', display: matches ? 'flex' : 'block' }}>
             <CardActionArea>
               <Skeleton
@@ -60,22 +59,6 @@ const CardSkeleton: React.FC = () => {
         </Grid>
       ))}
     </>
-  );
-};
-
-interface CopyrightProps {
-  sx: { pt: number };
-}
-
-const Copyright = ({ sx }: CopyrightProps) => {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" sx={sx}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}.
-    </Typography>
   );
 };
 
@@ -162,8 +145,6 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const matches = useMediaQuery('(min-width:600px)');
-
   return (
     <Box
       component="main"
@@ -175,10 +156,12 @@ const Dashboard: React.FC = () => {
         flexGrow: 1,
         height: '100vh',
         overflow: 'auto',
+        zIndex: 0,
+        position: 'relative',
       }}
       onScroll={handleScroll}
     >
-      <Toolbar sx={{ minHeight: '0 !important' }} id="back-to-top-anchor" />
+      <div id="back-to-top-anchor" />
       <Container maxWidth="xl" sx={{ mb: 4 }}>
         <MatchCardModal
           cardChecked={checked}
@@ -211,17 +194,41 @@ const Dashboard: React.FC = () => {
                 }}
               >
                 <SortFilterSection />
-                <Box display="flex">
-                  <Button
-                    variant="text"
-                    sx={{ mr: 1 }}
-                    onClick={handleClearSelection}
-                  >
-                    Clear selection
-                  </Button>
-                  <Button variant="contained" onClick={handleClickOpen}>
-                    Find match
-                  </Button>
+                <Box display="flex" justifyContent="flex-end">
+                  {checked.length > 0 && (
+                    <>
+                      <Button
+                        variant="text"
+                        sx={{
+                          mr: 2,
+                          '& .MuiButton-startIcon': {
+                            mr: 0,
+                          },
+                        }}
+                        endIcon={
+                          <Box
+                            sx={{
+                              minHeight: '20px',
+                              minWidth: '20px',
+                              borderRadius: appTheme.shape.borderRadius / 3,
+                              bgcolor: appTheme.palette.primary.main,
+                              p: 0.5,
+                            }}
+                          >
+                            <Typography color="white">
+                              {checked.length}
+                            </Typography>
+                          </Box>
+                        }
+                        onClick={handleClearSelection}
+                        startIcon={<CloseIcon />}
+                      />
+
+                      <Button variant="contained" onClick={handleClickOpen}>
+                        Find match
+                      </Button>
+                    </>
+                  )}
                 </Box>
               </Box>
             </Box>
@@ -246,6 +253,12 @@ const Dashboard: React.FC = () => {
               data?.pages.map((group, i) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <React.Fragment key={i}>
+                  {group?.response.length === 0 && (
+                    <Typography>
+                      Sorry! No dogs were found that match your search criteria.
+                    </Typography>
+                  )}
+
                   {group?.response
                     ?.filter((item) => {
                       const lcSearchValue = searchValue.toLowerCase();
@@ -284,7 +297,6 @@ const Dashboard: React.FC = () => {
             )}
           </Grid>
         </Grid>
-        <Copyright sx={{ pt: 4 }} />
       </Container>
       <BackToTop
         trigger={scrollTrigger}

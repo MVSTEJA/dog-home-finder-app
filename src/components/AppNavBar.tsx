@@ -27,7 +27,7 @@ const ButtonAppBar: React.FC = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <ConfirmationDialog
         open={openConfim}
         onSubmit={handleSubmit}
@@ -39,6 +39,9 @@ const ButtonAppBar: React.FC = () => {
         position="static"
         sx={{
           boxShadow: 0,
+          position: 'fixed',
+          top: 0,
+          zIndex: 1,
         }}
       >
         <Toolbar>
@@ -66,7 +69,7 @@ const ButtonAppBar: React.FC = () => {
           )}
         </Toolbar>
       </AppBar>
-    </Box>
+    </>
   );
 };
 

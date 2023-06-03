@@ -8,7 +8,9 @@ export const themeOptions: ThemeOptions = {
     mode: 'light',
     contrastThreshold: 4.5,
     primary: {
+      light: '#a03390',
       main: '#890075',
+      dark: '#5f0051',
     },
     secondary: {
       main: '#ff9100',
@@ -16,10 +18,25 @@ export const themeOptions: ThemeOptions = {
     tonalOffset: 0.2,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: grey[100],
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          p: 0,
+        },
+      },
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {
           backgroundColor: grey[100],
+          borderRadius: 0,
         },
       },
     },
@@ -56,6 +73,7 @@ export const themeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           textTransform: 'none',
+          borderRadius: '12px',
         },
       },
     },
@@ -63,7 +81,7 @@ export const themeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: '12px !important',
+          borderRadius: '12px',
         },
       },
     },
@@ -103,7 +121,27 @@ export const themeOptions: ThemeOptions = {
         size: 'medium',
       },
     },
+    MuiIcon: {
+      defaultProps: {
+        color: 'primary',
+      },
+    },
+    MuiChip: {
+      defaultProps: {
+        color: 'primary',
+        variant: 'outlined',
+      },
+      styleOverrides: {
+        outlined: {
+          backgroundColor: 'rgba(137, 0, 117, 0.08)',
+          borderColor: 'transparent',
+        },
+      },
+    },
     MuiSvgIcon: {
+      defaultProps: {
+        color: 'primary',
+      },
       styleOverrides: {
         colorSecondary: {
           color: 'white',
@@ -115,6 +153,7 @@ export const themeOptions: ThemeOptions = {
     },
   },
 };
+
 export const mobileThemeOptions: ThemeOptions = merge(
   cloneDeep(themeOptions),
   cloneDeep({
@@ -125,6 +164,11 @@ export const mobileThemeOptions: ThemeOptions = merge(
         },
       },
       MuiTextField: {
+        defaultProps: {
+          size: 'small',
+        },
+      },
+      MuiAutocomplete: {
         defaultProps: {
           size: 'small',
         },

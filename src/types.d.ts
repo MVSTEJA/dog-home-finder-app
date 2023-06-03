@@ -65,7 +65,14 @@ interface Paginate {
 }
 
 interface Filter {
-  filterBreeds: string[];
+  breeds: Breed[];
+  place: Place;
+}
+
+interface Place {
+  city: string;
+  state: string;
+  description?: string;
 }
 
 interface Location {

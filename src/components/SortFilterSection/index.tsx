@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Divider } from '@mui/material';
 
 import Sorting from './Sorting';
-import Filter from './Filter';
+import Filter from './FilterSection';
 
 const SortFilterSection: React.FC = () => {
   return (

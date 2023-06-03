@@ -3,7 +3,6 @@ import { Button, useTheme } from '@mui/material';
 const CustomIconBtn = ({ handleClick, children, iconState }) => {
   const theme = useTheme();
   return (
-    // <ThemeProvider theme={theme}>
     <Button
       sx={{
         borderRadius: theme.shape.borderRadius / 2,
@@ -20,7 +19,6 @@ const CustomIconBtn = ({ handleClick, children, iconState }) => {
       size="large"
       color="secondary"
     />
-    // </ThemeProvider>
   );
 };
 

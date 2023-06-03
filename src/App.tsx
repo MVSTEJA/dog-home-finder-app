@@ -1,20 +1,30 @@
 import * as React from 'react';
 import { Routes, Route, Outlet, Link, Navigate } from 'react-router-dom';
 
-import { CircularProgress, Container } from '@mui/material';
+import {
+  CircularProgress,
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  Toolbar,
+  createTheme,
+  useMediaQuery,
+} from '@mui/material';
 import { useReadLocalStorage } from 'usehooks-ts';
 
 import { toast } from 'react-toastify';
 import SignInSide from './pages/SignIn';
-import ResponsiveAppBar from './components/AppNavBar';
+import AppNavBar from './components/AppNavBar';
+import { mobileThemeOptions, themeOptions } from './theme';
 
 // const Home = React.lazy(() => import('./pages/Home'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
 const Layout: React.FC = () => {
   return (
-    <Container maxWidth="xl" sx={{ p: '0 !important' }}>
-      <ResponsiveAppBar />
+    <Container maxWidth="xl" sx={{ p: 0 }}>
+      <AppNavBar />
+      <Toolbar />
       <Outlet />
     </Container>
   );
@@ -52,34 +62,41 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 ProtectedRoute.defaultProps = {
   redirectPath: '/signin',
 };
+
+const baseTheme = createTheme(themeOptions);
+const mobileTheme = createTheme(mobileThemeOptions);
+
 const App: React.FC = () => {
   const loggedIn: boolean | null = useReadLocalStorage('login');
-  console.log({ loggedIn });
+  const matches = useMediaQuery('(min-width:600px)');
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route
-          index
-          path="signin"
-          element={
-            <React.Suspense fallback={<CircularProgress />}>
-              <SignInSide />
-            </React.Suspense>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute isLoggedIn={loggedIn}>
+    <ThemeProvider theme={matches ? baseTheme : mobileTheme}>
+      <CssBaseline />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route
+            index
+            path="signin"
+            element={
               <React.Suspense fallback={<CircularProgress />}>
-                <Dashboard />
+                <SignInSide />
               </React.Suspense>
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<NoMatch />} />
-      </Route>
-    </Routes>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute isLoggedIn={loggedIn}>
+                <React.Suspense fallback={<CircularProgress />}>
+                  <Dashboard />
+                </React.Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </ThemeProvider>
   );
 };
 

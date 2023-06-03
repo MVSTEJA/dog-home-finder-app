@@ -1,13 +1,8 @@
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import * as React from 'react';
 
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -16,24 +11,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { useLocalStorage } from 'usehooks-ts';
 import { toast } from 'react-toastify';
+import standingImage from '../assets/casual-life-3d-girl-standing-and-holding-dog.png';
 import { createLogin } from '../api';
 import { User } from '../types';
-
-interface CopyrightProps {
-  sx: { mt: number };
-}
-
-const Copyright: React.FC<CopyrightProps> = ({ sx }: CopyrightProps) => {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" sx={sx}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-};
 
 const SignInSide: React.FC = () => {
   const navigate = useNavigate();
@@ -68,22 +48,25 @@ const SignInSide: React.FC = () => {
   };
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid
+      container
+      component="main"
+      sx={{ height: '100vh', backgroundColor: (t) => t.palette.grey[100] }}
+    >
       <Grid
         item
         xs={false}
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundImage: `url(${standingImage})`,
           backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) =>
-            t.palette.mode === 'light'
-              ? t.palette.grey[500]
-              : t.palette.grey[900],
-          backgroundSize: 'cover',
+
+          backgroundSize: 'auto',
           backgroundPosition: 'center',
           borderTopRightRadius: 6,
+          borderBottomRightRadius: 6,
+          maxHeight: '600px',
         }}
       />
       <Grid
@@ -111,9 +94,9 @@ const SignInSide: React.FC = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
-          </Avatar>
+          </Avatar> */}
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -144,10 +127,10 @@ const SignInSide: React.FC = () => {
               autoComplete="email"
             />
 
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -156,8 +139,6 @@ const SignInSide: React.FC = () => {
             >
               Sign In
             </Button>
-
-            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>

@@ -1,11 +1,19 @@
 import { Autocomplete, TextField } from '@mui/material';
+import cloneDeep from 'lodash.clonedeep';
 
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import usePlacesAutocompleteService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
+import { Place } from '../../types';
 
-const LocationSelect = () => {
-  const [place, setPlace] = React.useState<string>('');
+export interface LocationSelectProps {
+  place: Place;
+  setPlace: Dispatch<SetStateAction<Place>>;
+}
 
+const LocationSelect: React.FC<LocationSelectProps> = ({
+  place,
+  setPlace,
+}: LocationSelectProps) => {
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     usePlacesAutocompleteService({
       options: {
@@ -15,6 +23,10 @@ const LocationSelect = () => {
     });
 
   const handleSearch = (search: string) => {
+    setPlace({
+      ...place,
+      city: search,
+    });
     getPlacePredictions({
       input: search,
     });
@@ -26,21 +38,39 @@ const LocationSelect = () => {
     evt: React.SyntheticEvent<Element, Event>,
     newValue: any
   ) => {
-    const termsCityStateCountry = [...newValue.terms].reverse().slice(0, 3);
-    termsCityStateCountry.shift();
-    console.log(termsCityStateCountry);
+    if (newValue) {
+      const termsCityStateCountry = cloneDeep(newValue.terms)
+        .reverse()
+        .slice(0, 3);
+      termsCityStateCountry.shift();
+      const [{ value: state }, { value: city }] = termsCityStateCountry;
 
-    setPlace(newValue.description);
+      setPlace({
+        ...place,
+        ...{
+          description: newValue.description,
+          city,
+          state,
+        },
+      });
+    } else {
+      setPlace({
+        ...place,
+        ...{
+          description: '',
+          city: '',
+          state: '',
+        },
+      });
+    }
   };
+
   return (
     <Autocomplete
-      inputValue={place}
+      inputValue={place.description}
       options={placePredictions}
       getOptionLabel={(option) => option.description}
       onChange={handleInput}
-      onClose={() => {
-        handleSearch('');
-      }}
       loading={isPlacePredictionsLoading}
       renderInput={(params) => (
         <TextField

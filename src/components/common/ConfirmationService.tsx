@@ -5,10 +5,7 @@ const ConfirmationServiceContext = React.createContext<
   (options: ConfirmationOptions) => Promise<void>
 >(Promise.reject);
 
-export const useConfirmation = () =>
-  React.useContext(ConfirmationServiceContext);
-
-export const ConfirmationServiceProvider = ({
+const ConfirmationServiceProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -59,3 +56,5 @@ export const ConfirmationServiceProvider = ({
     </>
   );
 };
+
+export default ConfirmationServiceProvider;

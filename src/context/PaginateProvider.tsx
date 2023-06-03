@@ -32,14 +32,6 @@ const initialPaginate = {
 };
 // { name: 'Ascending', id: 'asc', by: 'breed' };
 
-export function usePaginate(): Paginate {
-  return useContext(PaginateContext);
-}
-
-export function usePaginateDispatch() {
-  return useContext(PaginateDispatchContext);
-}
-
 function paginateReducer(paginate: Paginate, action: PaginateAction): Paginate {
   switch (action.type) {
     case 'asc': {

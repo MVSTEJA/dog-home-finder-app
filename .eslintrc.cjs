@@ -18,7 +18,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'react-refresh'],
   rules: {
     'react/react-in-jsx-scope': 0,
     'react/no-unescaped-entities': 0,
@@ -32,5 +32,7 @@ module.exports = {
     ],
     'no-return-await': 'off',
     '@typescript-eslint/return-await': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react-refresh/only-export-components': 'warn',
   },
 };

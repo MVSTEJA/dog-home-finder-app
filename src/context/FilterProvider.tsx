@@ -1,21 +1,27 @@
 import React, { Dispatch, createContext, useContext, useReducer } from 'react';
-import { Filter } from '../types';
+import { Breed, Filter, Place } from '../types';
 
-interface FilterAction {
+export interface FilterAction {
   type: string;
-  breeds: string[];
+  breeds: Breed[];
+  place: Place;
 }
 
 const initialFilter = {
-  filterBreeds: [],
+  breeds: [],
+  place: {
+    city: '',
+    state: '',
+  },
 };
 
 function filterReducer(filter: Filter, action: FilterAction): Filter {
   switch (action.type) {
-    case 'add_breed': {
+    case 'mutate': {
       return {
         ...filter,
-        filterBreeds: action.breeds,
+        breeds: action.breeds,
+        place: action.place,
       };
     }
 
@@ -24,18 +30,10 @@ function filterReducer(filter: Filter, action: FilterAction): Filter {
     }
   }
 }
-export const FilterContext = createContext<Filter>({ filterBreeds: [] });
+export const FilterContext = createContext<Filter>(initialFilter);
 export const FilterDispatchContext = createContext<Dispatch<FilterAction>>(
   () => null
 );
-
-export function useFilter(): Filter {
-  return useContext(FilterContext);
-}
-
-export function useFilterDispatch() {
-  return useContext(FilterDispatchContext);
-}
 
 export const FilterProvider = ({ children }: React.PropsWithChildren) => {
   const [filter, dispatch] = useReducer(filterReducer, initialFilter);

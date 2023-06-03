@@ -12,12 +12,9 @@ import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { SelectChangeEvent, Typography } from '@mui/material';
 
-import {
-  usePaginate,
-  usePaginateDispatch,
-} from '../../context/PaginateProvider';
 import CustomizedMenus from './CustomizedMenus';
 import CustomIconBtn from '../common/ActionableBtns';
+import { usePaginate, usePaginateDispatch } from '../../context/hooks';
 
 const options = [
   { name: 'Ascending', id: 'asc' },
@@ -81,7 +78,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
           <Box>Sort by </Box>
         </Typography>
       </DialogTitle>
-      <DialogContent sx={{ pt: '5px !important' }}>
+      <DialogContent sx={{ pb: 0 }}>
         <CustomizedMenus
           handleChange={handleSortByChange}
           sortSelected={sortByValue}
@@ -143,7 +140,9 @@ const Sorting: React.FC = () => {
         iconState={sortValue?.id !== ''}
         handleClick={handleClickListItem}
       >
-        <SortByAlphaRoundedIcon />
+        <SortByAlphaRoundedIcon
+          color={sortValue?.id !== '' ? 'secondary' : 'primary'}
+        />
       </CustomIconBtn>
 
       <ConfirmationDialogRaw

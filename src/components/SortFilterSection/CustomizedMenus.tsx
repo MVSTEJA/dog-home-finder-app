@@ -1,10 +1,5 @@
 import MenuItem from '@mui/material/MenuItem';
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
+import { FormControl, Select, SelectChangeEvent } from '@mui/material';
 
 interface CustomizedMenusProps {
   sortSelected: string;

@@ -7,11 +7,17 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 
-import { Box, Card, CardContent, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CircularProgress,
+  useMediaQuery,
+} from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { findMatch } from '../api';
-import DogCard from './DogCard';
+import { DogCardContent } from './DogCard';
 import { Dog } from '../types';
 
 interface MatchCardModalProps {
@@ -50,13 +56,13 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
     return cardData.id === data?.match;
   })[0];
 
+  const matches = useMediaQuery('(min-width:600px)');
   return (
     <Dialog
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
       open={modalOpen}
       maxWidth="xs"
-      fullWidth
     >
       <DialogContent
         dividers
@@ -93,12 +99,13 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
                 >
                   Match found !
                 </Typography>
-                <DogCard
+                <DogCardContent
                   img={matchCardData?.img}
                   breed={matchCardData?.breed}
+                  age={matchCardData?.age}
                   name={matchCardData?.name}
-                  zipCode={matchCardData?.zipCode}
-                  value={matchCardData?.id}
+                  zipCode={matchCardData?.zip_code}
+                  matches={matches}
                 />
               </>
             ) : (

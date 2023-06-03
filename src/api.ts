@@ -1,14 +1,14 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { toast } from 'react-toastify';
+import qs from 'qs';
 import {
   User,
   Dog,
   DogsSearchResponse,
-  AxiosError,
-  Breed,
   Filter,
   Paginate,
+  Location,
 } from './types';
 
 const client = axios.create({
@@ -58,22 +58,40 @@ export async function findAllDogs({
   filter?: Filter | undefined;
   paginate?: Paginate | undefined;
 }): Promise<AllDogsResponse> {
-  const queryURL = nextQuery || '/dogs/search';
-  let queryConfig = {};
+  const locationQueryURL = '/locations/search';
+  let zipCodes = [];
+
+  if (filter?.place) {
+    const {
+      data: { results: locations },
+    }: AxiosResponse = await client.post<DogsSearchResponse>(locationQueryURL, {
+      city: filter?.place.city,
+      states: [filter?.place.state],
+    });
+
+    zipCodes = locations.map((lc: Location) => lc.zip_code);
+  }
+
+  const dogSearchQueryURL = '/dogs/search';
+  let queryConfig: AxiosRequestConfig = {};
+
   if (!nextQuery) {
     queryConfig = {
       params: {
-        breeds: filter?.filterBreeds,
+        breeds: filter?.breeds.map((breed) => breed.value),
+        zipCodes,
         sort: `${paginate?.sort?.by}:${paginate?.sort?.id}`,
         from: paginate?.from,
         size: 25,
       },
+      // dping this as faced encoding issues.
+      paramsSerializer: (params) => qs.stringify(params, { encode: false }),
     };
   }
   const {
     data: { resultIds, next, prev },
   }: AxiosResponse = await client.get<DogsSearchResponse>(
-    queryURL,
+    dogSearchQueryURL,
     queryConfig
   );
   const { data } = await client.post<Dog[]>('/dogs', resultIds);
@@ -84,15 +102,18 @@ export async function findAllDogs({
   };
 }
 
-export async function findAllBreeds(): Promise<Breed[]> {
+export async function findAllBreeds(filterValue: Filter): Promise<Filter> {
   const { data }: AxiosResponse<string[]> = await client.get<string[]>(
     '/dogs/breeds'
   );
 
-  return data.map((breed) => ({
-    value: breed,
-    label: breed,
-  }));
+  return {
+    ...filterValue,
+    breeds: data.map((breed) => ({
+      value: breed,
+      label: breed,
+    })),
+  };
 }
 
 export async function findMatch(ids: string[]): Promise<Dog> {

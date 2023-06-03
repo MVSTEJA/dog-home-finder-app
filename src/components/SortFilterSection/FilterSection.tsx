@@ -1,3 +1,6 @@
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -5,38 +8,38 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import * as React from 'react';
-import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
-import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
-import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
 import { Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
 import { findAllBreeds } from '../../api';
-import { useFilter, useFilterDispatch } from '../../context/FilterProvider';
+import { FilterAction } from '../../context/FilterProvider';
+import { Breed, Filter, Place } from '../../types';
+import CustomIconBtn from '../common/ActionableBtns';
 import BreedSelect from './BreedSelect';
 import LocationSelect from './LocationSelect';
-import CustomIconBtn from '../common/ActionableBtns';
+import { useFilter, useFilterDispatch } from '../../context/hooks';
 
 export interface FilterDialogContainerProps {
   id: string;
   keepMounted: boolean;
-  filterValue: string[];
+  filterValue: Filter;
   open: boolean;
-  onClose: (value?: string[]) => void;
+  onClose: (value?: Filter) => void;
+  setFilterValue: React.Dispatch<FilterAction>;
 }
 
 const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
   props: FilterDialogContainerProps
 ) => {
-  const { onClose, filterValue, open, ...other } = props;
+  const { onClose, filterValue, open, setFilterValue, ...other } = props;
+
   const { data: options } = useQuery({
     queryKey: ['findAllBreeds'],
-    queryFn: findAllBreeds,
+    queryFn: () => findAllBreeds(filterValue),
   });
 
   const radioGroupRef = React.useRef<HTMLElement>(null);
-  const [personName, setPersonName] = React.useState<string[]>(filterValue);
 
   const handleEntering = () => {
     if (radioGroupRef.current != null) {
@@ -48,10 +51,15 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
     onClose();
   };
 
-  const handleOk = () => {
-    onClose(personName);
-  };
+  const [breeds, setBreeds] = React.useState<Breed[]>(filterValue.breeds);
+  const [place, setPlace] = React.useState<Place>(filterValue.place);
 
+  const handleOk = () => {
+    onClose({
+      breeds,
+      place,
+    });
+  };
   return (
     <Dialog
       sx={{
@@ -67,14 +75,15 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
       {...other}
     >
       <DialogTitle>
-        <Box display="flex" alignItems="center" mb={2}>
-          <TuneRoundedIcon sx={{ mr: 1 }} />
+        <Box display="flex" alignItems="center" mb={1}>
+          <TuneRoundedIcon color="primary" sx={{ mr: 1 }} />
           <Box>Filter</Box>
         </Box>
       </DialogTitle>
       <DialogContent
         sx={{
-          overflow: 'visible',
+          overflow: 'hidden',
+          overflowY: 'scroll',
         }}
       >
         <Typography
@@ -86,7 +95,11 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
           <PetsRoundedIcon sx={{ mr: 1 }} />
           <Box>Breeds</Box>
         </Typography>
-        <BreedSelect options={options} setPersonName={setPersonName} />
+        <BreedSelect
+          options={options?.breeds}
+          breeds={breeds}
+          setBreeds={setBreeds}
+        />
         <br />
         <Typography
           gutterBottom
@@ -97,7 +110,7 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
           <MapOutlinedIcon sx={{ mr: 1 }} />
           <Box>Location</Box>
         </Typography>
-        <LocationSelect />
+        <LocationSelect place={place} setPlace={setPlace} />
       </DialogContent>
       <DialogActions sx={{ mr: 1, mb: 1 }}>
         <Button onClick={handleCancel}>Cancel</Button>
@@ -109,7 +122,7 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
   );
 };
 
-const Filter: React.FC = () => {
+const FilterSection: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const filterValue = useFilter();
   const setFilterValue = useFilterDispatch();
@@ -117,41 +130,38 @@ const Filter: React.FC = () => {
     setOpen(true);
   };
 
-  const handleClose = (value?: string[] | undefined) => {
+  const handleClose = (value?: Filter | undefined) => {
     setOpen(false);
 
     if (value) {
       setFilterValue({
-        type: 'add_breed',
-        breeds: value,
+        ...filterValue,
+        type: 'mutate',
+        ...value,
       });
     }
   };
 
   return (
     <>
-      {/* <Box
-        sx={{
-          bgcolor: theme.palette.secondary.light,
-          borderRadius: theme.shape.borderRadius / 2,
-        }}
-      > */}
       <CustomIconBtn
-        iconState={filterValue.filterBreeds.length > 0}
+        iconState={filterValue?.breeds?.length > 0}
         handleClick={handleClickListItem}
       >
-        <TuneRoundedIcon />
+        <TuneRoundedIcon
+          color={filterValue?.breeds?.length > 0 ? 'secondary' : 'primary'}
+        />
       </CustomIconBtn>
-      {/* </Box> */}
       <FilterDialogContainer
         id="ringtone-menu"
         keepMounted
         open={open}
         onClose={handleClose}
-        filterValue={filterValue.filterBreeds}
+        filterValue={filterValue}
+        setFilterValue={setFilterValue}
       />
     </>
   );
 };
 
-export default Filter;
+export default FilterSection;

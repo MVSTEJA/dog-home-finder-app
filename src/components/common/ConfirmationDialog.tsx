@@ -32,9 +32,11 @@ const ConfirmationDialog = ({
       <DialogTitle fontSize="14px" id="alert-dialog-title">
         {title}
       </DialogTitle>
-      <DialogContent>
-        <DialogContentText>{description}</DialogContentText>
-      </DialogContent>
+      {description && (
+        <DialogContent>
+          <DialogContentText>{description}</DialogContentText>
+        </DialogContent>
+      )}
       <DialogActions>
         {variant === 'danger' && (
           <>
