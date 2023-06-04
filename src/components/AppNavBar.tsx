@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useLocalStorage } from 'usehooks-ts';
 import ConfirmationDialog from './common/ConfirmationDialog';
+import { ROUTE_CODES } from '../constants';
 
 const ButtonAppBar: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const ButtonAppBar: React.FC = () => {
   const handleSubmit = () => {
     setIsLoggedIn(false);
     handleClose();
-    navigate('/signin');
+    navigate(ROUTE_CODES.SIGNIN);
   };
 
   return (
@@ -50,7 +51,7 @@ const ButtonAppBar: React.FC = () => {
             variant="h6"
             sx={{ flexGrow: 1, color: 'black' }}
             onClick={() => {
-              navigate('/');
+              navigate(ROUTE_CODES.HOME);
             }}
           >
             Home for shelter dogs

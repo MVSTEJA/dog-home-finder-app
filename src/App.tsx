@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import SignInSide from './pages/SignIn';
 import AppNavBar from './components/AppNavBar';
 import { mobileThemeOptions, themeOptions } from './theme';
+import { ROUTE_CODES } from './constants';
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
@@ -35,7 +36,7 @@ const NoMatch: React.FC = () => {
     <div>
       <h2>Nothing to see here!</h2>
       <p>
-        <Link to="/">Go to the home page</Link>
+        <Link to={ROUTE_CODES.HOME}>Go to the home page</Link>
       </p>
     </div>
   );
@@ -48,7 +49,7 @@ interface ProtectedRouteProps {
 }
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   isLoggedIn,
-  redirectPath = '/signin',
+  redirectPath = ROUTE_CODES.SIGNIN,
   children,
 }: ProtectedRouteProps) => {
   if (!isLoggedIn) {
@@ -72,10 +73,10 @@ const App: React.FC = () => {
       <StyledEngineProvider injectFirst>
         <CssBaseline />
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path={ROUTE_CODES.HOME} element={<Layout />}>
             <Route
               index
-              path="signin"
+              path={ROUTE_CODES.SIGNIN}
               element={
                 <React.Suspense
                   fallback={
@@ -95,7 +96,7 @@ const App: React.FC = () => {
               }
             />
             <Route
-              path="/"
+              path={ROUTE_CODES.HOME}
               element={
                 <ProtectedRoute isLoggedIn={loggedIn}>
                   <React.Suspense

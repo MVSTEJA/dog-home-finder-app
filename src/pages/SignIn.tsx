@@ -15,6 +15,7 @@ import { AxiosError } from 'axios';
 import standingImage from '../assets/walking-a-dog.svg';
 import { createLogin } from '../api';
 import { User } from '../types';
+import { ROUTE_CODES } from '../constants';
 
 const SignInSide: React.FC = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const SignInSide: React.FC = () => {
     },
     onSuccess: () => {
       setIsLoggedIn(true);
-      navigate('/');
+      navigate(ROUTE_CODES.HOME);
     },
   });
 
@@ -93,6 +94,7 @@ const SignInSide: React.FC = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Typography component="h1" variant="h5">
@@ -102,7 +104,13 @@ const SignInSide: React.FC = () => {
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 1 }}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+            }}
           >
             <TextField
               margin="normal"
@@ -129,12 +137,7 @@ const SignInSide: React.FC = () => {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
           </Box>
