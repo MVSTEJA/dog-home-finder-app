@@ -1,17 +1,4 @@
 {
-  "name": "dog-home-finder-app",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "lint": "eslint --ext .js,.cjs,.ts,.tsx .",
-    "lint:fix": "eslint --ext .js,.cjs,.ts,.tsx . --fix",
-    "typecheck": "tsc --noEmit"
-  },
   "dependencies": {
     "@emotion/react": "11.11.0",
     "@emotion/styled": "11.11.0",
@@ -23,7 +10,6 @@
     "@tanstack/react-query": "4.29.7",
     "@types/googlemaps": "^3.43.3",
     "@types/react-highlight-words": "^0.16.4",
-    
     "@types/webfontloader": "^1.6.35",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "autosuggest-highlight": "3.3.4",
@@ -37,7 +23,6 @@
     "react-google-autocomplete": "2.7.3",
     "react-highlight-words": "0.20.0",
     "react-intersection-observer": "9.4.3",
-    
     "react-router-dom": "6.11.0",
     "react-select": "5.7.3",
     "react-toastify": "9.1.3",
@@ -75,5 +60,18 @@
     "vite": "4.3.3",
     "vitest": "0.30.1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "name": "dog-home-finder-app",
+  "private": true,
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "lint": "eslint --ext .js,.cjs,.ts,.tsx .",
+    "lint:fix": "eslint --ext .js,.cjs,.ts,.tsx . --fix",
+    "preview": "vite preview",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "type": "module",
+  "version": "0.0.0"
 }
