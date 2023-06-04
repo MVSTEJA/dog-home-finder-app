@@ -3,7 +3,7 @@ import { ThemeOptions } from '@mui/material/styles';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 
-export const themeOptions: ThemeOptions = {
+export const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
     contrastThreshold: 4.5,
@@ -169,25 +169,54 @@ export const themeOptions: ThemeOptions = {
   },
 };
 
-export const mobileThemeOptions: ThemeOptions = merge(
-  cloneDeep(themeOptions),
-  cloneDeep({
-    components: {
-      MuiButton: {
-        defaultProps: {
-          size: 'small',
-        },
-      },
-      MuiTextField: {
-        defaultProps: {
-          size: 'small',
-        },
-      },
-      MuiAutocomplete: {
-        defaultProps: {
-          size: 'small',
+export const darkThemeOptions: ThemeOptions = {
+  palette: {
+    mode: 'dark',
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: grey[900],
         },
       },
     },
-  })
+
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: grey[900],
+        },
+      },
+    },
+  },
+};
+export const mobileOnlyThemeOptions: ThemeOptions = {
+  components: {
+    MuiButton: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
+    MuiAutocomplete: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
+  },
+};
+
+export const mobileLightThemeOptions: ThemeOptions = merge(
+  cloneDeep(lightThemeOptions),
+  cloneDeep(mobileOnlyThemeOptions)
+);
+
+export const mobiledarkThemeOptions: ThemeOptions = merge(
+  cloneDeep(mobileOnlyThemeOptions),
+  cloneDeep(darkThemeOptions)
 );

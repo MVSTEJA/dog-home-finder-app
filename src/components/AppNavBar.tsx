@@ -5,11 +5,15 @@ import * as React from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
-import { Box } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+
 import WalkingDog from '../assets/dog-walking.png';
 
 import { ROUTE_CODES } from '../constants';
 import ConfirmationDialog from './common/ConfirmationDialog';
+import ColorModeContext from '../context/ColorMode';
 
 const ButtonAppBar: React.FC = () => {
   const navigate = useNavigate();
@@ -26,7 +30,8 @@ const ButtonAppBar: React.FC = () => {
     handleClose();
     navigate(ROUTE_CODES.SIGNIN);
   };
-
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
   return (
     <>
       <ConfirmationDialog
@@ -59,6 +64,18 @@ const ButtonAppBar: React.FC = () => {
               alt="d-gwalking"
             />
           </Box>
+
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === 'dark' ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
 
           {!location.pathname.includes('/signin') && (
             <Button

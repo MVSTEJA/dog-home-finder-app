@@ -215,8 +215,10 @@ const Dashboard: React.FC = () => {
             sx={{
               p: 1,
               zIndex: 1,
-              position: 'relative',
-              top: '40vh',
+              position: 'absolute',
+              top: '15vh',
+              left: 0,
+              right: 0,
               margin: '0 auto',
             }}
             display="grid"

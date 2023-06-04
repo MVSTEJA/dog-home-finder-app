@@ -53,7 +53,13 @@ const SignInSide: React.FC = () => {
     <Grid
       container
       component="main"
-      sx={{ height: '70vh', backgroundColor: (t) => t.palette.grey[100] }}
+      sx={{
+        height: '70vh',
+        backgroundColor: (t) =>
+          t.palette.mode === 'light'
+            ? t.palette.grey[100]
+            : t.palette.grey[900],
+      }}
     >
       <Grid
         item
