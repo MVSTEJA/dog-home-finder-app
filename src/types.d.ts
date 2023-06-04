@@ -61,7 +61,7 @@ interface Paginate {
   fromCount?: number;
   size?: number;
   from?: number;
-  sort?: Sort;
+  sort: Sort;
 }
 
 interface Filter {

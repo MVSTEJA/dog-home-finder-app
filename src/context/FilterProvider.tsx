@@ -1,4 +1,4 @@
-import React, { Dispatch, createContext, useContext, useReducer } from 'react';
+import React, { Dispatch, createContext, useReducer } from 'react';
 import { Breed, Filter, Place } from '../types';
 
 export interface FilterAction {

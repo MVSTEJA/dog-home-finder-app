@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useLocalStorage } from 'usehooks-ts';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 import standingImage from '../assets/casual-life-3d-girl-standing-and-holding-dog.png';
 import { createLogin } from '../api';
 import { User } from '../types';
@@ -19,7 +20,7 @@ const SignInSide: React.FC = () => {
   const navigate = useNavigate();
   const [, setIsLoggedIn] = useLocalStorage('login', true);
 
-  const { mutate } = useMutation<string, Error, User>({
+  const { mutate } = useMutation<string, AxiosError, User>({
     mutationFn: createLogin,
     onError: (err) => {
       toast.error(
@@ -94,9 +95,6 @@ const SignInSide: React.FC = () => {
             alignItems: 'center',
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar> */}
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

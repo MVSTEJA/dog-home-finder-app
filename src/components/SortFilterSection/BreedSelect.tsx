@@ -6,7 +6,12 @@ import { Breed } from '../../types';
 export interface BreedSelectProps {
   options: Breed[] | undefined;
   breeds: Breed[];
-  setBreeds: React.Dispatch<React.SetStateAction<Breed[]>>;
+  setBreeds: React.Dispatch<React.SetStateAction<[] | Breed[]>>;
+}
+
+interface ProviderOptions {
+  onSelectAll: (_selectedAll: boolean) => undefined;
+  selectedAll: boolean;
 }
 
 const BreedSelect: React.FC<BreedSelectProps> = ({
@@ -16,11 +21,13 @@ const BreedSelect: React.FC<BreedSelectProps> = ({
 }: BreedSelectProps) => {
   const selectedAll = breeds.length === options.length;
 
-  const providerOptions = useMemo(
+  const providerOptions: ProviderOptions = useMemo(
     () => ({
-      onSelectAll: (all) => setBreeds(all ? [] : options),
+      onSelectAll: (all: boolean) => {
+        setBreeds(all ? [] : options);
+        return undefined;
+      },
       selectedAll,
-      indeterminate: !!breeds.length && !selectedAll,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedAll]

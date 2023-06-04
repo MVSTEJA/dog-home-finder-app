@@ -7,11 +7,17 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 
 import { Fade } from '@mui/material';
 
-const BackToTop = ({ trigger, handleScrollToTop }) => {
-  const handleClick = () => {
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
+interface BackToTopProps {
+  trigger: boolean;
+  handleScrollToTop: () => void;
+}
 
-    handleScrollToTop(handleScrollToTop);
+const BackToTop: React.FC<BackToTopProps> = ({
+  trigger,
+  handleScrollToTop,
+}: BackToTopProps) => {
+  const handleClick = () => {
+    handleScrollToTop();
   };
   return (
     <Fade in={trigger}>

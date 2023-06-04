@@ -24,7 +24,7 @@ const options = [
 export interface ConfirmationDialogRawProps {
   id: string;
   keepMounted: boolean;
-  value: string | undefined;
+  value: string;
   open: boolean;
   onClose: (value?: string, sortBy?: string) => void;
   sortBy: string;
@@ -34,7 +34,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
   props: ConfirmationDialogRawProps
 ) => {
   const { onClose, value: valueProp, open, sortBy, ...other } = props;
-  const [value, setValue] = React.useState<string>(valueProp);
+  const [sortValue, setSortValue] = React.useState<string>(valueProp);
   const radioGroupRef = React.useRef<HTMLElement>(null);
   const [sortByValue, setSortByValue] = React.useState<string>(sortBy);
   const handleEntering = () => {
@@ -48,7 +48,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
   };
 
   const handleOk = () => {
-    onClose(value, sortByValue);
+    onClose(sortValue, sortByValue);
   };
 
   const handleSortByChange = (evt: SelectChangeEvent<string>) => {
@@ -56,7 +56,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
+    setSortValue((event.target as HTMLInputElement).value);
   };
 
   return (
@@ -89,7 +89,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
           ref={radioGroupRef}
           aria-label="ringtone"
           name="ringtone"
-          value={value}
+          value={sortValue}
           onChange={handleChange}
         >
           {options.map((option) => (

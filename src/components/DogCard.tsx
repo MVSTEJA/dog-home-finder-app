@@ -8,6 +8,7 @@ import {
   Checkbox,
   Grid,
   Paper,
+  ThemeOptions,
   useMediaQuery,
 } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -37,11 +38,11 @@ export const DogCardContent = ({
   breed,
   zipCode,
 }: Dog) => {
-  const theme = useTheme();
+  const theme: ThemeOptions = useTheme();
 
   const themeLightColor = React.useMemo(
-    () => theme.palette.primary.light,
-    [theme.palette.primary.light]
+    () => theme?.palette?.primary,
+    [theme?.palette?.primary]
   );
   return (
     <>
@@ -87,7 +88,8 @@ export const DogCardContent = ({
         </Grid>
         <Grid container item flexBasis="50%">
           <Grid item xs={3}>
-            <DogIcon color={themeLightColor} />
+            {/* @ts-expect-error imported inherent lib types issues */}
+            <DogIcon color={themeLightColor?.light || ''} />
           </Grid>
           <Grid item xs={9} display="flex" justifyContent="flex-end">
             <Typography variant="body1" color="text.primary">
@@ -172,7 +174,6 @@ const DogCard: React.FC<DogCardProps> = ({
               zIndex: 1,
               padding: 0,
               m: 1,
-              borderRadius: '50% !important',
               borderColor: 'transparent',
             }}
             inputProps={{ 'aria-labelledby': name }}
@@ -207,5 +208,5 @@ const DogCard: React.FC<DogCardProps> = ({
     </Card>
   );
 };
-
-export default React.memo(DogCard);
+const MemoizedDogCard = React.memo(DogCard);
+export default MemoizedDogCard;

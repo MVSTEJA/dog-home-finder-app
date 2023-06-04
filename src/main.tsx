@@ -29,7 +29,7 @@ WebFont.load({
 
 let container: HTMLElement | null = null;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   if (!container) {
     container = document.getElementById('root') as HTMLElement;
     const root = createRoot(container);

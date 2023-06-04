@@ -52,8 +52,16 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
         left: 0,
         right: 0,
         zIndex: 2,
-        backgroundColor: appTheme.palette.grey[100],
-        border: `1px solid ${appTheme.palette.grey[100]}`,
+        backgroundColor:
+          appTheme.palette.mode === 'light'
+            ? appTheme.palette.grey[100]
+            : appTheme.palette.grey[900],
+
+        border: `1px solid ${
+          appTheme.palette.mode === 'light'
+            ? appTheme.palette.grey[100]
+            : appTheme.palette.grey[900]
+        }`,
       }}
       item
       xs={12}

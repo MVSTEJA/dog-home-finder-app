@@ -1,4 +1,4 @@
-import { Dispatch, createContext, useContext, useReducer } from 'react';
+import { Dispatch, createContext, useReducer } from 'react';
 import { Paginate } from '../types';
 
 interface PaginateAction {

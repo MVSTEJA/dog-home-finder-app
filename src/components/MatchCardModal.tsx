@@ -7,16 +7,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import {
-  Box,
-  Card,
-  CardContent,
-  CircularProgress,
-  Divider,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Card, CardContent, Divider, useMediaQuery } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 import { findMatch } from '../api';
 import successAnimation from '../lotties/91540-dog-love.json';
 import { Dog } from '../types';
@@ -39,10 +31,6 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
 }: MatchCardModalProps) => {
   const { data, mutate, isLoading } = useMutation({
     mutationFn: (checked: string[]) => findMatch(checked),
-
-    onError: (err: any) => {
-      toast.error(err.response ? `${err.response} request.` : err);
-    },
   });
 
   const handleMutate = React.useCallback(() => {
@@ -71,7 +59,7 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
       <DialogContent
         dividers
         sx={{
-          padding: '0 !important',
+          padding: 0,
         }}
       >
         {isLoading && (
@@ -108,7 +96,7 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
                     color="text.primary"
                     gutterBottom
                   >
-                    Found a dog for you!
+                    Yay! Found a dog.
                   </Typography>
                   <AnimatedFigure
                     animationData={successAnimation as Record<string, unknown>}

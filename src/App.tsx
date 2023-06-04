@@ -3,7 +3,6 @@ import { Routes, Route, Outlet, Link, Navigate } from 'react-router-dom';
 
 import {
   Box,
-  CircularProgress,
   Container,
   CssBaseline,
   StyledEngineProvider,

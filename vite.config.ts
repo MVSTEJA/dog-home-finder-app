@@ -12,10 +12,4 @@ export default defineConfig({
       jsxImportSource: '@welldone-software/why-did-you-render',
     }),
   ],
-
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./src/setupTests.ts'],
-  },
 });

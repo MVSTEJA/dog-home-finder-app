@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference types="@welldone-software/why-did-you-render" />
 import * as React from 'react';
 

@@ -17,6 +17,7 @@ const LocationSelect: React.FC<LocationSelectProps> = ({
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     usePlacesAutocompleteService({
       options: {
+        input: '',
         componentRestrictions: { country: 'us' },
       },
       apiKey: import.meta.env.VITE_REACT_APP_GOOGLE,
@@ -35,11 +36,11 @@ const LocationSelect: React.FC<LocationSelectProps> = ({
     handleSearch(event.target.value);
   };
   const handleInput = (
-    evt: React.SyntheticEvent<Element, Event>,
-    newValue: any
+    _: React.SyntheticEvent<Element, Event>,
+    value: google.maps.places.AutocompletePrediction
   ) => {
-    if (newValue) {
-      const termsCityStateCountry = cloneDeep(newValue.terms)
+    if (value) {
+      const termsCityStateCountry = cloneDeep(value.terms)
         .reverse()
         .slice(0, 3);
       termsCityStateCountry.shift();
@@ -48,7 +49,7 @@ const LocationSelect: React.FC<LocationSelectProps> = ({
       setPlace({
         ...place,
         ...{
-          description: newValue.description,
+          description: value.description,
           city,
           state,
         },
@@ -70,6 +71,7 @@ const LocationSelect: React.FC<LocationSelectProps> = ({
       inputValue={place.description}
       options={placePredictions}
       getOptionLabel={(option) => option.description}
+      // @ts-expect-error this is complex
       onChange={handleInput}
       loading={isPlacePredictionsLoading}
       renderInput={(params) => (
