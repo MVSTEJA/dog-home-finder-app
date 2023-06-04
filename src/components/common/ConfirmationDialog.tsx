@@ -21,9 +21,9 @@ interface ConfirmationDialogProps extends ConfirmationOptions {
 
 const ConfirmationDialog = ({
   open,
-  title,
-  variant,
-  description,
+  description = '',
+  variant = 'info',
+  title = '',
   onSubmit,
   onClose,
 }: ConfirmationDialogProps) => {
@@ -62,12 +62,6 @@ const ConfirmationDialog = ({
       </DialogActions>
     </Dialog>
   );
-};
-
-ConfirmationDialog.defaultProps = {
-  description: '',
-  variant: 'info',
-  title: '',
 };
 
 export default ConfirmationDialog;

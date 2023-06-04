@@ -13,7 +13,7 @@ const CustomizedMenus: React.FC<CustomizedMenusProps> = ({
   handleChange,
 }: CustomizedMenusProps) => {
   return (
-    <FormControl fullWidth sx={{ mb: 1 }}>
+    <FormControl fullWidth sx={{ mb: 1, pt: 1 }}>
       <Select
         labelId="select-label"
         id="select"

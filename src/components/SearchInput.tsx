@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
 import { OutlinedInput } from '@mui/material';
+import { useDebounce } from 'usehooks-ts';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -53,14 +54,25 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
 }));
 
 interface SearchInputProps {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({
-  handleChange,
-  searchValue,
+  setSearchValue,
 }: SearchInputProps) => {
+  const [search, setSearch] = React.useState<string>('');
+  const handleChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(event.target.value);
+    },
+    []
+  );
+  const debouncedSearchTerm = useDebounce(search, 500);
+
+  React.useEffect(() => {
+    setSearchValue(debouncedSearchTerm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Search>
@@ -69,7 +81,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search by name, breed, age, zip"
-          value={searchValue}
           onChange={handleChange}
           inputProps={{ 'aria-label': 'search' }}
           autoFocus

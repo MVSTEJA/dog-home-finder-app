@@ -1,7 +1,7 @@
 import { grey } from '@mui/material/colors';
 import { ThemeOptions } from '@mui/material/styles';
-import merge from 'lodash.merge';
 import cloneDeep from 'lodash.clonedeep';
+import merge from 'lodash.merge';
 
 export const themeOptions: ThemeOptions = {
   palette: {
@@ -21,17 +21,19 @@ export const themeOptions: ThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
+          fontFamily: ['Lexend'],
           backgroundColor: grey[100],
         },
       },
     },
-    MuiContainer: {
+    MuiTypography: {
       styleOverrides: {
         root: {
-          p: 0,
+          fontFamily: ['Lexend'],
         },
       },
     },
+
     MuiAppBar: {
       styleOverrides: {
         root: {
@@ -43,6 +45,7 @@ export const themeOptions: ThemeOptions = {
     MuiPaper: {
       styleOverrides: {
         root: {
+          fontFamily: ['Lexend'],
           borderRadius: 12,
         },
       },
@@ -55,6 +58,11 @@ export const themeOptions: ThemeOptions = {
             boxShadow: '0px 0px 15px 1px rgba(168,168,168,1)',
           },
         },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {},
       },
     },
     MuiCardActionArea: {
@@ -95,6 +103,7 @@ export const themeOptions: ThemeOptions = {
     MuiInputBase: {
       styleOverrides: {
         root: {
+          fontFamily: ['Lexend'],
           borderRadius: 12,
         },
       },
@@ -125,7 +134,13 @@ export const themeOptions: ThemeOptions = {
       defaultProps: {
         color: 'primary',
       },
+      styleOverrides: {
+        colorPrimary: {
+          color: '#a03390',
+        },
+      },
     },
+
     MuiChip: {
       defaultProps: {
         color: 'primary',
@@ -147,7 +162,7 @@ export const themeOptions: ThemeOptions = {
           color: 'white',
         },
         colorPrimary: {
-          color: '#890075',
+          color: '#a03390',
         },
       },
     },

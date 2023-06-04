@@ -34,5 +34,13 @@ module.exports = {
     '@typescript-eslint/return-await': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react-refresh/only-export-components': 'warn',
+    'react/require-default-props': [
+      'error',
+      {
+        forbidDefaultForRequired: false,
+        functions: 'defaultArguments',
+        ignoreFunctionalComponents: false,
+      },
+    ],
   },
 };

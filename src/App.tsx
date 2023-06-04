@@ -2,9 +2,11 @@ import * as React from 'react';
 import { Routes, Route, Outlet, Link, Navigate } from 'react-router-dom';
 
 import {
+  Box,
   CircularProgress,
   Container,
   CssBaseline,
+  StyledEngineProvider,
   ThemeProvider,
   Toolbar,
   createTheme,
@@ -16,8 +18,8 @@ import { toast } from 'react-toastify';
 import SignInSide from './pages/SignIn';
 import AppNavBar from './components/AppNavBar';
 import { mobileThemeOptions, themeOptions } from './theme';
+import PetLoader from './components/common/PetLoader';
 
-// const Home = React.lazy(() => import('./pages/Home'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
 const Layout: React.FC = () => {
@@ -59,9 +61,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   return children || <Outlet />;
 };
-ProtectedRoute.defaultProps = {
-  redirectPath: '/signin',
-};
 
 const baseTheme = createTheme(themeOptions);
 const mobileTheme = createTheme(mobileThemeOptions);
@@ -71,31 +70,69 @@ const App: React.FC = () => {
   const matches = useMediaQuery('(min-width:600px)');
   return (
     <ThemeProvider theme={matches ? baseTheme : mobileTheme}>
-      <CssBaseline />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            path="signin"
-            element={
-              <React.Suspense fallback={<CircularProgress />}>
-                <SignInSide />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute isLoggedIn={loggedIn}>
-                <React.Suspense fallback={<CircularProgress />}>
-                  <Dashboard />
+      <StyledEngineProvider injectFirst>
+        <CssBaseline />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route
+              index
+              path="signin"
+              element={
+                <React.Suspense
+                  fallback={
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    >
+                      <PetLoader />
+                    </Box>
+                  }
+                >
+                  <SignInSide />
                 </React.Suspense>
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
-      </Routes>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute isLoggedIn={loggedIn}>
+                  <React.Suspense
+                    fallback={
+                      <Box
+                        sx={{
+                          position: 'relative',
+                          width: '100%',
+                          height: '90vh',
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <PetLoader />
+                      </Box>
+                    }
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '90vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Dashboard />
+                    </Box>
+                  </React.Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<NoMatch />} />
+          </Route>
+        </Routes>
+      </StyledEngineProvider>
     </ThemeProvider>
   );
 };

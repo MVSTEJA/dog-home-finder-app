@@ -1,10 +1,18 @@
 import React from 'react';
-import { Box, Divider } from '@mui/material';
-
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Sorting from './Sorting';
 import Filter from './FilterSection';
+import SearchInput from '../SearchInput';
 
-const SortFilterSection: React.FC = () => {
+export const SortFilterSection: React.FC = () => {
   return (
     <Box
       sx={{
@@ -24,4 +32,82 @@ const SortFilterSection: React.FC = () => {
   );
 };
 
-export default SortFilterSection;
+interface SearchSectionProps {
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  checked: string[];
+  handleClearSelection: () => void;
+  handleClickOpen: () => void;
+}
+export const SearchSection: React.FC<SearchSectionProps> = ({
+  setSearchValue,
+  checked,
+  handleClearSelection,
+  handleClickOpen,
+}) => {
+  const appTheme = useTheme();
+  return (
+    <Grid
+      sx={{
+        position: 'fixed',
+        left: 0,
+        right: 0,
+        zIndex: 2,
+        backgroundColor: appTheme.palette.grey[100],
+        border: `1px solid ${appTheme.palette.grey[100]}`,
+      }}
+      item
+      xs={12}
+    >
+      <Box
+        sx={{
+          padding: '0 20px',
+        }}
+      >
+        <SearchInput setSearchValue={setSearchValue} />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <SortFilterSection />
+          <Box display="flex" justifyContent="flex-end">
+            {checked.length > 0 && (
+              <>
+                <Button
+                  variant="text"
+                  sx={{
+                    mr: 2,
+                    '& .MuiButton-startIcon': {
+                      mr: 0,
+                    },
+                  }}
+                  endIcon={
+                    <Box
+                      sx={{
+                        minHeight: '20px',
+                        minWidth: '25px',
+                        borderRadius: appTheme.shape.borderRadius / 2,
+                        bgcolor: appTheme.palette.primary.main,
+                        p: 0.5,
+                      }}
+                    >
+                      <Typography color="white">{checked.length}</Typography>
+                    </Box>
+                  }
+                  onClick={handleClearSelection}
+                  startIcon={<CloseIcon />}
+                />
+
+                <Button variant="contained" onClick={handleClickOpen}>
+                  Find match
+                </Button>
+              </>
+            )}
+          </Box>
+        </Box>
+      </Box>
+    </Grid>
+  );
+};

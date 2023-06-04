@@ -75,19 +75,20 @@ export async function findAllDogs({
   const dogSearchQueryURL = '/dogs/search';
   let queryConfig: AxiosRequestConfig = {};
 
-  if (!nextQuery) {
-    queryConfig = {
-      params: {
-        breeds: filter?.breeds.map((breed) => breed.value),
-        zipCodes,
-        sort: `${paginate?.sort?.by}:${paginate?.sort?.id}`,
-        from: paginate?.from,
-        size: 25,
-      },
-      // dping this as faced encoding issues.
-      paramsSerializer: (params) => qs.stringify(params, { encode: false }),
-    };
-  }
+  const { from } = qs.parse(nextQuery);
+
+  queryConfig = {
+    params: {
+      breeds: filter?.breeds.map((breed) => breed.value),
+      zipCodes,
+      sort: `${paginate?.sort?.by}:${paginate?.sort?.id}`,
+      from: from || 0,
+      size: 25,
+    },
+    // dping this as faced encoding issues.
+    paramsSerializer: (params) => qs.stringify(params, { encode: false }),
+  };
+
   const {
     data: { resultIds, next, prev },
   }: AxiosResponse = await client.get<DogsSearchResponse>(

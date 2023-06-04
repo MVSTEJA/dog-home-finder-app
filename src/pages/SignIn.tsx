@@ -51,12 +51,12 @@ const SignInSide: React.FC = () => {
     <Grid
       container
       component="main"
-      sx={{ height: '100vh', backgroundColor: (t) => t.palette.grey[100] }}
+      sx={{ height: '70vh', backgroundColor: (t) => t.palette.grey[100] }}
     >
       <Grid
         item
         xs={false}
-        sm={4}
+        sm={6}
         md={7}
         sx={{
           backgroundImage: `url(${standingImage})`,
@@ -66,13 +66,13 @@ const SignInSide: React.FC = () => {
           backgroundPosition: 'center',
           borderTopRightRadius: 6,
           borderBottomRightRadius: 6,
-          maxHeight: '600px',
+          maxHeight: '100vh',
         }}
       />
       <Grid
         item
         xs={12}
-        sm={8}
+        sm={6}
         md={5}
         component={Paper}
         elevation={6}

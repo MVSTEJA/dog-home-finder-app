@@ -1,57 +1,63 @@
 import * as React from 'react';
 
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 
 import {
-  Button,
   Card,
   CardActionArea,
   CardContent,
+  CircularProgress,
   Skeleton,
-  Theme,
   Toolbar,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-import { useTheme, Theme as ITheme } from '@emotion/react';
-import CloseIcon from '@mui/icons-material/Close';
 import { findAllDogs } from '../api';
-import DogCard from '../components/DogCard';
-import SearchInput from '../components/SearchComponent';
 
 import MatchCardModal from '../components/MatchCardModal';
-import SortFilterSection from '../components/SortFilterSection';
+import { SearchSection } from '../components/SortFilterSection';
 import BackToTop from '../components/common/BackToTop';
 import { useFilter, usePaginate } from '../context/hooks';
+import DogCard from '../components/DogCard';
+import PetLoader from '../components/common/PetLoader';
 
 const CardSkeleton: React.FC = () => {
   const matches = useMediaQuery('(min-width:600px)');
   return (
     <>
       {Array.from({ length: 9 }, (item: string, key) => (
-        <Grid key={item + key.toString()} item xs={12} sm={1}>
-          <Card sx={{ minWidth: '250px', display: matches ? 'flex' : 'block' }}>
-            <CardActionArea>
+        <Grid key={item + key.toString()}>
+          <Card
+            sx={{
+              width: matches ? 350 : 250,
+              margin: '0 auto',
+            }}
+          >
+            <CardActionArea
+              sx={{
+                display: 'flex',
+                flexDirection: matches ? 'row' : 'column',
+              }}
+            >
               <Skeleton
                 variant="rectangular"
                 sx={{
-                  minHeight: '250px',
-                  maxWidth: '100%',
-                  maxHeight: '100%',
+                  flex: 1,
+                  minHeight: '175px',
                 }}
               />
 
-              <CardContent sx={{ p: 2 }}>
+              <CardContent sx={{ flex: 1, p: 2 }}>
                 <Box>
-                  <Skeleton width="60%" height="50px" />
-                  <Skeleton />
-                  <Skeleton />
+                  <Skeleton width="75%" height="50px" />
+                  <Skeleton width="50%" />
+                  <Skeleton width="50%" />
                 </Box>
               </CardContent>
             </CardActionArea>
@@ -67,7 +73,6 @@ const Dashboard: React.FC = () => {
 
   const paginateValue = usePaginate();
   const filterValue = useFilter();
-  const appTheme = useTheme();
 
   const handleToggle = (value: string) => {
     const currentIndex = checked.indexOf(value);
@@ -83,20 +88,26 @@ const Dashboard: React.FC = () => {
   };
 
   const handleClearSelection = () => setChecked([]);
-  const { ref, inView } = useInView();
+  const { ref: loadMoreref, inView } = useInView();
 
-  const { data, isFetching, fetchNextPage, isInitialLoading } =
-    useInfiniteQuery({
-      queryKey: ['findAllDogs', filterValue, paginateValue],
-      queryFn: ({ pageParam }) => {
-        return findAllDogs({
-          nextQuery: pageParam,
-          filter: filterValue,
-          paginate: paginateValue,
-        });
-      },
-      getNextPageParam: (lastPage) => lastPage.next,
-    });
+  const {
+    data,
+    isFetching,
+    hasNextPage,
+    isLoading,
+    fetchNextPage,
+    isInitialLoading,
+  } = useInfiniteQuery({
+    queryKey: ['findAllDogs', filterValue, paginateValue.sort],
+    queryFn: ({ pageParam }) => {
+      return findAllDogs({
+        nextQuery: pageParam,
+        filter: filterValue,
+        paginate: paginateValue,
+      });
+    },
+    getNextPageParam: (currentParam) => currentParam.next,
+  });
 
   React.useEffect(() => {
     if (inView) {
@@ -116,12 +127,6 @@ const Dashboard: React.FC = () => {
 
   const [searchValue, setSearchValue] = React.useState<string>('');
 
-  const handleChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value);
-    },
-    []
-  );
   const [scrollTrigger, setScrollTrigger] = React.useState<boolean>(false);
 
   const handleScroll = (event: React.SyntheticEvent) => {
@@ -144,7 +149,7 @@ const Dashboard: React.FC = () => {
       });
     }
   };
-
+  const matches = useMediaQuery('(min-width:600px)');
   return (
     <Box
       component="main"
@@ -161,8 +166,10 @@ const Dashboard: React.FC = () => {
       }}
       onScroll={handleScroll}
     >
-      <div id="back-to-top-anchor" />
-      <Container maxWidth="xl" sx={{ mb: 4 }}>
+      <Container
+        maxWidth="xl"
+        sx={{ mb: 4, display: 'flex', flexFlow: 'column' }}
+      >
         <MatchCardModal
           cardChecked={checked}
           handleClose={handleClose}
@@ -170,132 +177,74 @@ const Dashboard: React.FC = () => {
           allCards={data?.pages[0]?.response}
         />
         <Grid container item xs={12}>
-          <Grid item xs={12}>
-            <Box
-              sx={{
-                position: 'fixed',
-                left: 0,
-                right: 0,
-                padding: '0 20px',
-                zIndex: 2,
-                backgroundColor: appTheme.palette.grey[100],
-                border: `1px solid ${appTheme.palette.grey[100]}`,
-              }}
-            >
-              <SearchInput
-                handleChange={handleChange}
-                searchValue={searchValue}
-              />
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <SortFilterSection />
-                <Box display="flex" justifyContent="flex-end">
-                  {checked.length > 0 && (
-                    <>
-                      <Button
-                        variant="text"
-                        sx={{
-                          mr: 2,
-                          '& .MuiButton-startIcon': {
-                            mr: 0,
-                          },
-                        }}
-                        endIcon={
-                          <Box
-                            sx={{
-                              minHeight: '20px',
-                              minWidth: '20px',
-                              borderRadius: appTheme.shape.borderRadius / 3,
-                              bgcolor: appTheme.palette.primary.main,
-                              p: 0.5,
-                            }}
-                          >
-                            <Typography color="white">
-                              {checked.length}
-                            </Typography>
-                          </Box>
-                        }
-                        onClick={handleClearSelection}
-                        startIcon={<CloseIcon />}
-                      />
-
-                      <Button variant="contained" onClick={handleClickOpen}>
-                        Find match
-                      </Button>
-                    </>
-                  )}
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
+          <SearchSection
+            setSearchValue={setSearchValue}
+            checked={checked}
+            handleClearSelection={handleClearSelection}
+            handleClickOpen={handleClickOpen}
+          />
+          <div id="back-to-top-anchor" />
           <Grid
             container
             sx={{
               p: 1,
-              mt: 15,
               zIndex: 1,
+              position: 'relative',
+              top: '15vh',
+              margin: '0 auto',
             }}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            rowSpacing={5}
-            columnSpacing={5}
-            columns={{ sm: 2, md: 4 }}
+            display="grid"
+            gap={5}
+            gridTemplateColumns={`repeat(auto-fit, minmax(${
+              matches ? '300px' : '250px'
+            }, 1fr))`}
           >
-            {isInitialLoading ? (
-              <CardSkeleton />
-            ) : (
-              data?.pages.map((group, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <React.Fragment key={i}>
-                  {group?.response.length === 0 && (
-                    <Typography>
-                      Sorry! No dogs were found that match your search criteria.
-                    </Typography>
-                  )}
+            {data?.pages.map((group, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <React.Fragment key={i}>
+                {group?.response.length === 0 && (
+                  <Typography>
+                    Sorry! No dogs were found that match your search criteria.
+                  </Typography>
+                )}
+                {group?.response.map((item, index) => {
+                  const lcSearchValue = searchValue.toLowerCase();
+                  const lcMatch =
+                    item.name.toLowerCase().includes(lcSearchValue) ||
+                    item.breed.toLowerCase().includes(lcSearchValue) ||
+                    item.age.toString().toLowerCase().includes(lcSearchValue) ||
+                    item.zip_code.toLowerCase().includes(lcSearchValue);
 
-                  {group?.response
-                    ?.filter((item) => {
-                      const lcSearchValue = searchValue.toLowerCase();
-                      return (
-                        item.name.toLowerCase().includes(lcSearchValue) ||
-                        item.breed.toLowerCase().includes(lcSearchValue) ||
-                        item.age
-                          .toString()
-                          .toLowerCase()
-                          .includes(lcSearchValue) ||
-                        item.zip_code.toLowerCase().includes(lcSearchValue)
-                      );
-                    })
-                    .map((item, index) => (
-                      <Grid
-                        ref={group.response.length === index + 1 ? ref : null}
-                        key={item.id}
-                        item
-                      >
-                        <DogCard
-                          img={item.img}
-                          breed={item.breed}
-                          name={item.name}
-                          zipCode={item.zip_code}
-                          checked={checked}
-                          value={item.id}
-                          age={item.age}
-                          handleToggle={handleToggle}
-                          searchValue={searchValue}
-                        />
-                      </Grid>
-                    ))}
-                  {isFetching && <CardSkeleton />}
-                </React.Fragment>
-              ))
-            )}
+                  return (
+                    <Grid
+                      key={item.id}
+                      item
+                      sx={{
+                        display: lcMatch ? 'block' : 'none',
+                        contentVisibility: lcMatch ? 'visible' : 'hidden',
+                      }}
+                    >
+                      <DogCard
+                        index={index}
+                        img={item.img}
+                        breed={item.breed}
+                        name={item.name}
+                        zipCode={item.zip_code}
+                        checked={checked}
+                        value={item.id}
+                        age={item.age}
+                        handleToggle={handleToggle}
+                        searchValue={searchValue}
+                      />
+                    </Grid>
+                  );
+                })}
+              </React.Fragment>
+            ))}
+            {isFetching && <CardSkeleton />}
+            {(isInitialLoading || isFetching || isLoading) && <CardSkeleton />}
           </Grid>
+          {hasNextPage && <PetLoader refProp={loadMoreref} />}
         </Grid>
       </Container>
       <BackToTop

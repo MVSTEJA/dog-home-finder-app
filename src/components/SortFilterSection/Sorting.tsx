@@ -78,7 +78,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
           <Box>Sort by </Box>
         </Typography>
       </DialogTitle>
-      <DialogContent sx={{ pb: 0 }}>
+      <DialogContent>
         <CustomizedMenus
           handleChange={handleSortByChange}
           sortSelected={sortByValue}

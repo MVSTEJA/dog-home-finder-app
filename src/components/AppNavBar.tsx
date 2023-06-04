@@ -1,6 +1,5 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -42,6 +41,8 @@ const ButtonAppBar: React.FC = () => {
           position: 'fixed',
           top: 0,
           zIndex: 1,
+          left: 0,
+          right: 0,
         }}
       >
         <Toolbar>

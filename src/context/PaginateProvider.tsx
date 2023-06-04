@@ -21,9 +21,6 @@ export const PaginateDispatchContext = createContext<Dispatch<PaginateAction>>(
 );
 
 const initialPaginate = {
-  size: 25,
-  from: 0,
-  fromCount: 1,
   sort: {
     name: 'Ascending',
     id: 'asc',
@@ -55,13 +52,7 @@ function paginateReducer(paginate: Paginate, action: PaginateAction): Paginate {
         },
       };
     }
-    case 'load_more': {
-      return {
-        ...paginate,
-        fromCount: paginate.fromCount + 1,
-        from: paginate.fromCount * 25,
-      };
-    }
+
     default: {
       return paginate;
     }

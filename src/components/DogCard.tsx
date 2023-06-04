@@ -1,8 +1,7 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
+import { useTheme } from '@emotion/react';
+import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import LocalPostOfficeOutlinedIcon from '@mui/icons-material/LocalPostOfficeOutlined';
 import {
   Box,
   CardActionArea,
@@ -11,16 +10,18 @@ import {
   Paper,
   useMediaQuery,
 } from '@mui/material';
-import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import Highlighter from 'react-highlight-words';
-import LocalPostOfficeOutlinedIcon from '@mui/icons-material/LocalPostOfficeOutlined';
-import { useTheme } from '@emotion/react';
 
 import { Dog } from '../types';
 import DogIcon from './common/DogIcon';
 
 export interface DogCardProps extends Dog {
+  index: number;
   checked?: string[];
   value: string;
   handleToggle?: (value: string) => void;
@@ -37,16 +38,20 @@ export const DogCardContent = ({
   zipCode,
 }: Dog) => {
   const theme = useTheme();
+
+  const themeLightColor = React.useMemo(
+    () => theme.palette.primary.light,
+    [theme.palette.primary.light]
+  );
   return (
     <>
       <CardMedia
         component="img"
         sx={{
-          // m: 1,
-          width: '175px',
           height: '175px',
           transition: 'transform 330ms ease-in',
           aspectRatio: 1,
+          flex: 1,
         }}
         image={img}
         alt={name}
@@ -56,10 +61,10 @@ export const DogCardContent = ({
       <CardContent
         sx={{
           display: 'flex',
-          flexDirection: 'column',
           flexFlow: 'column',
           height: matches ? '175px' : '125px',
-          alignSelf: 'flex-start',
+          flex: 1,
+          width: '100%',
         }}
       >
         <Grid container item flexBasis="100%">
@@ -82,9 +87,9 @@ export const DogCardContent = ({
         </Grid>
         <Grid container item flexBasis="50%">
           <Grid item xs={3}>
-            <DogIcon color={theme.palette.primary.light} />
+            <DogIcon color={themeLightColor} />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={9} display="flex" justifyContent="flex-end">
             <Typography variant="body1" color="text.primary">
               <Highlighter
                 highlightClassName="YourHighlightClass"
@@ -98,13 +103,10 @@ export const DogCardContent = ({
         <Grid container item flexBasis="50%">
           <Grid item xs={3}>
             <Typography variant="body1" color="text.secondary">
-              <LocalPostOfficeOutlinedIcon
-                height={20}
-                sx={{ color: theme.palette.primary.light }}
-              />
+              <LocalPostOfficeOutlinedIcon color="primary" height={20} />
             </Typography>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={9} display="flex" justifyContent="flex-end">
             <Typography variant="body1" color="text.primary">
               <Highlighter
                 highlightClassName="YourHighlightClass"
@@ -121,15 +123,16 @@ export const DogCardContent = ({
 };
 
 const DogCard: React.FC<DogCardProps> = ({
+  index = 0,
   img,
   breed = '',
   name = '',
   zipCode = '',
-  checked,
+  checked = [''],
   value,
-  handleToggle,
+  handleToggle = () => {},
   age = null,
-  searchValue,
+  searchValue = '',
 }: DogCardProps) => {
   const cardSelected = checked?.indexOf(value) !== -1;
 
@@ -139,7 +142,18 @@ const DogCard: React.FC<DogCardProps> = ({
     <Card
       component={Paper}
       variant="outlined"
-      sx={{ position: 'relative', overflow: 'visible' }}
+      sx={{
+        width: matches ? 350 : 250,
+        m: '0 auto',
+        position: 'relative',
+        overflow: 'visible',
+        '--delay': index,
+        animationName: 'animateIn',
+        animationDuration: '100ms',
+        animationDelay: `calc(var(--delay, 0) * 20ms)`,
+        animationFillMode: 'both',
+        animationTimingFunction: 'ease-in-out',
+      }}
     >
       {cardSelected && (
         <Box
@@ -177,6 +191,7 @@ const DogCard: React.FC<DogCardProps> = ({
           '&:hover .MuiCardMedia-root': {
             transform: 'scale(1.05)',
           },
+          justifyContent: 'flex-start',
         }}
       >
         <DogCardContent
@@ -193,41 +208,4 @@ const DogCard: React.FC<DogCardProps> = ({
   );
 };
 
-// const DogCardHover = () => {
-//   return (
-//     <Paper
-//       // href={ROUTES.showcase}
-//       variant="body1"
-//       sx={{ p: 2, height: '100%' }}
-//     >
-//       <Typography variant="body1" fontWeight="bold" sx={{ mb: 0.5 }}>
-//         Showcase
-//       </Typography>
-//       <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-//         Check out some great examples of MUI&apos;s products in action.
-//       </Typography>
-//       <Typography
-//         color="primary"
-//         variant="body1"
-//         fontWeight="bold"
-//         sx={{
-//           '& > svg': { transition: '0.2s' },
-//           '&:hover > svg': { transform: 'translateX(2px)' },
-//         }}
-//       >
-//         Learn more{' '}
-//         <KeyboardArrowRightRounded
-//           fontSize="small"
-//           sx={{ verticalAlign: 'middle' }}
-//         />
-//       </Typography>
-//     </Paper>
-//   );
-// };
-DogCard.defaultProps = {
-  checked: [''],
-  handleToggle: () => {},
-  searchValue: '',
-};
-
-export default DogCard;
+export default React.memo(DogCard);
