@@ -1,18 +1,18 @@
-import { Ref } from 'react';
 import { Box } from '@mui/material';
-import dogStepsAnimation from '../../lotties/paw-loading.json';
+import React from 'react';
 import AnimatedFigure from './AnimatedFigure';
+import PetImage from '../../assets/golden-retriever-unscreen.gif';
 
 const PetLoader = ({
-  refProp = null,
   width = '100px',
   height = '',
   position = 'relative',
+  refProp = null,
 }: {
   width?: string;
   height?: string;
-  refProp?: Ref<unknown>;
   position?: string;
+  refProp?: React.Ref<unknown>;
 }) => {
   return (
     <Box
@@ -25,11 +25,9 @@ const PetLoader = ({
       sx={{
         position,
       }}
+      ref={refProp}
     >
-      <AnimatedFigure
-        refProp={refProp}
-        animationData={dogStepsAnimation as Record<string, unknown>}
-      />
+      <AnimatedFigure PetImage={PetImage} />
     </Box>
   );
 };

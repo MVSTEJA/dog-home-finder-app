@@ -9,6 +9,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CircularProgress,
   Skeleton,
   Typography,
   useMediaQuery,
@@ -23,7 +24,6 @@ import { SearchSection } from '../components/SortFilterSection';
 import BackToTop from '../components/common/BackToTop';
 import { useFilter, usePaginate } from '../context/hooks';
 import DogCard from '../components/DogCard';
-import PetLoader from '../components/common/PetLoader';
 
 const CardSkeleton: React.FC = () => {
   const matches = useMediaQuery('(min-width:600px)');
@@ -240,7 +240,7 @@ const Dashboard: React.FC = () => {
             {isFetching && <CardSkeleton />}
             {(isInitialLoading || isFetching || isLoading) && <CardSkeleton />}
           </Grid>
-          {hasNextPage && <PetLoader refProp={loadMoreref} />}
+          {hasNextPage && <CircularProgress ref={loadMoreref} />}
         </Grid>
       </Container>
       <BackToTop

@@ -3,6 +3,7 @@ import { Routes, Route, Outlet, Link, Navigate } from 'react-router-dom';
 
 import {
   Box,
+  CircularProgress,
   Container,
   CssBaseline,
   StyledEngineProvider,
@@ -17,7 +18,6 @@ import { toast } from 'react-toastify';
 import SignInSide from './pages/SignIn';
 import AppNavBar from './components/AppNavBar';
 import { mobileThemeOptions, themeOptions } from './theme';
-import PetLoader from './components/common/PetLoader';
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
@@ -86,7 +86,7 @@ const App: React.FC = () => {
                         height: '100%',
                       }}
                     >
-                      <PetLoader />
+                      <CircularProgress />
                     </Box>
                   }
                 >
@@ -109,7 +109,7 @@ const App: React.FC = () => {
                           justifyContent: 'center',
                         }}
                       >
-                        <PetLoader />
+                        <CircularProgress />
                       </Box>
                     }
                   >

@@ -7,14 +7,21 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import { Box, Card, CardContent, Divider, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CircularProgress,
+  Divider,
+  useMediaQuery,
+} from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { findMatch } from '../api';
-import successAnimation from '../lotties/91540-dog-love.json';
+
 import { Dog } from '../types';
 import { DogCardContent } from './DogCard';
 import AnimatedFigure from './common/AnimatedFigure';
-import PetLoader from './common/PetLoader';
+import DogDelivery from '../assets/being-happy-1.svg';
 
 interface MatchCardModalProps {
   handleClose: () => void;
@@ -49,6 +56,7 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
   })[0];
 
   const matches = useMediaQuery('(min-width:600px)');
+
   return (
     <Dialog
       onClose={handleClose}
@@ -64,7 +72,7 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
       >
         {isLoading && (
           <Box display="flex" justifyContent="center" width={100} height={200}>
-            <PetLoader />
+            <CircularProgress />
           </Box>
         )}
 
@@ -99,7 +107,7 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
                     Yay! Found a dog.
                   </Typography>
                   <AnimatedFigure
-                    animationData={successAnimation as Record<string, unknown>}
+                    PetImage={DogDelivery}
                     height={200}
                     width={200}
                   />

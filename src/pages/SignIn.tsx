@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
-import standingImage from '../assets/casual-life-3d-girl-standing-and-holding-dog.png';
+import standingImage from '../assets/walking-a-dog.svg';
 import { createLogin } from '../api';
 import { User } from '../types';
 
