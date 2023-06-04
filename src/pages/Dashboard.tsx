@@ -13,17 +13,18 @@ import {
   Skeleton,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
 import { findAllDogs } from '../api';
 
+import DogCard from '../components/DogCard';
 import MatchCardModal from '../components/MatchCardModal';
 import { SearchSection } from '../components/SortFilterSection';
 import BackToTop from '../components/common/BackToTop';
 import { useFilter, usePaginate } from '../context/hooks';
-import DogCard from '../components/DogCard';
 
 const CardSkeleton: React.FC = () => {
   const matches = useMediaQuery('(min-width:600px)');
@@ -146,6 +147,9 @@ const Dashboard: React.FC = () => {
     }
   };
   const matches = useMediaQuery('(min-width:600px)');
+  const appENV =
+    import.meta.env.MODE === 'development' ? 'develop' : 'production';
+  const appTheme = useTheme();
   return (
     <Box
       component="main"
@@ -173,12 +177,38 @@ const Dashboard: React.FC = () => {
           allCards={data?.pages[0]?.response}
         />
         <Grid container item xs={12}>
-          <SearchSection
-            setSearchValue={setSearchValue}
-            checked={checked}
-            handleClearSelection={handleClearSelection}
-            handleClickOpen={handleClickOpen}
-          />
+          <Box
+            sx={{
+              px: 2,
+
+              position: 'fixed',
+              left: 0,
+              right: 0,
+              zIndex: 2,
+              backgroundColor:
+                appTheme.palette.mode === 'light'
+                  ? appTheme.palette.grey[100]
+                  : appTheme.palette.grey[900],
+
+              border: `1px solid ${
+                appTheme.palette.mode === 'light'
+                  ? appTheme.palette.grey[100]
+                  : appTheme.palette.grey[900]
+              }`,
+            }}
+          >
+            <Grid item xs={12} sx={{ p: 1 }}>
+              <Typography variant="h6" sx={{ flexGrow: 1, color: 'black' }}>
+                Find a pet ({appENV})
+              </Typography>
+            </Grid>
+            <SearchSection
+              setSearchValue={setSearchValue}
+              checked={checked}
+              handleClearSelection={handleClearSelection}
+              handleClickOpen={handleClickOpen}
+            />
+          </Box>
           <div id="back-to-top-anchor" />
           <Grid
             container
@@ -186,7 +216,7 @@ const Dashboard: React.FC = () => {
               p: 1,
               zIndex: 1,
               position: 'relative',
-              top: '15vh',
+              top: '40vh',
               margin: '0 auto',
             }}
             display="grid"

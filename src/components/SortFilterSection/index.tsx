@@ -46,74 +46,49 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
 }) => {
   const appTheme = useTheme();
   return (
-    <Grid
-      sx={{
-        position: 'fixed',
-        left: 0,
-        right: 0,
-        zIndex: 2,
-        backgroundColor:
-          appTheme.palette.mode === 'light'
-            ? appTheme.palette.grey[100]
-            : appTheme.palette.grey[900],
-
-        border: `1px solid ${
-          appTheme.palette.mode === 'light'
-            ? appTheme.palette.grey[100]
-            : appTheme.palette.grey[900]
-        }`,
-      }}
-      item
-      xs={12}
-    >
+    <Grid item xs={12}>
+      <SearchInput setSearchValue={setSearchValue} />
       <Box
         sx={{
-          padding: '0 20px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
-        <SearchInput setSearchValue={setSearchValue} />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <SortFilterSection />
-          <Box display="flex" justifyContent="flex-end">
-            {checked.length > 0 && (
-              <>
-                <Button
-                  variant="text"
-                  sx={{
-                    mr: 2,
-                    '& .MuiButton-startIcon': {
-                      mr: 0,
-                    },
-                  }}
-                  endIcon={
-                    <Box
-                      sx={{
-                        minHeight: '20px',
-                        minWidth: '25px',
-                        borderRadius: appTheme.shape.borderRadius / 2,
-                        bgcolor: appTheme.palette.primary.main,
-                        p: 0.5,
-                      }}
-                    >
-                      <Typography color="white">{checked.length}</Typography>
-                    </Box>
-                  }
-                  onClick={handleClearSelection}
-                  startIcon={<CloseIcon />}
-                />
+        <SortFilterSection />
+        <Box display="flex" justifyContent="flex-end">
+          {checked.length > 0 && (
+            <>
+              <Button
+                variant="text"
+                sx={{
+                  mr: 2,
+                  '& .MuiButton-startIcon': {
+                    mr: 0,
+                  },
+                }}
+                endIcon={
+                  <Box
+                    sx={{
+                      minHeight: '20px',
+                      minWidth: '25px',
+                      borderRadius: appTheme.shape.borderRadius / 2,
+                      bgcolor: appTheme.palette.primary.main,
+                      p: 0.5,
+                    }}
+                  >
+                    <Typography color="white">{checked.length}</Typography>
+                  </Box>
+                }
+                onClick={handleClearSelection}
+                startIcon={<CloseIcon />}
+              />
 
-                <Button variant="contained" onClick={handleClickOpen}>
-                  Find match
-                </Button>
-              </>
-            )}
-          </Box>
+              <Button variant="contained" onClick={handleClickOpen}>
+                Find match
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
     </Grid>

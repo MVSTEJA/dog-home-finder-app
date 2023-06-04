@@ -1,14 +1,15 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
+import * as React from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import { useLocalStorage } from 'usehooks-ts';
-import ConfirmationDialog from './common/ConfirmationDialog';
+import { Box } from '@mui/material';
+import WalkingDog from '../assets/dog-walking.png';
+
 import { ROUTE_CODES } from '../constants';
+import ConfirmationDialog from './common/ConfirmationDialog';
 
 const ButtonAppBar: React.FC = () => {
   const navigate = useNavigate();
@@ -47,15 +48,18 @@ const ButtonAppBar: React.FC = () => {
         }}
       >
         <Toolbar>
-          <Typography
-            variant="h6"
-            sx={{ flexGrow: 1, color: 'black' }}
-            onClick={() => {
-              navigate(ROUTE_CODES.HOME);
-            }}
-          >
-            Home for shelter dogs
-          </Typography>
+          <Box sx={{ flexGrow: 1 }}>
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */}
+            <img
+              src={WalkingDog}
+              onClick={() => {
+                navigate(ROUTE_CODES.HOME);
+              }}
+              height="50px"
+              alt="d-gwalking"
+            />
+          </Box>
+
           {!location.pathname.includes('/signin') && (
             <Button
               variant="text"
