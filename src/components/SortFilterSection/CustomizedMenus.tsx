@@ -1,5 +1,6 @@
 import MenuItem from '@mui/material/MenuItem';
 import { FormControl, Select, SelectChangeEvent } from '@mui/material';
+import { FC } from 'react';
 
 interface CustomizedMenusProps {
   sortSelected: string;
@@ -7,7 +8,7 @@ interface CustomizedMenusProps {
   handleChange: (evt: SelectChangeEvent<string>) => void;
 }
 
-const CustomizedMenus: React.FC<CustomizedMenusProps> = ({
+const CustomizedMenus: FC<CustomizedMenusProps> = ({
   sortSelected,
   sortMenu,
   handleChange,

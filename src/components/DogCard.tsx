@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react';
 import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import LocalPostOfficeOutlinedIcon from '@mui/icons-material/LocalPostOfficeOutlined';
@@ -10,14 +9,16 @@ import {
   Paper,
   ThemeOptions,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+
 import Highlighter from 'react-highlight-words';
 
+import { useMemo, FC, memo } from 'react';
 import { Dog } from '../types';
 import DogIcon from './common/DogIcon';
 
@@ -40,7 +41,7 @@ export const DogCardContent = ({
 }: Dog) => {
   const theme: ThemeOptions = useTheme();
 
-  const themeLightColor = React.useMemo(
+  const themeLightColor = useMemo(
     () => theme?.palette?.primary,
     [theme?.palette?.primary]
   );
@@ -123,7 +124,7 @@ export const DogCardContent = ({
   );
 };
 
-const DogCard: React.FC<DogCardProps> = ({
+const DogCard: FC<DogCardProps> = ({
   index = 0,
   img,
   breed = '',
@@ -207,5 +208,5 @@ const DogCard: React.FC<DogCardProps> = ({
     </Card>
   );
 };
-const MemoizedDogCard = React.memo(DogCard);
+const MemoizedDogCard = memo(DogCard);
 export default MemoizedDogCard;

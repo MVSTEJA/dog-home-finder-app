@@ -1,4 +1,4 @@
-import React, { Dispatch, createContext, useReducer } from 'react';
+import { Dispatch, ReactNode, createContext, useReducer } from 'react';
 import { Breed, Filter, Place } from '../types';
 
 export interface FilterAction {
@@ -35,7 +35,10 @@ export const FilterDispatchContext = createContext<Dispatch<FilterAction>>(
   () => null
 );
 
-export const FilterProvider = ({ children }: React.PropsWithChildren) => {
+interface PropsWithChildren {
+  children: ReactNode;
+}
+export const FilterProvider = ({ children }: PropsWithChildren) => {
   const [filter, dispatch] = useReducer(filterReducer, initialFilter);
 
   return (

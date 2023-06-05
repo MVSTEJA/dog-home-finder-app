@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
-import React from 'react';
+
+import { Ref } from 'react';
 import AnimatedFigure from './AnimatedFigure';
 import PetImage from '../../assets/golden-retriever-unscreen.gif';
 
@@ -12,7 +13,7 @@ const PetLoader = ({
   width?: string;
   height?: string;
   position?: string;
-  refProp?: React.Ref<unknown>;
+  refProp?: Ref<unknown>;
 }) => {
   return (
     <Box

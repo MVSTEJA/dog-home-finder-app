@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 
@@ -16,6 +14,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
+import { FC, useCallback, useEffect } from 'react';
 import { findMatch } from '../api';
 
 import { Dog } from '../types';
@@ -30,7 +29,7 @@ interface MatchCardModalProps {
   allCards: Dog[] | undefined;
 }
 
-const MatchCardModal: React.FC<MatchCardModalProps> = ({
+const MatchCardModal: FC<MatchCardModalProps> = ({
   handleClose,
   modalOpen,
   cardChecked,
@@ -40,13 +39,13 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
     mutationFn: (checked: string[]) => findMatch(checked),
   });
 
-  const handleMutate = React.useCallback(() => {
+  const handleMutate = useCallback(() => {
     if (modalOpen) {
       mutate(cardChecked);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
-  React.useEffect(() => {
+  useEffect(() => {
     handleMutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);

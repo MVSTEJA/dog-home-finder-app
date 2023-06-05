@@ -1,5 +1,5 @@
 import { Autocomplete, Checkbox, TextField } from '@mui/material';
-import React, { useMemo } from 'react';
+import { Dispatch, FC, SetStateAction, useMemo } from 'react';
 import { MuiAutocompleteSelectAll } from 'mui-autocomplete-select-all';
 
 import { Breed } from '../../types';
@@ -7,7 +7,7 @@ import { Breed } from '../../types';
 export interface BreedSelectProps {
   options: Breed[] | undefined;
   breeds: Breed[];
-  setBreeds: React.Dispatch<React.SetStateAction<[] | Breed[]>>;
+  setBreeds: Dispatch<SetStateAction<[] | Breed[]>>;
 }
 
 interface ProviderOptions {
@@ -15,7 +15,7 @@ interface ProviderOptions {
   selectedAll: boolean;
 }
 
-const BreedSelect: React.FC<BreedSelectProps> = ({
+const BreedSelect: FC<BreedSelectProps> = ({
   options = [],
   breeds = [],
   setBreeds = () => {},

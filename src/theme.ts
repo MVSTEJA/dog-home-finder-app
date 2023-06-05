@@ -126,35 +126,12 @@ export const lightThemeOptions: ThemeOptions = {
         size: 'medium',
       },
     },
-    MuiIcon: {
-      defaultProps: {
-        color: 'primary',
-      },
-      styleOverrides: {
-        colorPrimary: {
-          color: '#a03390',
-        },
-      },
-    },
 
     MuiChip: {
       styleOverrides: {
         outlined: {
           backgroundColor: 'rgba(137, 0, 117, 0.08)',
           borderColor: 'transparent',
-        },
-      },
-    },
-    MuiSvgIcon: {
-      defaultProps: {
-        color: 'primary',
-      },
-      styleOverrides: {
-        colorSecondary: {
-          color: 'white',
-        },
-        colorPrimary: {
-          color: '#a03390',
         },
       },
     },
@@ -184,6 +161,23 @@ export const darkThemeOptions: ThemeOptions = {
           backgroundColor: grey[700],
         },
       },
+    },
+    MuiIcon: {
+      defaultProps: {},
+      styleOverrides: {},
+    },
+
+    MuiChip: {
+      styleOverrides: {
+        outlined: {
+          backgroundColor: 'rgba(137, 0, 117, 0.08)',
+          borderColor: 'transparent',
+        },
+      },
+    },
+    MuiSvgIcon: {
+      defaultProps: {},
+      styleOverrides: {},
     },
   },
 };

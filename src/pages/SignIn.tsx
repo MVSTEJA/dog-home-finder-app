@@ -1,5 +1,4 @@
 import Button from '@mui/material/Button';
-import * as React from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -7,19 +6,20 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 
 import { useLocalStorage } from 'usehooks-ts';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { useMediaQuery } from '@mui/material';
+import { FC, SyntheticEvent } from 'react';
 import standingImage from '../assets/walking-a-dog.svg';
 import { createLogin } from '../api';
 import { User } from '../types';
 import { ROUTE_CODES } from '../constants';
 
-const SignInSide: React.FC = () => {
-  const navigate = useNavigate();
+const SignInSide: FC = () => {
+  const [, navigate] = useLocation();
   const [, setIsLoggedIn] = useLocalStorage('login', true);
 
   const { mutate } = useMutation<string, AxiosError, User>({
@@ -35,7 +35,7 @@ const SignInSide: React.FC = () => {
     },
   });
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     const target = event.target as typeof event.target & {
       email: { value: string };
@@ -85,7 +85,7 @@ const SignInSide: React.FC = () => {
         square
         sx={{
           boxShadow: 'none',
-          height: matches ? '25vh' : '50vh',
+          minHeight: matches ? '25vh' : '50vh',
         }}
       >
         <Box

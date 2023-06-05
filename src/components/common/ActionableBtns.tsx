@@ -1,12 +1,13 @@
 import { Button, useTheme } from '@mui/material';
+import { ReactNode, FC } from 'react';
 
 interface CustomIconBtnProps {
   handleClick: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
   iconState: boolean;
 }
 
-const CustomIconBtn: React.FC<CustomIconBtnProps> = ({
+const CustomIconBtn: FC<CustomIconBtnProps> = ({
   handleClick,
   children,
   iconState,

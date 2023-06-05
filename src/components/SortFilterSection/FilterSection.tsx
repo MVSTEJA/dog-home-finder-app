@@ -7,11 +7,11 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import * as React from 'react';
 
 import { Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
+import { Dispatch, FC, useRef, useState } from 'react';
 import { findAllBreeds } from '../../api';
 import { FilterAction } from '../../context/FilterProvider';
 import { Breed, Filter, Place } from '../../types';
@@ -26,10 +26,10 @@ export interface FilterDialogContainerProps {
   filterValue: Filter;
   open: boolean;
   onClose: (value?: Filter) => void;
-  setFilterValue: React.Dispatch<FilterAction>;
+  setFilterValue: Dispatch<FilterAction>;
 }
 
-const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
+const FilterDialogContainer: FC<FilterDialogContainerProps> = (
   props: FilterDialogContainerProps
 ) => {
   const { onClose, filterValue, open, setFilterValue, ...other } = props;
@@ -39,7 +39,7 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
     queryFn: () => findAllBreeds(filterValue),
   });
 
-  const radioGroupRef = React.useRef<HTMLElement>(null);
+  const radioGroupRef = useRef<HTMLElement>(null);
 
   const handleEntering = () => {
     if (radioGroupRef.current != null) {
@@ -51,8 +51,8 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
     onClose();
   };
 
-  const [breeds, setBreeds] = React.useState<Breed[]>(filterValue.breeds);
-  const [place, setPlace] = React.useState<Place>(filterValue.place);
+  const [breeds, setBreeds] = useState<Breed[]>(filterValue.breeds);
+  const [place, setPlace] = useState<Place>(filterValue.place);
 
   const handleOk = () => {
     onClose({
@@ -122,8 +122,8 @@ const FilterDialogContainer: React.FC<FilterDialogContainerProps> = (
   );
 };
 
-const FilterSection: React.FC = () => {
-  const [open, setOpen] = React.useState<boolean>(false);
+const FilterSection: FC = () => {
+  const [open, setOpen] = useState<boolean>(false);
   const filterValue = useFilter();
   const setFilterValue = useFilterDispatch();
   const handleClickListItem = () => {

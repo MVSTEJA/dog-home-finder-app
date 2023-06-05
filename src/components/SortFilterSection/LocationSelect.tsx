@@ -1,7 +1,13 @@
 import { Autocomplete, TextField } from '@mui/material';
 import cloneDeep from 'lodash.clonedeep';
 
-import React, { Dispatch, SetStateAction } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  SetStateAction,
+  SyntheticEvent,
+} from 'react';
 import usePlacesAutocompleteService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
 import { Place } from '../../types';
 
@@ -10,7 +16,7 @@ export interface LocationSelectProps {
   setPlace: Dispatch<SetStateAction<Place>>;
 }
 
-const LocationSelect: React.FC<LocationSelectProps> = ({
+const LocationSelect: FC<LocationSelectProps> = ({
   place,
   setPlace,
 }: LocationSelectProps) => {
@@ -32,11 +38,11 @@ const LocationSelect: React.FC<LocationSelectProps> = ({
       input: search,
     });
   };
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     handleSearch(event.target.value);
   };
   const handleInput = (
-    _: React.SyntheticEvent<Element, Event>,
+    _: SyntheticEvent<Element, Event>,
     value: google.maps.places.AutocompletePrediction
   ) => {
     if (value) {

@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
+import { FC } from 'react';
+import { Link } from 'wouter';
 
-const NotFound: React.FC = () => {
+const NotFound: FC = () => {
   return (
     <>
       <h1>Not Found</h1>
-      <Link to="/">GO HOME</Link>
+      <Link href="/">GO HOME</Link>
     </>
   );
 };

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   Button,
@@ -8,11 +7,12 @@ import {
   useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { FC, Dispatch, SetStateAction } from 'react';
 import Sorting from './Sorting';
 import Filter from './FilterSection';
 import SearchInput from '../SearchInput';
 
-export const SortFilterSection: React.FC = () => {
+export const SortFilterSection: FC = () => {
   return (
     <Box
       sx={{
@@ -32,12 +32,12 @@ export const SortFilterSection: React.FC = () => {
 };
 
 interface SearchSectionProps {
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  setSearchValue: Dispatch<SetStateAction<string>>;
   checked: string[];
   handleClearSelection: () => void;
   handleClickOpen: () => void;
 }
-export const SearchSection: React.FC<SearchSectionProps> = ({
+export const SearchSection: FC<SearchSectionProps> = ({
   setSearchValue,
   checked,
   handleClearSelection,

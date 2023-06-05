@@ -1,25 +1,24 @@
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
-import * as React from 'react';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
 import { Box, IconButton, useTheme } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
+import { FC, useState, useContext } from 'react';
 import WalkingDog from '../assets/dog-walking.png';
 
 import { COLOR_SCHEME_QUERY, ROUTE_CODES } from '../constants';
 import ConfirmationDialog from './common/ConfirmationDialog';
 import ColorModeContext from '../context/ColorMode';
 
-const ButtonAppBar: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const ButtonAppBar: FC = () => {
+  const [location, navigate] = useLocation();
 
-  const [openConfim, setOpenConfim] = React.useState(false);
+  const [openConfim, setOpenConfim] = useState(false);
   const [, setIsLoggedIn] = useLocalStorage('login', true);
   const handleClose = () => {
     setOpenConfim(false);
@@ -31,7 +30,7 @@ const ButtonAppBar: React.FC = () => {
     navigate(ROUTE_CODES.SIGNIN);
   };
   const appTheme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
+  const colorMode = useContext(ColorModeContext);
   const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
 
   return (
@@ -81,7 +80,7 @@ const ButtonAppBar: React.FC = () => {
             )}
           </IconButton>
 
-          {!location.pathname.includes('/signin') && (
+          {!location.includes('/signin') && (
             <Button
               variant="text"
               sx={{

@@ -1,9 +1,17 @@
-import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
 import { OutlinedInput } from '@mui/material';
 import { useDebounce } from 'usehooks-ts';
+import {
+  Dispatch,
+  SetStateAction,
+  FC,
+  useState,
+  useCallback,
+  ChangeEvent,
+  useEffect,
+} from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -58,22 +66,19 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
 }));
 
 interface SearchInputProps {
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  setSearchValue: Dispatch<SetStateAction<string>>;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({
+const SearchInput: FC<SearchInputProps> = ({
   setSearchValue,
 }: SearchInputProps) => {
-  const [search, setSearch] = React.useState<string>('');
-  const handleChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(event.target.value);
-    },
-    []
-  );
+  const [search, setSearch] = useState<string>('');
+  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  }, []);
   const debouncedSearchTerm = useDebounce(search, 500);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setSearchValue(debouncedSearchTerm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);

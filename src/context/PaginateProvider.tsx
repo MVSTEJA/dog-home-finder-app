@@ -1,4 +1,4 @@
-import { Dispatch, createContext, useReducer } from 'react';
+import { Dispatch, ReactNode, createContext, useReducer } from 'react';
 import { Paginate } from '../types';
 
 interface PaginateAction {
@@ -59,7 +59,10 @@ function paginateReducer(paginate: Paginate, action: PaginateAction): Paginate {
   }
 }
 
-export const PaginateProvider = ({ children }: React.PropsWithChildren) => {
+interface PropsWithChildren {
+  children: ReactNode;
+}
+export const PaginateProvider = ({ children }: PropsWithChildren) => {
   const [paginate, dispatch] = useReducer(paginateReducer, initialPaginate);
 
   return (

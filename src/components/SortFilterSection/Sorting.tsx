@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -12,6 +11,7 @@ import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { SelectChangeEvent, Typography } from '@mui/material';
 
+import { FC, useState, useRef, ChangeEvent } from 'react';
 import CustomizedMenus from './CustomizedMenus';
 import CustomIconBtn from '../common/ActionableBtns';
 import { usePaginate, usePaginateDispatch } from '../../context/hooks';
@@ -30,13 +30,13 @@ export interface ConfirmationDialogRawProps {
   sortBy: string;
 }
 
-const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
+const ConfirmationDialogRaw: FC<ConfirmationDialogRawProps> = (
   props: ConfirmationDialogRawProps
 ) => {
   const { onClose, value: valueProp, open, sortBy, ...other } = props;
-  const [sortValue, setSortValue] = React.useState<string>(valueProp);
-  const radioGroupRef = React.useRef<HTMLElement>(null);
-  const [sortByValue, setSortByValue] = React.useState<string>(sortBy);
+  const [sortValue, setSortValue] = useState<string>(valueProp);
+  const radioGroupRef = useRef<HTMLElement>(null);
+  const [sortByValue, setSortByValue] = useState<string>(sortBy);
   const handleEntering = () => {
     if (radioGroupRef.current != null) {
       radioGroupRef.current.focus();
@@ -55,7 +55,7 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
     setSortByValue(evt.target.value);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSortValue((event.target as HTMLInputElement).value);
   };
 
@@ -112,8 +112,8 @@ const ConfirmationDialogRaw: React.FC<ConfirmationDialogRawProps> = (
   );
 };
 
-const Sorting: React.FC = () => {
-  const [open, setOpen] = React.useState<boolean>(false);
+const Sorting: FC = () => {
+  const [open, setOpen] = useState<boolean>(false);
 
   const { sort: sortValue } = usePaginate();
   const setSortValue = usePaginateDispatch();

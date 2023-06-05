@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import Box from '@mui/material/Box';
 
 import Container from '@mui/material/Container';
@@ -17,6 +15,7 @@ import {
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
+import { FC, useState, useEffect, SyntheticEvent, Fragment } from 'react';
 import { findAllDogs } from '../api';
 
 import MatchCardModal from '../components/MatchCardModal';
@@ -25,7 +24,7 @@ import BackToTop from '../components/common/BackToTop';
 import { useFilter, usePaginate } from '../context/hooks';
 import MemoizedDogCard from '../components/DogCard';
 
-const CardSkeleton: React.FC<{
+const CardSkeleton: FC<{
   elemRef?: (node?: Element | null | undefined) => void;
 }> = ({ elemRef = null }) => {
   const matches = useMediaQuery('(min-width:600px)');
@@ -70,8 +69,8 @@ const CardSkeleton: React.FC<{
   );
 };
 
-const Dashboard: React.FC = () => {
-  const [checked, setChecked] = React.useState<string[]>([]);
+const Dashboard: FC = () => {
+  const [checked, setChecked] = useState<string[]>([]);
 
   const paginateValue = usePaginate();
   const filterValue = useFilter();
@@ -111,7 +110,7 @@ const Dashboard: React.FC = () => {
     getNextPageParam: (currentParam) => currentParam.next,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inView) {
       setTimeout(() => {
         fetchNextPage();
@@ -120,7 +119,7 @@ const Dashboard: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const handleClickOpen = () => {
     setModalOpen(true);
@@ -129,11 +128,11 @@ const Dashboard: React.FC = () => {
     setModalOpen(false);
   };
 
-  const [searchValue, setSearchValue] = React.useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
 
-  const [scrollTrigger, setScrollTrigger] = React.useState<boolean>(false);
+  const [scrollTrigger, setScrollTrigger] = useState<boolean>(false);
 
-  const handleScroll = (event: React.SyntheticEvent) => {
+  const handleScroll = (event: SyntheticEvent) => {
     if (event.currentTarget.scrollTop > document.documentElement.clientHeight) {
       setScrollTrigger(true);
     } else {
@@ -225,14 +224,14 @@ const Dashboard: React.FC = () => {
               }, 1fr))`,
             }}
           >
+            {data?.pages[0]?.response?.length === 0 && (
+              <Typography sx={{ p: 2 }}>
+                Sorry! No dogs were found that match your search criteria.
+              </Typography>
+            )}
             {data?.pages.map((group, i) => (
               // eslint-disable-next-line react/no-array-index-key
-              <React.Fragment key={i}>
-                {group?.response.length === 0 && (
-                  <Typography>
-                    Sorry! No dogs were found that match your search criteria.
-                  </Typography>
-                )}
+              <Fragment key={i}>
                 {group?.response.map((item, index) => {
                   const lcSearchValue = searchValue.toLowerCase();
                   const lcMatch =
@@ -266,7 +265,7 @@ const Dashboard: React.FC = () => {
                     </Grid>
                   );
                 })}
-              </React.Fragment>
+              </Fragment>
             ))}
 
             {(isInitialLoading || isFetching || isLoading) && <CardSkeleton />}
