@@ -1,24 +1,26 @@
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 
-import { Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
 import { Dispatch, FC, useRef, useState } from 'react';
-import { findAllBreeds } from '../../api';
-import { FilterAction } from '../../context/FilterProvider';
-import { Breed, Filter, Place } from '../../types';
-import CustomIconBtn from '../common/ActionableBtns';
+import { findAllBreeds } from 'src/api';
+import { FilterAction } from 'src/context/FilterProvider';
+import { useFilter, useFilterDispatch } from 'src/context/hooks';
+import { Breed, Filter, Place } from 'src/types';
+import CustomIconBtn from 'src/components/common/ActionableBtns';
 import BreedSelect from './BreedSelect';
 import LocationSelect from './LocationSelect';
-import { useFilter, useFilterDispatch } from '../../context/hooks';
 
 export interface FilterDialogContainerProps {
   id: string;
@@ -76,7 +78,7 @@ const FilterDialogContainer: FC<FilterDialogContainerProps> = (
     >
       <DialogTitle>
         <Box display="flex" alignItems="center" mb={1}>
-          <TuneRoundedIcon color="primary" sx={{ mr: 1 }} />
+          <TuneRoundedIcon sx={{ mr: 1 }} />
           <Box>Filter</Box>
         </Box>
       </DialogTitle>
@@ -147,6 +149,7 @@ const FilterSection: FC = () => {
       <CustomIconBtn
         iconState={filterValue?.breeds?.length > 0}
         handleClick={handleClickListItem}
+        color="secondary"
       >
         <TuneRoundedIcon />
       </CustomIconBtn>

@@ -1,19 +1,21 @@
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import Toolbar from '@mui/material/Toolbar';
-
 import { useLocation } from 'wouter';
-import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
-import { Box, IconButton, useTheme } from '@mui/material';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useLocalStorage } from 'usehooks-ts';
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  useTheme,
+} from '@mui/material';
+import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
 
 import { FC, useState, useContext } from 'react';
-import WalkingDog from '../assets/dog-walking.png';
+import WalkingDog from 'src/assets/dog-walking.png';
 
-import { COLOR_SCHEME_QUERY, ROUTE_CODES } from '../constants';
+import { ROUTE_CODES } from 'src/constants';
+import ColorModeContext from 'src/context/ColorMode';
 import ConfirmationDialog from './common/ConfirmationDialog';
-import ColorModeContext from '../context/ColorMode';
 
 const ButtonAppBar: FC = () => {
   const [location, navigate] = useLocation();
@@ -30,8 +32,7 @@ const ButtonAppBar: FC = () => {
     navigate(ROUTE_CODES.SIGNIN);
   };
   const appTheme = useTheme();
-  const colorMode = useContext(ColorModeContext);
-  const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
+  const { toggleColorMode } = useContext(ColorModeContext);
 
   return (
     <>
@@ -68,15 +69,11 @@ const ButtonAppBar: FC = () => {
             />
           </Box>
 
-          <IconButton
-            sx={{ ml: 1 }}
-            onClick={colorMode.toggleColorMode}
-            color="inherit"
-          >
-            {appTheme.palette.mode === 'dark' || isDarkOS ? (
-              <Brightness7Icon />
+          <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+            {appTheme.palette.mode === 'dark' ? (
+              <LightModeOutlined color="secondary" />
             ) : (
-              <Brightness4Icon />
+              <DarkModeOutlined color="action" />
             )}
           </IconButton>
 

@@ -1,7 +1,6 @@
-import { common, grey } from '@mui/material/colors';
-import { ThemeOptions } from '@mui/material/styles';
-import cloneDeep from 'lodash-es/cloneDeep';
-import merge from 'lodash-es/merge';
+import { ThemeOptions } from '@mui/material';
+import { grey, common } from '@mui/material/colors';
+import { cloneDeep, merge } from 'lodash-es';
 
 export const lightThemeOptions: ThemeOptions = {
   palette: {
@@ -104,6 +103,15 @@ export const lightThemeOptions: ThemeOptions = {
       },
     },
 
+    MuiSvgIcon: {
+      defaultProps: {
+        color: 'primary',
+      },
+      styleOverrides: {
+        colorPrimary: '#890075',
+      },
+    },
+
     MuiCardMedia: {
       styleOverrides: {
         root: {
@@ -162,10 +170,6 @@ export const darkThemeOptions: ThemeOptions = {
         },
       },
     },
-    MuiIcon: {
-      defaultProps: {},
-      styleOverrides: {},
-    },
 
     MuiChip: {
       styleOverrides: {
@@ -175,9 +179,15 @@ export const darkThemeOptions: ThemeOptions = {
         },
       },
     },
+
     MuiSvgIcon: {
-      defaultProps: {},
-      styleOverrides: {},
+      styleOverrides: {
+        root: {
+          '&.MuiSvgIcon-colorPrimary': {
+            color: '#ffffff',
+          },
+        },
+      },
     },
   },
 };

@@ -1,12 +1,10 @@
-import Box from '@mui/material/Box';
-
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
+  Container,
+  Grid,
   Paper,
   Skeleton,
   Typography,
@@ -16,13 +14,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
 import { FC, useState, useEffect, SyntheticEvent, Fragment } from 'react';
-import { findAllDogs } from '../api';
+import { findAllDogs } from 'src/api';
 
-import MatchCardModal from '../components/MatchCardModal';
-import { SearchSection } from '../components/SortFilterSection';
-import BackToTop from '../components/common/BackToTop';
-import { useFilter, usePaginate } from '../context/hooks';
-import MemoizedDogCard from '../components/DogCard';
+import MatchCardModal from 'src/components/MatchCardModal';
+import { SearchSection } from 'src/components/SortFilterSection';
+import BackToTop from 'src/components/common/BackToTop';
+import { useFilter, usePaginate } from 'src/context/hooks';
+import MemoizedDogCard from 'src/components/DogCard';
 
 const CardSkeleton: FC<{
   elemRef?: (node?: Element | null | undefined) => void;

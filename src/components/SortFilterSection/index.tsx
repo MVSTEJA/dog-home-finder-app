@@ -8,9 +8,9 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { FC, Dispatch, SetStateAction } from 'react';
+import SearchInput from 'src/components/SearchInput';
 import Sorting from './Sorting';
 import Filter from './FilterSection';
-import SearchInput from '../SearchInput';
 
 export const SortFilterSection: FC = () => {
   return (

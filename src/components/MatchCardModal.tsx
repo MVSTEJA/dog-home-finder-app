@@ -1,26 +1,25 @@
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 
 import {
   Box,
   Card,
   CardContent,
   CircularProgress,
+  Dialog,
+  DialogContent,
   Divider,
+  IconButton,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { FC, useCallback, useEffect } from 'react';
-import { findMatch } from '../api';
+import { findMatch } from 'src/api';
 
-import { Dog } from '../types';
+import DogDelivery from 'src/assets/being-happy-1.svg';
+import { Dog } from 'src/types';
 import { DogCardContent } from './DogCard';
 import AnimatedFigure from './common/AnimatedFigure';
-import DogDelivery from '../assets/being-happy-1.svg';
 
 interface MatchCardModalProps {
   handleClose: () => void;

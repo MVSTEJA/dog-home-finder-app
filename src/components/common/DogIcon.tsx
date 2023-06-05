@@ -1,7 +1,13 @@
-import { SvgIcon, SvgIconProps } from '@mui/material';
+import { SvgIcon, SvgIconProps, useTheme } from '@mui/material';
 
 const DogIcon = (props: SvgIconProps) => {
-  const { color } = props;
+  const theme = useTheme();
+
+  const color =
+    theme.palette?.mode === 'dark'
+      ? theme?.palette?.common?.white
+      : theme?.palette?.primary?.main;
+
   return (
     <SvgIcon {...props}>
       <svg

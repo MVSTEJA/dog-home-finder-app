@@ -1,22 +1,25 @@
-import Button from '@mui/material/Button';
-
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
 
-import { useLocalStorage } from 'usehooks-ts';
-import { toast } from 'react-toastify';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { AxiosError } from 'axios';
-import { useMediaQuery } from '@mui/material';
 import { FC, SyntheticEvent } from 'react';
-import standingImage from '../assets/walking-a-dog.svg';
-import { createLogin } from '../api';
-import { User } from '../types';
-import { ROUTE_CODES } from '../constants';
+import { toast } from 'react-toastify';
+import { createLogin } from 'src/api';
+import HappyDog from 'src/assets/dog.png';
+import standingImage from 'src/assets/walking-a-dog.svg';
+import happyImage from 'src/assets/bye-pet.svg';
+import { ROUTE_CODES } from 'src/constants';
+import { User } from 'src/types';
+import { useLocalStorage } from 'usehooks-ts';
 
 const SignInSide: FC = () => {
   const [, navigate] = useLocation();
@@ -62,10 +65,9 @@ const SignInSide: FC = () => {
       <Grid
         item
         xs={false}
-        sm={6}
-        md={7}
+        sm={4}
         sx={{
-          backgroundImage: `url(${standingImage})`,
+          backgroundImage: `url(${happyImage})`,
           backgroundRepeat: 'no-repeat',
 
           backgroundSize: 'auto',
@@ -78,14 +80,14 @@ const SignInSide: FC = () => {
       <Grid
         item
         xs={12}
-        sm={6}
-        md={5}
+        sm={4}
         component={Paper}
         elevation={6}
         square
         sx={{
           boxShadow: 'none',
           minHeight: matches ? '25vh' : '50vh',
+          position: 'relative',
         }}
       >
         <Box
@@ -98,6 +100,15 @@ const SignInSide: FC = () => {
             justifyContent: 'center',
           }}
         >
+          <Box
+            component="img"
+            src={HappyDog}
+            width={50}
+            sx={{
+              position: 'absolute',
+              top: -25,
+            }}
+          />
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -134,16 +145,32 @@ const SignInSide: FC = () => {
               autoComplete="email"
             />
 
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
               Sign In
             </Button>
           </Box>
         </Box>
       </Grid>
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        sx={{
+          backgroundImage: `url(${standingImage})`,
+          backgroundRepeat: 'no-repeat',
+
+          backgroundSize: 'auto',
+          backgroundPosition: 'center',
+          borderTopRightRadius: 6,
+          borderBottomRightRadius: 6,
+          minHeight: '50vh',
+        }}
+      />
     </Grid>
   );
 };

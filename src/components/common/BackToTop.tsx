@@ -1,10 +1,6 @@
-// import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Fab from '@mui/material/Fab';
-import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 
-import { Fade } from '@mui/material';
+import { Box, Fab, Fade, Tooltip } from '@mui/material';
 import { FC } from 'react';
 
 interface BackToTopProps {

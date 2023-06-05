@@ -1,5 +1,9 @@
-import MenuItem from '@mui/material/MenuItem';
-import { FormControl, Select, SelectChangeEvent } from '@mui/material';
+import {
+  FormControl,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import { FC } from 'react';
 
 interface CustomizedMenusProps {

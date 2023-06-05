@@ -1,20 +1,23 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-
 import SortByAlphaRoundedIcon from '@mui/icons-material/SortByAlphaRounded';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Dialog from '@mui/material/Dialog';
-import RadioGroup from '@mui/material/RadioGroup';
-import Radio from '@mui/material/Radio';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import { SelectChangeEvent, Typography } from '@mui/material';
+
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material';
 
 import { FC, useState, useRef, ChangeEvent } from 'react';
+import { usePaginate, usePaginateDispatch } from 'src/context/hooks';
+import CustomIconBtn from 'src/components/common/ActionableBtns';
 import CustomizedMenus from './CustomizedMenus';
-import CustomIconBtn from '../common/ActionableBtns';
-import { usePaginate, usePaginateDispatch } from '../../context/hooks';
 
 const options = [
   { name: 'Ascending', id: 'asc' },
@@ -139,6 +142,7 @@ const Sorting: FC = () => {
       <CustomIconBtn
         iconState={sortValue?.id !== ''}
         handleClick={handleClickListItem}
+        color="secondary"
       >
         <SortByAlphaRoundedIcon />
       </CustomIconBtn>

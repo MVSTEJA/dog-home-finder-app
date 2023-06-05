@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, createContext, useReducer } from 'react';
-import { Breed, Filter, Place } from '../types';
+import { Breed, Filter, Place } from 'src/types';
 
 export interface FilterAction {
   type: string;

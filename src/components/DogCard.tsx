@@ -1,25 +1,23 @@
 import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
-import LocalPostOfficeOutlinedIcon from '@mui/icons-material/LocalPostOfficeOutlined';
+import PinDropRoundedIcon from '@mui/icons-material/PinDropRounded';
 import {
   Box,
+  Card,
   CardActionArea,
+  CardContent,
+  CardMedia,
   Checkbox,
   Grid,
   Paper,
-  ThemeOptions,
+  Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 
-import Highlighter from 'react-highlight-words';
-
-import { useMemo, FC, memo } from 'react';
-import { Dog } from '../types';
+import { FC, memo } from 'react';
+import { Dog } from 'src/types';
+import GetHighlightedText from 'src/utils/highlight-text';
 import DogIcon from './common/DogIcon';
 
 export interface DogCardProps extends Dog {
@@ -39,12 +37,6 @@ export const DogCardContent = ({
   breed,
   zipCode,
 }: Dog) => {
-  const theme: ThemeOptions = useTheme();
-
-  const themeLightColor = useMemo(
-    () => theme?.palette?.primary,
-    [theme?.palette?.primary]
-  );
   return (
     <>
       <CardMedia
@@ -70,52 +62,29 @@ export const DogCardContent = ({
       >
         <Grid container item flexBasis="100%">
           <Typography gutterBottom variant="body1" component="div">
-            <Highlighter
-              highlightClassName="YourHighlightClass"
-              searchWords={[searchValue]}
-              autoEscape
-              textToHighlight={name}
-            />{' '}
-            (
-            <Highlighter
-              highlightClassName="YourHighlightClass"
-              searchWords={[searchValue]}
-              autoEscape
-              textToHighlight={age?.toString()}
-            />
-            )
+            <GetHighlightedText highlight={searchValue} text={name} />
+            <GetHighlightedText highlight={searchValue} text={age.toString()} />
           </Typography>
         </Grid>
         <Grid container item flexBasis="50%">
           <Grid item xs={3}>
-            {/* @ts-expect-error imported inherent lib types issues */}
-            <DogIcon color={themeLightColor?.light || ''} />
+            <DogIcon />
           </Grid>
           <Grid item xs={9} display="flex" justifyContent="flex-end">
             <Typography variant="body1" color="text.primary">
-              <Highlighter
-                highlightClassName="YourHighlightClass"
-                searchWords={[searchValue]}
-                autoEscape
-                textToHighlight={breed}
-              />
+              <GetHighlightedText highlight={searchValue} text={breed} />
             </Typography>
           </Grid>
         </Grid>
         <Grid container item flexBasis="50%">
           <Grid item xs={3}>
             <Typography variant="body1" color="text.secondary">
-              <LocalPostOfficeOutlinedIcon color="primary" height={20} />
+              <PinDropRoundedIcon />
             </Typography>
           </Grid>
           <Grid item xs={9} display="flex" justifyContent="flex-end">
             <Typography variant="body1" color="text.primary">
-              <Highlighter
-                highlightClassName="YourHighlightClass"
-                searchWords={[searchValue]}
-                autoEscape
-                textToHighlight={zipCode}
-              />
+              <GetHighlightedText highlight={searchValue} text={zipCode} />
             </Typography>
           </Grid>
         </Grid>

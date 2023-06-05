@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 
 import { Ref } from 'react';
+import PetImage from 'src/assets/golden-retriever-unscreen.gif';
 import AnimatedFigure from './AnimatedFigure';
-import PetImage from '../../assets/golden-retriever-unscreen.gif';
 
 const PetLoader = ({
   width = '100px',

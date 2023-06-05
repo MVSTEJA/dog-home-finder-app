@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Filter, Paginate } from '../types';
+import { Filter, Paginate } from 'src/types';
 import { FilterContext, FilterDispatchContext } from './FilterProvider';
 import { PaginateContext, PaginateDispatchContext } from './PaginateProvider';
 

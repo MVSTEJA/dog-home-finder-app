@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from '@mui/material';
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 import {
   ChangeEvent,
@@ -9,7 +9,7 @@ import {
   SyntheticEvent,
 } from 'react';
 import usePlacesAutocompleteService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
-import { Place } from '../../types';
+import { Place } from 'src/types';
 
 export interface LocationSelectProps {
   place: Place;

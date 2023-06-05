@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const root = createRoot(container);
     root.render(
       <StrictMode>
-        {/* <BrowserRouter> */}
         <QueryClientProvider client={queryClient}>
           <FilterProvider>
             <PaginateProvider>
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </PaginateProvider>
           </FilterProvider>
         </QueryClientProvider>
-        {/* </BrowserRouter> */}
       </StrictMode>
     );
   }

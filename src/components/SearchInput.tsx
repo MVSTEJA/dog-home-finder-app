@@ -1,17 +1,17 @@
 import { alpha, styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+
 import SearchIcon from '@mui/icons-material/Search';
-import { OutlinedInput } from '@mui/material';
-import { useDebounce } from 'usehooks-ts';
+import { Box, OutlinedInput } from '@mui/material';
 import {
-  Dispatch,
-  SetStateAction,
-  FC,
-  useState,
-  useCallback,
   ChangeEvent,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
   useEffect,
+  useState,
 } from 'react';
+import { useDebounce } from 'usehooks-ts';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',

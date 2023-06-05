@@ -5,15 +5,18 @@ interface CustomIconBtnProps {
   handleClick: () => void;
   children: ReactNode;
   iconState: boolean;
+  color?: string;
 }
 
 const CustomIconBtn: FC<CustomIconBtnProps> = ({
   handleClick,
   children,
   iconState,
+  ...props
 }: CustomIconBtnProps) => {
   const theme = useTheme();
   return (
+    // @ts-expect-error this is complex
     <Button
       sx={{
         borderRadius: theme.shape.borderRadius / 2,
@@ -26,7 +29,7 @@ const CustomIconBtn: FC<CustomIconBtnProps> = ({
       variant={iconState ? 'contained' : 'text'}
       startIcon={children}
       onClick={handleClick}
-      color="secondary"
+      {...props}
     />
   );
 };

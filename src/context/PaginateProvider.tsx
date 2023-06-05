@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, createContext, useReducer } from 'react';
-import { Paginate } from '../types';
+import { Paginate } from 'src/types';
 
 interface PaginateAction {
   type: string;
