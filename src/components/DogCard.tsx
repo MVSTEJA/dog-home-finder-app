@@ -12,7 +12,6 @@ import {
   Paper,
   Typography,
   useMediaQuery,
-  useTheme,
 } from '@mui/material';
 
 import { FC, memo } from 'react';
