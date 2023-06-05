@@ -228,6 +228,6 @@ export const mobileLightThemeOptions: ThemeOptions = merge(
 );
 
 export const mobiledarkThemeOptions: ThemeOptions = merge(
-  cloneDeep(mobileOnlyThemeOptions),
-  cloneDeep(darkThemeOptions)
+  cloneDeep(darkBaseThemeOptions),
+  cloneDeep(mobileOnlyThemeOptions)
 );
