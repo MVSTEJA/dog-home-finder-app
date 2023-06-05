@@ -22,6 +22,7 @@ import {
   darkThemeOptions,
   mobileLightThemeOptions,
   mobiledarkThemeOptions,
+  darkBaseThemeOptions,
 } from './theme';
 import { ROUTE_CODES } from './constants';
 import ColorModeContext from './context/ColorMode';
@@ -69,7 +70,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 };
 
 const lightTheme = createTheme(lightThemeOptions);
-const darkTheme = createTheme(darkThemeOptions);
+const darkTheme = createTheme(darkBaseThemeOptions);
 const mobileLightTheme = createTheme(mobileLightThemeOptions);
 const mobileDarkTheme = createTheme(mobiledarkThemeOptions);
 

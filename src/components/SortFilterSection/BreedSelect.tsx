@@ -1,6 +1,13 @@
-import { Autocomplete, Checkbox, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Checkbox,
+  Chip,
+  TextField,
+  useTheme,
+} from '@mui/material';
 import React, { useMemo } from 'react';
 import { MuiAutocompleteSelectAll } from 'mui-autocomplete-select-all';
+
 import { Breed } from '../../types';
 
 export interface BreedSelectProps {
@@ -44,6 +51,17 @@ const BreedSelect: React.FC<BreedSelectProps> = ({
         ListboxComponent={MuiAutocompleteSelectAll.ListBox}
         disablePortal
         options={options}
+        renderTags={(value: Breed[], getTagProps) =>
+          value.map((option: Breed, index: number) => (
+            <Chip
+              key={option.value}
+              variant="outlined"
+              label={option.label}
+              {...getTagProps({ index })}
+              // color={color}
+            />
+          ))
+        }
         renderInput={(params) => (
           <TextField placeholder="Select breed" {...params} />
         )}

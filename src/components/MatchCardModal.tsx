@@ -85,7 +85,6 @@ const MatchCardModal: React.FC<MatchCardModalProps> = ({
                 position: 'relative',
                 right: 0,
                 marginRight: '0',
-                color: (theme) => theme.palette.grey[500],
               }}
             >
               <CloseIcon />

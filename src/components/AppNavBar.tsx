@@ -30,7 +30,7 @@ const ButtonAppBar: React.FC = () => {
     handleClose();
     navigate(ROUTE_CODES.SIGNIN);
   };
-  const theme = useTheme();
+  const appTheme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   return (
     <>
@@ -50,6 +50,8 @@ const ButtonAppBar: React.FC = () => {
           zIndex: 1,
           left: 0,
           right: 0,
+          backgroundColor: appTheme.palette.background.default,
+          backgroundImage: 'none',
         }}
       >
         <Toolbar>
@@ -70,7 +72,7 @@ const ButtonAppBar: React.FC = () => {
             onClick={colorMode.toggleColorMode}
             color="inherit"
           >
-            {theme.palette.mode === 'dark' ? (
+            {appTheme.palette.mode === 'dark' ? (
               <Brightness7Icon />
             ) : (
               <Brightness4Icon />

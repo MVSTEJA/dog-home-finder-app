@@ -26,7 +26,7 @@ client.interceptors.response.use(
           setTimeout(() => {
             localStorage.clear();
             window.location.replace('/signin');
-          }, 5000);
+          }, 3000);
         },
       });
     }

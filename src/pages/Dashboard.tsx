@@ -10,6 +10,7 @@ import {
   CardActionArea,
   CardContent,
   CircularProgress,
+  Paper,
   Skeleton,
   Typography,
   useMediaQuery,
@@ -152,80 +153,75 @@ const Dashboard: React.FC = () => {
   const appTheme = useTheme();
   return (
     <Box
-      component="main"
+      component={Container}
+      fixed
       sx={{
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'light'
-            ? theme.palette.grey[100]
-            : theme.palette.grey[900],
         flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
+        height: '90vh',
         zIndex: 0,
+        mb: 4,
+        display: 'flex',
+        flexFlow: 'column',
         position: 'relative',
       }}
       onScroll={handleScroll}
     >
-      <Container
-        maxWidth="xl"
-        sx={{ mb: 4, display: 'flex', flexFlow: 'column' }}
-      >
-        <MatchCardModal
-          cardChecked={checked}
-          handleClose={handleClose}
-          modalOpen={modalOpen}
-          allCards={data?.pages[0]?.response}
-        />
-        <Grid container item xs={12}>
-          <Box
+      <MatchCardModal
+        cardChecked={checked}
+        handleClose={handleClose}
+        modalOpen={modalOpen}
+        allCards={data?.pages[0]?.response}
+      />
+      <Grid container item xs={12}>
+        <Paper
+          sx={{
+            px: 2,
+            position: 'fixed',
+            left: 0,
+            right: 0,
+            zIndex: 2,
+            mx: matches ? 3 : 1,
+          }}
+        >
+          <Grid item xs={12} sx={{ p: 1 }}>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              Find a pet ({appENV})
+            </Typography>
+          </Grid>
+          <SearchSection
+            setSearchValue={setSearchValue}
+            checked={checked}
+            handleClearSelection={handleClearSelection}
+            handleClickOpen={handleClickOpen}
+          />
+        </Paper>
+        <div id="back-to-top-anchor" />
+        <Grid
+          component={Paper}
+          container
+          sx={{
+            p: 1,
+            zIndex: 1,
+            position: 'absolute',
+            top: matches ? '15vh' : '20vh',
+            left: 0,
+            right: 0,
+            mx: 'auto',
+            width: matches ? '100%' : 'fit-content',
+            overflowY: 'scroll',
+            maxHeight: matches ? '75vh' : '70vh',
+            flexFlow: 'column',
+          }}
+        >
+          <Paper
             sx={{
-              px: 2,
-
-              position: 'fixed',
-              left: 0,
-              right: 0,
-              zIndex: 2,
-              backgroundColor:
-                appTheme.palette.mode === 'light'
-                  ? appTheme.palette.grey[100]
-                  : appTheme.palette.grey[900],
-
-              border: `1px solid ${
-                appTheme.palette.mode === 'light'
-                  ? appTheme.palette.grey[100]
-                  : appTheme.palette.grey[900]
-              }`,
+              height: '100%',
+              display: 'grid',
+              gap: 5,
+              gridTemplateColumns: `repeat(auto-fit, minmax(${
+                matches ? '300px' : '300px'
+              }, 1fr))`,
             }}
-          >
-            <Grid item xs={12} sx={{ p: 1 }}>
-              <Typography variant="h6" sx={{ flexGrow: 1, color: 'black' }}>
-                Find a pet ({appENV})
-              </Typography>
-            </Grid>
-            <SearchSection
-              setSearchValue={setSearchValue}
-              checked={checked}
-              handleClearSelection={handleClearSelection}
-              handleClickOpen={handleClickOpen}
-            />
-          </Box>
-          <div id="back-to-top-anchor" />
-          <Grid
-            container
-            sx={{
-              p: 1,
-              zIndex: 1,
-              position: 'absolute',
-              top: '15vh',
-              left: 0,
-              right: 0,
-              margin: '0 auto',
-            }}
-            display="grid"
-            gap={5}
-            gridTemplateColumns={`repeat(auto-fit, minmax(${
-              matches ? '300px' : '250px'
-            }, 1fr))`}
           >
             {data?.pages.map((group, i) => (
               // eslint-disable-next-line react/no-array-index-key
@@ -250,6 +246,7 @@ const Dashboard: React.FC = () => {
                       sx={{
                         display: lcMatch ? 'block' : 'none',
                         contentVisibility: lcMatch ? 'visible' : 'hidden',
+                        width: '100%',
                       }}
                     >
                       <DogCard
@@ -269,12 +266,12 @@ const Dashboard: React.FC = () => {
                 })}
               </React.Fragment>
             ))}
-            {isFetching && <CardSkeleton />}
             {(isInitialLoading || isFetching || isLoading) && <CardSkeleton />}
-          </Grid>
-          {hasNextPage && <CircularProgress ref={loadMoreref} />}
+            {hasNextPage && <CircularProgress ref={loadMoreref} />}
+          </Paper>
         </Grid>
-      </Container>
+      </Grid>
+
       <BackToTop
         trigger={scrollTrigger}
         handleScrollToTop={handleScrollToTop}

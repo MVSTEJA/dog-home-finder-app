@@ -65,7 +65,6 @@ export const DogCardContent = ({
           flexFlow: 'column',
           height: matches ? '175px' : '125px',
           flex: 1,
-          width: '100%',
         }}
       >
         <Grid container item flexBasis="100%">
@@ -145,8 +144,8 @@ const DogCard: React.FC<DogCardProps> = ({
       component={Paper}
       variant="outlined"
       sx={{
-        width: matches ? 350 : 250,
-        m: '0 auto',
+        width: matches ? 350 : 325,
+        mx: 2,
         position: 'relative',
         overflow: 'visible',
         '--delay': index,

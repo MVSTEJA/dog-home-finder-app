@@ -1,4 +1,4 @@
-import { grey } from '@mui/material/colors';
+import { common, grey } from '@mui/material/colors';
 import { ThemeOptions } from '@mui/material/styles';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
@@ -15,6 +15,10 @@ export const lightThemeOptions: ThemeOptions = {
     secondary: {
       main: '#ff9100',
     },
+    background: {
+      default: grey[100],
+    },
+
     tonalOffset: 0.2,
   },
   components: {
@@ -37,12 +41,14 @@ export const lightThemeOptions: ThemeOptions = {
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: grey[100],
           borderRadius: 0,
         },
       },
     },
     MuiPaper: {
+      defaultProps: {
+        elevation: 0,
+      },
       styleOverrides: {
         root: {
           fontFamily: ['Lexend'],
@@ -60,11 +66,7 @@ export const lightThemeOptions: ThemeOptions = {
         },
       },
     },
-    MuiCardContent: {
-      styleOverrides: {
-        root: {},
-      },
-    },
+
     MuiCardActionArea: {
       styleOverrides: {
         root: {
@@ -100,14 +102,7 @@ export const lightThemeOptions: ThemeOptions = {
         },
       },
     },
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          fontFamily: ['Lexend'],
-          borderRadius: 12,
-        },
-      },
-    },
+
     MuiCardMedia: {
       styleOverrides: {
         root: {
@@ -142,10 +137,6 @@ export const lightThemeOptions: ThemeOptions = {
     },
 
     MuiChip: {
-      defaultProps: {
-        color: 'primary',
-        variant: 'outlined',
-      },
       styleOverrides: {
         outlined: {
           backgroundColor: 'rgba(137, 0, 117, 0.08)',
@@ -172,25 +163,33 @@ export const lightThemeOptions: ThemeOptions = {
 export const darkThemeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
+    background: {
+      default: grey[700],
+      paper: common.black,
+    },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: grey[900],
+          backgroundColor: grey[700],
         },
       },
     },
-
-    MuiAppBar: {
+    MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: grey[900],
+          backgroundColor: grey[700],
         },
       },
     },
   },
 };
+
+export const darkBaseThemeOptions: ThemeOptions = merge(
+  cloneDeep(lightThemeOptions),
+  cloneDeep(darkThemeOptions)
+);
 export const mobileOnlyThemeOptions: ThemeOptions = {
   components: {
     MuiButton: {

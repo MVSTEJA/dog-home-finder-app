@@ -55,10 +55,6 @@ const SignInSide: React.FC = () => {
       component="main"
       sx={{
         height: '70vh',
-        backgroundColor: (t) =>
-          t.palette.mode === 'light'
-            ? t.palette.grey[100]
-            : t.palette.grey[900],
       }}
     >
       <Grid
@@ -86,10 +82,6 @@ const SignInSide: React.FC = () => {
         elevation={6}
         square
         sx={{
-          backgroundColor: (t) =>
-            t.palette.mode === 'light'
-              ? t.palette.grey[100]
-              : t.palette.grey[900],
           boxShadow: 'none',
         }}
       >
