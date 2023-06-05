@@ -145,7 +145,7 @@ const DogCard: React.FC<DogCardProps> = ({
       variant="outlined"
       sx={{
         width: matches ? 350 : 325,
-        mx: 2,
+        mx: 'auto',
         position: 'relative',
         overflow: 'visible',
         '--delay': index,

@@ -140,9 +140,7 @@ const Sorting: React.FC = () => {
         iconState={sortValue?.id !== ''}
         handleClick={handleClickListItem}
       >
-        <SortByAlphaRoundedIcon
-          color={sortValue?.id !== '' ? 'secondary' : 'primary'}
-        />
+        <SortByAlphaRoundedIcon />
       </CustomIconBtn>
 
       <ConfirmationDialogRaw

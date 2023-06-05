@@ -148,9 +148,7 @@ const FilterSection: React.FC = () => {
         iconState={filterValue?.breeds?.length > 0}
         handleClick={handleClickListItem}
       >
-        <TuneRoundedIcon
-          color={filterValue?.breeds?.length > 0 ? 'secondary' : 'primary'}
-        />
+        <TuneRoundedIcon />
       </CustomIconBtn>
       <FilterDialogContainer
         id="ringtone-menu"

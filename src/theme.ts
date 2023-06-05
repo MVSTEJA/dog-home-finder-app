@@ -16,7 +16,7 @@ export const lightThemeOptions: ThemeOptions = {
       main: '#ff9100',
     },
     background: {
-      default: grey[100],
+      default: grey[200],
     },
 
     tonalOffset: 0.2,
@@ -26,7 +26,7 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         body: {
           fontFamily: ['Lexend'],
-          backgroundColor: grey[100],
+          backgroundColor: grey[200],
         },
       },
     },
@@ -59,6 +59,7 @@ export const lightThemeOptions: ThemeOptions = {
     MuiCard: {
       styleOverrides: {
         root: {
+          backgroundColor: grey[200],
           borderRadius: 12,
           '&:hover': {
             boxShadow: '0px 0px 15px 1px rgba(168,168,168,1)',
@@ -176,6 +177,7 @@ export const darkThemeOptions: ThemeOptions = {
         },
       },
     },
+
     MuiCard: {
       styleOverrides: {
         root: {
@@ -203,6 +205,16 @@ export const mobileOnlyThemeOptions: ThemeOptions = {
       },
     },
     MuiAutocomplete: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
+    MuiRadio: {
       defaultProps: {
         size: 'small',
       },

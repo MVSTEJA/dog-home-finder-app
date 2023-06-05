@@ -21,12 +21,10 @@ const CustomIconBtn: React.FC<CustomIconBtnProps> = ({
         '& .MuiButton-startIcon': {
           m: 0,
         },
-        color: iconState ? 'white' : '',
       }}
       variant={iconState ? 'contained' : 'text'}
       startIcon={children}
       onClick={handleClick}
-      size="large"
       color="secondary"
     />
   );

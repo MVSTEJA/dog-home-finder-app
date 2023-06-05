@@ -9,36 +9,37 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CircularProgress,
   Paper,
   Skeleton,
   Typography,
   useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
 import { findAllDogs } from '../api';
 
-import DogCard from '../components/DogCard';
 import MatchCardModal from '../components/MatchCardModal';
 import { SearchSection } from '../components/SortFilterSection';
 import BackToTop from '../components/common/BackToTop';
 import { useFilter, usePaginate } from '../context/hooks';
+import MemoizedDogCard from '../components/DogCard';
 
-const CardSkeleton: React.FC = () => {
+const CardSkeleton: React.FC<{
+  elemRef?: (node?: Element | null | undefined) => void;
+}> = ({ elemRef = null }) => {
   const matches = useMediaQuery('(min-width:600px)');
   return (
     <>
-      {Array.from({ length: 9 }, (item: string, key) => (
+      {Array.from({ length: 12 }, (item: string, key) => (
         <Grid key={item + key.toString()}>
           <Card
             sx={{
-              width: matches ? 350 : 250,
+              width: matches ? 350 : 325,
               margin: '0 auto',
             }}
           >
+            {key === 1 && <div ref={elemRef || null} />}
             <CardActionArea
               sx={{
                 display: 'flex',
@@ -49,11 +50,12 @@ const CardSkeleton: React.FC = () => {
                 variant="rectangular"
                 sx={{
                   flex: 1,
+                  width: '100%',
                   minHeight: '175px',
                 }}
               />
 
-              <CardContent sx={{ flex: 1, p: 2 }}>
+              <CardContent sx={{ flex: 1, p: 2, width: '100%' }}>
                 <Box>
                   <Skeleton width="75%" height="50px" />
                   <Skeleton width="50%" />
@@ -111,7 +113,9 @@ const Dashboard: React.FC = () => {
 
   React.useEffect(() => {
     if (inView) {
-      fetchNextPage();
+      setTimeout(() => {
+        fetchNextPage();
+      }, 200);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
@@ -150,16 +154,18 @@ const Dashboard: React.FC = () => {
   const matches = useMediaQuery('(min-width:600px)');
   const appENV =
     import.meta.env.MODE === 'development' ? 'develop' : 'production';
-  const appTheme = useTheme();
+
   return (
     <Box
       component={Container}
       fixed
       sx={{
         flexGrow: 1,
-        height: '90vh',
+
         zIndex: 0,
         mb: 4,
+        p: 0,
+        m: 0,
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
@@ -173,14 +179,14 @@ const Dashboard: React.FC = () => {
         allCards={data?.pages[0]?.response}
       />
       <Grid container item xs={12}>
-        <Paper
+        <Grid
+          container
+          item
+          component={Paper}
           sx={{
             px: 2,
-            position: 'fixed',
-            left: 0,
-            right: 0,
-            zIndex: 2,
-            mx: matches ? 3 : 1,
+            mx: matches ? 0 : 1,
+            mb: 2,
           }}
         >
           <Grid item xs={12} sx={{ p: 1 }}>
@@ -194,20 +200,16 @@ const Dashboard: React.FC = () => {
             handleClearSelection={handleClearSelection}
             handleClickOpen={handleClickOpen}
           />
-        </Paper>
+        </Grid>
         <div id="back-to-top-anchor" />
         <Grid
           component={Paper}
           container
           sx={{
-            p: 1,
-            zIndex: 1,
-            position: 'absolute',
+            pt: 2,
             top: matches ? '15vh' : '20vh',
-            left: 0,
-            right: 0,
-            mx: 'auto',
-            width: matches ? '100%' : 'fit-content',
+            mx: matches ? 0 : 1,
+            width: '100%',
             overflowY: 'scroll',
             maxHeight: matches ? '75vh' : '70vh',
             flexFlow: 'column',
@@ -217,9 +219,9 @@ const Dashboard: React.FC = () => {
             sx={{
               height: '100%',
               display: 'grid',
-              gap: 5,
+              gap: 3,
               gridTemplateColumns: `repeat(auto-fit, minmax(${
-                matches ? '300px' : '300px'
+                matches ? '350px' : '325px'
               }, 1fr))`,
             }}
           >
@@ -249,7 +251,7 @@ const Dashboard: React.FC = () => {
                         width: '100%',
                       }}
                     >
-                      <DogCard
+                      <MemoizedDogCard
                         index={index}
                         img={item.img}
                         breed={item.breed}
@@ -266,8 +268,10 @@ const Dashboard: React.FC = () => {
                 })}
               </React.Fragment>
             ))}
+
             {(isInitialLoading || isFetching || isLoading) && <CardSkeleton />}
-            {hasNextPage && <CircularProgress ref={loadMoreref} />}
+
+            {hasNextPage && <CardSkeleton elemRef={loadMoreref} />}
           </Paper>
         </Grid>
       </Grid>

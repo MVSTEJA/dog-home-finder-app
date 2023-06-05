@@ -20,7 +20,6 @@ export const SortFilterSection: React.FC = () => {
         minWidth: '120px',
         display: 'flex',
         justifyContent: 'space-between',
-
         p: 1,
         alignItems: 'center',
       }}

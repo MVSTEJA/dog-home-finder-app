@@ -19,7 +19,6 @@ import SignInSide from './pages/SignIn';
 import AppNavBar from './components/AppNavBar';
 import {
   lightThemeOptions,
-  darkThemeOptions,
   mobileLightThemeOptions,
   mobiledarkThemeOptions,
   darkBaseThemeOptions,
@@ -31,7 +30,7 @@ const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
 const Layout: React.FC = () => {
   return (
-    <Container maxWidth="xl" sx={{ p: 0 }}>
+    <Container maxWidth="xl" sx={{ mx: 'auto' }}>
       <AppNavBar />
       <Toolbar />
       <Outlet />
@@ -97,10 +96,9 @@ const App: React.FC = () => {
       return themeVar;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [mode, matches]
+    [mode]
   );
 
-  console.log({ mode });
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -119,6 +117,8 @@ const App: React.FC = () => {
                           position: 'relative',
                           width: '100%',
                           height: '100%',
+                          display: 'flex',
+                          justifyContent: 'center',
                         }}
                       >
                         <CircularProgress />
@@ -139,7 +139,7 @@ const App: React.FC = () => {
                           sx={{
                             position: 'relative',
                             width: '100%',
-                            height: '90vh',
+                            height: '100%',
                             display: 'flex',
                             justifyContent: 'center',
                           }}
@@ -148,17 +148,7 @@ const App: React.FC = () => {
                         </Box>
                       }
                     >
-                      <Box
-                        sx={{
-                          position: 'relative',
-                          width: '100%',
-                          height: '90vh',
-                          display: 'flex',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <Dashboard />
-                      </Box>
+                      <Dashboard />
                     </React.Suspense>
                   </ProtectedRoute>
                 }

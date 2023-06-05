@@ -89,7 +89,7 @@ const ButtonAppBar: React.FC = () => {
                 setOpenConfim(true);
               }}
             >
-              Logout
+              Log out
             </Button>
           )}
         </Toolbar>
