@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
+import { useMediaQuery } from '@mui/material';
 import standingImage from '../assets/walking-a-dog.svg';
 import { createLogin } from '../api';
 import { User } from '../types';
@@ -48,14 +49,15 @@ const SignInSide: React.FC = () => {
       name,
     });
   };
-
+  const matches = useMediaQuery('(min-width:600px)');
   return (
     <Grid
       container
       component="main"
-      sx={{
-        height: '70vh',
-      }}
+      justifyContent="center"
+      alignContent="center"
+      alignItems="center"
+      height="80vh"
     >
       <Grid
         item
@@ -70,7 +72,7 @@ const SignInSide: React.FC = () => {
           backgroundPosition: 'center',
           borderTopRightRadius: 6,
           borderBottomRightRadius: 6,
-          maxHeight: '100vh',
+          minHeight: '50vh',
         }}
       />
       <Grid
@@ -83,6 +85,7 @@ const SignInSide: React.FC = () => {
         square
         sx={{
           boxShadow: 'none',
+          height: matches ? '25vh' : '50vh',
         }}
       >
         <Box
