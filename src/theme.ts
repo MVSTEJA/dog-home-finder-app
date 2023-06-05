@@ -1,7 +1,7 @@
 import { common, grey } from '@mui/material/colors';
 import { ThemeOptions } from '@mui/material/styles';
-import cloneDeep from 'lodash.clonedeep';
-import merge from 'lodash.merge';
+import cloneDeep from 'lodash-es/cloneDeep';
+import merge from 'lodash-es/merge';
 
 export const lightThemeOptions: ThemeOptions = {
   palette: {

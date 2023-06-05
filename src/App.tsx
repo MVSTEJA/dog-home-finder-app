@@ -23,7 +23,7 @@ import {
   mobiledarkThemeOptions,
   darkBaseThemeOptions,
 } from './theme';
-import { ROUTE_CODES } from './constants';
+import { COLOR_SCHEME_QUERY, ROUTE_CODES } from './constants';
 import ColorModeContext from './context/ColorMode';
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
@@ -76,7 +76,10 @@ const mobileDarkTheme = createTheme(mobiledarkThemeOptions);
 const App: React.FC = () => {
   const loggedIn: boolean | null = useReadLocalStorage('login');
   const matches = useMediaQuery('(min-width:600px)');
-  const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+  const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
+  const [mode, setMode] = React.useState<'light' | 'dark'>(
+    isDarkOS ? 'dark' : 'light'
+  );
 
   const colorMode = React.useMemo(
     () => ({

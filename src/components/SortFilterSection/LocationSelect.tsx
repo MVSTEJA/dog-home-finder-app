@@ -77,7 +77,7 @@ const LocationSelect: React.FC<LocationSelectProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Search..."
+          placeholder="Search by city, state..."
           onChange={handleChange}
           name="places"
           id="places-input"

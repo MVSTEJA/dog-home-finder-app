@@ -46,7 +46,7 @@ const BreedSelect: React.FC<BreedSelectProps> = ({
         disablePortal
         options={options}
         renderInput={(params) => (
-          <TextField placeholder="Select breed" {...params} />
+          <TextField placeholder="Search breed and select..." {...params} />
         )}
         renderOption={(props, option, { selected }) => (
           <li key={option.value} {...props}>

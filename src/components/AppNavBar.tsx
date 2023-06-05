@@ -4,14 +4,14 @@ import Toolbar from '@mui/material/Toolbar';
 import * as React from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'usehooks-ts';
+import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
 import { Box, IconButton, useTheme } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 import WalkingDog from '../assets/dog-walking.png';
 
-import { ROUTE_CODES } from '../constants';
+import { COLOR_SCHEME_QUERY, ROUTE_CODES } from '../constants';
 import ConfirmationDialog from './common/ConfirmationDialog';
 import ColorModeContext from '../context/ColorMode';
 
@@ -32,6 +32,8 @@ const ButtonAppBar: React.FC = () => {
   };
   const appTheme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+  const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
+
   return (
     <>
       <ConfirmationDialog
@@ -72,7 +74,7 @@ const ButtonAppBar: React.FC = () => {
             onClick={colorMode.toggleColorMode}
             color="inherit"
           >
-            {appTheme.palette.mode === 'dark' ? (
+            {appTheme.palette.mode === 'dark' || isDarkOS ? (
               <Brightness7Icon />
             ) : (
               <Brightness4Icon />
