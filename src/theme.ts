@@ -1,23 +1,27 @@
-import { ThemeOptions } from '@mui/material';
-import { grey, common } from '@mui/material/colors';
+import { ThemeOptions, alpha } from '@mui/material';
 import { cloneDeep, merge } from 'lodash-es';
 
 export const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
-    contrastThreshold: 4.5,
+    // primary: {
+    //   light: '#a03390',
+    //   main: '#890075',
+    //   dark: '#5f0051',
+    // },
+    // secondary: {
+    //   main: '#ff9100',
+    // },
+    // background: {
+    //   default: '#F5EFE7',
+    // },
     primary: {
-      light: '#a03390',
       main: '#890075',
-      dark: '#5f0051',
-    },
-    secondary: {
-      main: '#ff9100',
     },
     background: {
-      default: grey[200],
+      default: '#F5EFE7',
     },
-
+    contrastThreshold: 3,
     tonalOffset: 0.2,
   },
   components: {
@@ -25,7 +29,7 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         body: {
           fontFamily: ['Lexend'],
-          backgroundColor: grey[200],
+          backgroundColor: '#F5EFE7',
         },
       },
     },
@@ -58,7 +62,7 @@ export const lightThemeOptions: ThemeOptions = {
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: grey[200],
+          backgroundColor: '#F5EFE7',
           borderRadius: 12,
           '&:hover': {
             boxShadow: '0px 0px 15px 1px rgba(168,168,168,1)',
@@ -71,6 +75,9 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           '&:hover': {
+            backgroundColor: 'rgba(137, 0, 117, 0.12)',
+          },
+          '&.Mui-selected': {
             backgroundColor: 'rgba(137, 0, 117, 0.12)',
           },
         },
@@ -95,10 +102,13 @@ export const lightThemeOptions: ThemeOptions = {
         },
       },
     },
-    MuiOutlinedInput: {
+    MuiInputBase: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          backgroundColor: alpha('#fff', 0.15),
+          '&:hover': {
+            backgroundColor: alpha('#fff', 0.25),
+          },
         },
       },
     },
@@ -108,7 +118,7 @@ export const lightThemeOptions: ThemeOptions = {
         color: 'primary',
       },
       styleOverrides: {
-        colorPrimary: '#890075',
+        colorPrimary: '#E74646',
       },
     },
 
@@ -149,32 +159,72 @@ export const lightThemeOptions: ThemeOptions = {
 export const darkThemeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
+    primary: {
+      light: '#EADDFF',
+      main: '#4F378B',
+    },
+    secondary: {
+      main: '#633B48',
+    },
+    neutral: {
+      main: '',
+    },
     background: {
-      default: grey[700],
-      paper: common.black,
+      default: '#1C1B1F',
+      paper: '#4A4458',
+    },
+    text: {
+      primary: '#EADDFF',
     },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: grey[700],
+          backgroundColor: '#1C1B1F',
         },
       },
     },
-
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: '#EADDFF',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        text: {
+          color: '#333',
+          backgroundColor: '#CCC2DC',
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: grey[700],
+          backgroundColor: '#1C1B1F',
+        },
+      },
+    },
+    MuiCardActionArea: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            boxShadow: 'none',
+            backgroundColor: '#7D5260',
+          },
+          '&.Mui-selected': {
+            backgroundColor: '#7D5260',
+          },
         },
       },
     },
 
     MuiChip: {
       styleOverrides: {
-        outlined: {
-          backgroundColor: 'rgba(137, 0, 117, 0.08)',
+        root: {
+          backgroundColor: '#7D5260',
           borderColor: 'transparent',
         },
       },
@@ -235,3 +285,21 @@ export const mobiledarkThemeOptions: ThemeOptions = merge(
   cloneDeep(darkBaseThemeOptions),
   cloneDeep(mobileOnlyThemeOptions)
 );
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    neutral: Palette['primary'];
+  }
+
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    neutral?: PaletteOptions['primary'];
+  }
+}
+
+// @babel-ignore-comment-in-output Update the Button's color prop options
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    neutral: true;
+  }
+}

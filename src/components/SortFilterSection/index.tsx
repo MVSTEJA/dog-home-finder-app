@@ -3,6 +3,7 @@ import {
   Button,
   Divider,
   Grid,
+  Paper,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -68,6 +69,7 @@ export const SearchSection: FC<SearchSectionProps> = ({
                 }}
                 endIcon={
                   <Box
+                    component={Paper}
                     sx={{
                       minHeight: '20px',
                       minWidth: '25px',
@@ -80,7 +82,7 @@ export const SearchSection: FC<SearchSectionProps> = ({
                   </Box>
                 }
                 onClick={handleClearSelection}
-                startIcon={<CloseIcon />}
+                startIcon={<CloseIcon color="primary.light" />}
               />
 
               <Button variant="contained" onClick={handleClickOpen}>

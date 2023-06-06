@@ -154,8 +154,8 @@ const DogCard: FC<DogCardProps> = ({
         onClick={() => {
           handleToggle?.(value);
         }}
+        className={cardSelected ? 'Mui-selected' : ''}
         sx={{
-          backgroundColor: `${cardSelected ? 'rgba(137, 0, 117, 0.24)' : ''}`,
           display: matches ? 'flex' : 'block',
           '&:hover .MuiCardMedia-root': {
             transform: 'scale(1.05)',

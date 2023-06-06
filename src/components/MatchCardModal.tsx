@@ -60,7 +60,8 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
       open={modalOpen}
-      maxWidth="md"
+      maxWidth={matches ? 'md' : 'xl'}
+      fullScreen={!matches}
     >
       <DialogContent
         dividers
@@ -95,13 +96,13 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
                 alignItems="center"
                 flexDirection={`${matches ? 'row' : 'column'}`}
               >
-                <Box>
+                <Box sx={{ bgcolor: 'GrayText', borderRadius: 3 }}>
                   <Typography
                     sx={{ textAlign: 'center', flex: 2, m: 1 }}
                     color="text.primary"
                     gutterBottom
                   >
-                    Yay! Found a dog.
+                    Yay! Found a pet.
                   </Typography>
                   <AnimatedFigure
                     PetImage={DogDelivery}
@@ -112,7 +113,7 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
                 <Divider
                   flexItem
                   orientation="vertical"
-                  sx={{ mx: 2, borderWidth: 1 }}
+                  sx={{ mx: 2, borderWidth: 1, my: 2 }}
                 />
                 <Box width={250}>
                   <DogCardContent

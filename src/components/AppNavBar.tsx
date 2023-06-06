@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   IconButton,
+  Paper,
   Toolbar,
   useTheme,
 } from '@mui/material';
@@ -69,27 +70,28 @@ const ButtonAppBar: FC = () => {
             />
           </Box>
 
-          <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-            {appTheme.palette.mode === 'dark' ? (
-              <LightModeOutlined color="secondary" />
-            ) : (
-              <DarkModeOutlined color="action" />
-            )}
-          </IconButton>
+          <Box component={Paper} justifyContent="center">
+            <IconButton onClick={toggleColorMode} color="inherit">
+              {appTheme.palette.mode === 'dark' ? (
+                <LightModeOutlined />
+              ) : (
+                <DarkModeOutlined color="action" />
+              )}
+            </IconButton>
 
-          {!location.includes('/signin') && (
-            <Button
-              variant="text"
-              sx={{
-                textTransform: 'initial',
-              }}
-              onClick={() => {
-                setOpenConfim(true);
-              }}
-            >
-              Log out
-            </Button>
-          )}
+            {!location.includes('/signin') && (
+              <Button
+                sx={{
+                  textTransform: 'initial',
+                }}
+                onClick={() => {
+                  setOpenConfim(true);
+                }}
+              >
+                Log out
+              </Button>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
     </>

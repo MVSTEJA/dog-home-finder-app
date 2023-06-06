@@ -43,10 +43,7 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
   height: '100%',
   alignSelf: 'center',
   borderColor: 'transparent',
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
+
   boxShadow:
     'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 2px 10px 0px',
   borderRadius: theme.shape.borderRadius * 12,
