@@ -26,7 +26,7 @@ const LocationSelect: FC<LocationSelectProps> = ({
         input: '',
         componentRestrictions: { country: 'us' },
       },
-      apiKey: import.meta.env.VITE_REACT_APP_GOOGLE,
+      apiKey: 'AIzaSyC41gKwv8dQF1yN0WKNmCmZn08ikNmLSAU',
     });
 
   const handleSearch = (search: string) => {
