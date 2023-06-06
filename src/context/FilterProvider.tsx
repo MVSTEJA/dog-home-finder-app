@@ -24,6 +24,12 @@ function filterReducer(filter: Filter, action: FilterAction): Filter {
         place: action.place,
       };
     }
+    case 'clear': {
+      return {
+        ...filter,
+        ...initialFilter,
+      };
+    }
 
     default: {
       return filter;

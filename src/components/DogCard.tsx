@@ -113,6 +113,7 @@ const DogCard: FC<DogCardProps> = ({
     <Card
       component={Paper}
       variant="outlined"
+      className={cardSelected ? 'Mui-selected' : ''}
       sx={{
         width: matches ? 350 : 325,
         mx: 'auto',

@@ -13,12 +13,13 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { findMatch } from 'src/api';
 
 import DogDelivery from 'src/assets/being-happy-1.svg';
 import { Dog } from 'src/types';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
+import ConfettiExplosion, { ConfettiProps } from 'react-confetti-explosion';
 import { DogCardContent } from './DogCard';
 import AnimatedFigure from './common/AnimatedFigure';
 
@@ -38,7 +39,8 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
   const { data, mutate, isLoading } = useMutation({
     mutationFn: (checked: string[]) => findMatch(checked),
   });
-
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const [isLargeExploding, setIsLargeExploding] = useState(false);
   const handleMutate = useCallback(() => {
     if (modalOpen) {
       mutate(cardChecked);
@@ -47,6 +49,14 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
   }, [modalOpen]);
   useEffect(() => {
     handleMutate();
+
+    if (!modalOpen) {
+      setIsLargeExploding(false);
+    }
+    setTimeout(() => {
+      setIsLargeExploding(true);
+    }, 500);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
 
@@ -54,7 +64,17 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
     return cardData.id === data?.match;
   })[0];
 
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const largeProps: ConfettiProps = {
+    force: 0.8,
+    duration: 8000,
+    particleCount: 500,
+    width: 1600,
+    zIndex: 1301,
+    colors: ['#041E43', '#1471BF', '#5BB4DC', '#FC027B', '#66D805'],
+    onComplete: () => {
+      setIsLargeExploding(false);
+    },
+  };
 
   return (
     <Dialog
@@ -70,6 +90,7 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
           padding: 0,
         }}
       >
+        {isLargeExploding && <ConfettiExplosion {...largeProps} />}
         {isLoading && (
           <Box display="flex" justifyContent="center" width={100} height={200}>
             <CircularProgress />

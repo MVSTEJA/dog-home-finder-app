@@ -51,8 +51,10 @@ export const SearchSection: FC<SearchSectionProps> = ({
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: '',
           alignItems: 'center',
+          flexWrap: 'wrap',
+          pb: 1,
         }}
       >
         <SortFilterSection />

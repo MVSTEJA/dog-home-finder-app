@@ -4,19 +4,12 @@ import { cloneDeep, merge } from 'lodash-es';
 export const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
-    // primary: {
-    //   light: '#a03390',
-    //   main: '#890075',
-    //   dark: '#5f0051',
-    // },
-    // secondary: {
-    //   main: '#ff9100',
-    // },
-    // background: {
-    //   default: '#F5EFE7',
-    // },
+
     primary: {
       main: '#890075',
+    },
+    secondary: {
+      main: '#ffb402',
     },
     background: {
       default: '#F5EFE7',
@@ -63,10 +56,6 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           backgroundColor: '#F5EFE7',
-          borderRadius: 12,
-          '&:hover': {
-            boxShadow: '0px 0px 15px 1px rgba(168,168,168,1)',
-          },
         },
       },
     },
@@ -201,21 +190,17 @@ export const darkThemeOptions: ThemeOptions = {
       },
     },
     MuiCard: {
+      defaultProps: {
+        variant: 'outlined',
+      },
       styleOverrides: {
         root: {
           backgroundColor: '#1C1B1F',
-        },
-      },
-    },
-    MuiCardActionArea: {
-      styleOverrides: {
-        root: {
-          '&:hover': {
-            boxShadow: 'none',
-            backgroundColor: '#7D5260',
-          },
           '&.Mui-selected': {
-            backgroundColor: '#7D5260',
+            border: '1px solid',
+          },
+          '&:hover': {
+            border: '1px solid',
           },
         },
       },

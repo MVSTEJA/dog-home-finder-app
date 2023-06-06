@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
-import { Dispatch, FC, useRef, useState } from 'react';
+import { Dispatch, FC, useEffect, useRef, useState } from 'react';
 import { findAllBreeds } from 'src/api';
 import { FilterAction } from 'src/context/FilterProvider';
 import { useFilter, useFilterDispatch } from 'src/context/hooks';
@@ -62,6 +62,19 @@ const FilterDialogContainer: FC<FilterDialogContainerProps> = (
       place,
     });
   };
+  const handleData = () => {
+    if (filterValue.breeds) {
+      setBreeds(filterValue.breeds);
+    }
+    if (filterValue.place.city) {
+      setPlace(filterValue.place);
+    }
+  };
+  useEffect(() => {
+    console.log({ filterValue });
+    handleData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(filterValue)]);
   return (
     <Dialog
       sx={{
@@ -144,16 +157,39 @@ const FilterSection: FC = () => {
     }
   };
 
+  const breedLength = filterValue?.breeds?.length;
+  const iconState = breedLength > 0 || filterValue?.place?.description;
+  let selectedText = '';
+
+  if (breedLength > 0) {
+    selectedText += `${breedLength?.toString()}`;
+  }
+  if (filterValue?.place?.description) {
+    selectedText += breedLength > 0 ? ', ' : '';
+    selectedText += `${
+      filterValue?.place?.description ? filterValue?.place?.description : ''
+    }`;
+  }
+
   return (
     <>
       <CustomIconBtn
-        iconState={filterValue?.breeds?.length > 0}
+        iconState={iconState}
         handleClick={handleClickListItem}
-        color="primary"
-      >
-        {/* @ts-expect-error ineherent type issue. */}
-        <TuneRoundedIcon color="primary.light" />
-      </CustomIconBtn>
+        color="secondary"
+        sx={{ mr: 1 }}
+        /* @ts-expect-error inherent type issue. */
+        startIcon={<TuneRoundedIcon color="secondary.light" />}
+        btnText="Filter"
+        selectedText={selectedText}
+        clearAction={() => {
+          setFilterValue({
+            ...filterValue,
+            type: 'clear',
+          });
+        }}
+        showClose
+      />
       <FilterDialogContainer
         id="ringtone-menu"
         keepMounted

@@ -72,6 +72,7 @@ const LocationSelect: FC<LocationSelectProps> = ({
     }
   };
 
+  console.log({ place });
   return (
     <Autocomplete
       inputValue={place.description}
@@ -88,6 +89,7 @@ const LocationSelect: FC<LocationSelectProps> = ({
           name="places"
           id="places-input"
           variant="outlined"
+          value={place.description}
         />
       )}
     />

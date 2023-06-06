@@ -156,14 +156,14 @@ const Dashboard: FC = () => {
   return (
     <Box
       component={Container}
-      fixed
+      maxWidth="xl"
       sx={{
         flexGrow: 1,
-
+        mt: 2,
         zIndex: 0,
         mb: 4,
         p: 0,
-        m: 0,
+        // m: 0,
         display: 'flex',
         flexFlow: 'column',
         position: 'relative',
@@ -223,11 +223,12 @@ const Dashboard: FC = () => {
               }, 1fr))`,
             }}
           >
-            {data?.pages[0]?.response?.length === 0 && (
-              <Typography sx={{ p: 2 }}>
-                Sorry! No dogs were found that match your search criteria.
-              </Typography>
-            )}
+            {!(isInitialLoading || isFetching || isLoading) &&
+              data?.pages[0]?.response?.length === 0 && (
+                <Typography sx={{ p: 2, m: '0 auto' }}>
+                  Sorry! No dogs were found matching your search criteria.
+                </Typography>
+              )}
             {data?.pages.map((group, i) => (
               // eslint-disable-next-line react/no-array-index-key
               <Fragment key={i}>

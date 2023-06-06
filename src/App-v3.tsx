@@ -46,7 +46,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
       <AppNavBar />
       <Toolbar />
       {children}
-      {/* <Outlet /> */}
     </Container>
   );
 };
@@ -146,7 +145,6 @@ const App: FC = () => {
     []
   );
 
-  console.log({ matches });
   const theme = useMemo(
     () => {
       const baseTheme = mode === 'dark' ? darkTheme : lightTheme;

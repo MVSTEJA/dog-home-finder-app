@@ -142,11 +142,13 @@ const Sorting: FC = () => {
       <CustomIconBtn
         iconState={sortValue?.id !== ''}
         handleClick={handleClickListItem}
-        color="primary"
-      >
-        {/* @ts-expect-error ineherent type issue. */}
-        <SortByAlphaRoundedIcon color="primary.light" />
-      </CustomIconBtn>
+        color="secondary"
+        sx={{ ml: 1 }}
+        /* @ts-expect-error inherent type issue. */
+        startIcon={<SortByAlphaRoundedIcon color="secondary.light" />}
+        btnText="Sort by"
+        selectedText={sortValue.by}
+      />
 
       <ConfirmationDialogRaw
         id="ringtone-menu"

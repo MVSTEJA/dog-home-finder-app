@@ -19,7 +19,7 @@ import { appLogOut } from 'src/api';
 import ConfirmationDialog from './common/ConfirmationDialog';
 
 const ButtonAppBar: FC = () => {
-  const [location, navigate] = useLocation();
+  const [, navigate] = useLocation();
 
   const [openConfim, setOpenConfim] = useState(false);
   const loggedIn: boolean | null = useReadLocalStorage('login');
@@ -81,7 +81,7 @@ const ButtonAppBar: FC = () => {
               )}
             </IconButton>
 
-            {!location.includes('/signin') && (
+            {loggedIn && (
               <Button
                 sx={{
                   textTransform: 'initial',

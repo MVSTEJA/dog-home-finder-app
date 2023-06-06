@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { AxiosError } from 'axios';
 import { FC, SyntheticEvent, useState } from 'react';
@@ -27,12 +28,14 @@ const SignInSide: FC = () => {
   const loggedIn: boolean | null = useReadLocalStorage('login');
 
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('login', loggedIn);
-  console.log({ loggedIn, isLoggedIn });
+
   const { mutate } = useMutation<string, AxiosError, User>({
     mutationFn: createLogin,
     onError: (err) => {
       toast.error(
-        err?.response ? `${err?.response} request.` : 'No credentials provided'
+        err?.response
+          ? `${err?.response} request.`
+          : 'Invalid credentials provided'
       );
     },
     onSuccess: () => {
@@ -41,18 +44,49 @@ const SignInSide: FC = () => {
     },
   });
 
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  const validateEmail = (email: string) => {
+    console.log(email);
+    if (email === '') {
+      setEmailError('Please enter an email');
+      return false;
+    }
+    if (!email?.match(/[-.\w]+@([\w-]+\.)+[\w-]+/g)) {
+      setEmailError('Please provide valid email');
+      return false;
+    }
+    setEmailError('');
+    return true;
+  };
+  const validateName = (name: string) => {
+    if (name === '') {
+      setNameError('Please provide a name');
+      return false;
+    }
+    setNameError('');
+    return true;
+  };
+
+  console.log(nameError, emailError);
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
+
     const target = event.target as typeof event.target & {
       email: { value: string };
       name: { value: string };
     };
-    const email = target.email.value;
-    const name = target.name.value;
+
+    const { email, name } = target;
+    if (!validateName(name.value)) return;
+    if (!validateEmail(email.value)) return;
+
+    toast.success('Login success !');
 
     mutate({
-      email,
-      name,
+      email: email.value,
+      name: name.value,
     });
   };
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
@@ -65,7 +99,8 @@ const SignInSide: FC = () => {
   const handleBackNav = async () => {
     navigate(ROUTE_CODES.HOME);
   };
-  console.log({ isLoggedIn });
+  const theme = useTheme();
+
   return (
     <Grid
       container
@@ -81,9 +116,41 @@ const SignInSide: FC = () => {
           onSubmit={handleBackNav}
           onClose={handleClose}
           variant="danger"
-          title="You have logged in already, return ?"
+          title="You have logged in already, return to the app?"
         />
       )}
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="center"
+        item
+        xs={12}
+        sm={12}
+        mb={4}
+      >
+        <Grid item xs={12} sm={4}>
+          <Box
+            component={Paper}
+            sx={{
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? theme.palette.secondary.main
+                  : theme.palette.secondary.main,
+              textAlign: 'left',
+              p: 1,
+              color: 'white',
+            }}
+          >
+            <Typography variant="h6" textAlign="center" gutterBottom>
+              Good Day! Welcome to pet finder app.
+            </Typography>
+            <Typography variant="subtitle2">
+              The app gives ablity to search for dogs nearby you. And provide a
+              dog that matches you.
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
       <Grid
         item
         xs={false}
@@ -91,14 +158,14 @@ const SignInSide: FC = () => {
         sx={{
           backgroundImage: `url(${happyImage})`,
           backgroundRepeat: 'no-repeat',
-
           backgroundSize: 'auto',
           backgroundPosition: 'center',
           borderTopRightRadius: 6,
           borderBottomRightRadius: 6,
-          minHeight: '50vh',
+          minHeight: `${matches ? '30vh' : '0'}`,
         }}
       />
+
       <Grid
         item
         xs={12}
@@ -114,7 +181,7 @@ const SignInSide: FC = () => {
       >
         <Box
           sx={{
-            my: 8,
+            my: 4,
             mx: 4,
             display: 'flex',
             flexDirection: 'column',
@@ -156,7 +223,13 @@ const SignInSide: FC = () => {
               id="name"
               autoComplete="current-name"
               autoFocus
+              error={nameError !== ''}
+              helperText={nameError}
+              onInput={(evt) =>
+                validateName((evt.target as HTMLInputElement)?.value)
+              }
             />
+
             <TextField
               margin="normal"
               required
@@ -165,6 +238,13 @@ const SignInSide: FC = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
+              type="email"
+              inputMode="email"
+              error={emailError !== ''}
+              helperText={emailError}
+              onInput={(evt) =>
+                validateEmail((evt.target as HTMLInputElement)?.value)
+              }
             />
 
             <Button
@@ -190,7 +270,7 @@ const SignInSide: FC = () => {
           backgroundPosition: 'center',
           borderTopRightRadius: 6,
           borderBottomRightRadius: 6,
-          minHeight: '50vh',
+          minHeight: `${matches ? '30vh' : '0'}`,
         }}
       />
     </Grid>
