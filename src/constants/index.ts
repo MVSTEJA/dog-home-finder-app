@@ -1,6 +1,6 @@
-export const PUBLIC_PATH = '/pet-home-finder-app';
+export const PUBLIC_PATH = '/';
 export const ROUTE_CODES = {
-  HOME: `${PUBLIC_PATH}/home`,
+  HOME: `${PUBLIC_PATH}home`,
   SIGNIN: PUBLIC_PATH,
 };
 

@@ -1,4 +1,4 @@
-import { Route, Link, Redirect } from 'wouter';
+import { Route, Link, Redirect, Switch } from 'wouter';
 
 import {
   Box,
@@ -166,9 +166,11 @@ const App: FC = () => {
           <CssBaseline />
 
           <Layout>
-            <Route path={ROUTE_CODES.SIGNIN} component={SIGNIN} />
-            <Route path={ROUTE_CODES.HOME} component={HOME} />
-            <Route component={NoMatch} />
+            <Switch>
+              <Route path={ROUTE_CODES.SIGNIN} component={SIGNIN} />
+              <Route path={ROUTE_CODES.HOME} component={HOME} />
+              <Route component={NoMatch} />
+            </Switch>
           </Layout>
         </StyledEngineProvider>
       </ThemeProvider>
