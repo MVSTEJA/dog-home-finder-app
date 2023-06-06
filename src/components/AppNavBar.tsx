@@ -16,6 +16,7 @@ import WalkingDog from 'src/assets/dog-walking.png';
 
 import { ROUTE_CODES } from 'src/constants';
 import ColorModeContext from 'src/context/ColorMode';
+import { appLogOut } from 'src/api';
 import ConfirmationDialog from './common/ConfirmationDialog';
 
 const ButtonAppBar: FC = () => {
@@ -27,9 +28,10 @@ const ButtonAppBar: FC = () => {
     setOpenConfim(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsLoggedIn(false);
     handleClose();
+    await appLogOut();
     navigate(ROUTE_CODES.SIGNIN);
   };
   const appTheme = useTheme();

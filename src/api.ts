@@ -130,3 +130,8 @@ export async function findLocations(): Promise<Location> {
   const { data }: AxiosResponse = await client.get<Location>('/locations');
   return data;
 }
+
+export async function appLogOut(): Promise<Location> {
+  const { data }: AxiosResponse = await client.get<Location>('/auth/logout');
+  return data;
+}

@@ -11,19 +11,20 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { AxiosError } from 'axios';
-import { FC, SyntheticEvent } from 'react';
+import { FC, SyntheticEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import { createLogin } from 'src/api';
+import { appLogOut, createLogin } from 'src/api';
 import HappyDog from 'src/assets/dog.png';
 import standingImage from 'src/assets/walking-a-dog.svg';
 import happyImage from 'src/assets/bye-pet.svg';
 import { ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
 import { useLocalStorage } from 'usehooks-ts';
+import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
 
 const SignInSide: FC = () => {
   const [, navigate] = useLocation();
-  const [, setIsLoggedIn] = useLocalStorage('login', true);
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage('login', true);
 
   const { mutate } = useMutation<string, AxiosError, User>({
     mutationFn: createLogin,
@@ -53,6 +54,15 @@ const SignInSide: FC = () => {
     });
   };
   const matches = useMediaQuery('(min-width:600px)');
+
+  const [openConfim, setOpenConfim] = useState(isLoggedIn);
+  const handleClose = () => {
+    setOpenConfim(false);
+  };
+
+  const handleBackNav = async () => {
+    navigate(ROUTE_CODES.HOME);
+  };
   return (
     <Grid
       container
@@ -62,6 +72,15 @@ const SignInSide: FC = () => {
       alignItems="center"
       height="80vh"
     >
+      {isLoggedIn && (
+        <ConfirmationDialog
+          open={openConfim}
+          onSubmit={handleBackNav}
+          onClose={handleClose}
+          variant="danger"
+          title="You have logged in already, return ?"
+        />
+      )}
       <Grid
         item
         xs={false}
