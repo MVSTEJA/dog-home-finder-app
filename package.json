@@ -68,7 +68,7 @@
     "vitest": "0.30.1"
   },
   "license": "MIT",
-  "name": "dog-home-finder-app",
+  "name": "pet-home-finder-app",
   "private": true,
   "scripts": {
     "build": "tsc && vite build",

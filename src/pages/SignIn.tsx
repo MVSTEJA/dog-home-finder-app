@@ -63,6 +63,7 @@ const SignInSide: FC = () => {
   const handleBackNav = async () => {
     navigate(ROUTE_CODES.HOME);
   };
+  console.log({ isLoggedIn });
   return (
     <Grid
       container
