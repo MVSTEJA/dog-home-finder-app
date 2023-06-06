@@ -13,7 +13,7 @@ import {
 import { AxiosError } from 'axios';
 import { FC, SyntheticEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import { appLogOut, createLogin } from 'src/api';
+import { createLogin } from 'src/api';
 import HappyDog from 'src/assets/dog.png';
 import standingImage from 'src/assets/walking-a-dog.svg';
 import happyImage from 'src/assets/bye-pet.svg';
