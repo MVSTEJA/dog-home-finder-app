@@ -8,6 +8,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/pet-finder',
   resolve: {
     alias: {
       src: path.resolve(__dirname, './src/'),
