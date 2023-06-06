@@ -17,7 +17,7 @@ import { createLogin } from 'src/api';
 import HappyDog from 'src/assets/dog.png';
 import standingImage from 'src/assets/walking-a-dog.svg';
 import happyImage from 'src/assets/bye-pet.svg';
-import { ROUTE_CODES } from 'src/constants';
+import { MOBILE_WIDTH_QUERY, ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
 import { useLocalStorage } from 'usehooks-ts';
 import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
@@ -53,7 +53,7 @@ const SignInSide: FC = () => {
       name,
     });
   };
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
 
   const [openConfim, setOpenConfim] = useState(isLoggedIn);
   const handleClose = () => {

@@ -18,6 +18,7 @@ import { findMatch } from 'src/api';
 
 import DogDelivery from 'src/assets/being-happy-1.svg';
 import { Dog } from 'src/types';
+import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import { DogCardContent } from './DogCard';
 import AnimatedFigure from './common/AnimatedFigure';
 
@@ -53,7 +54,7 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
     return cardData.id === data?.match;
   })[0];
 
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
 
   return (
     <Dialog

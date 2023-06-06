@@ -1,5 +1,5 @@
 import { useLocation } from 'wouter';
-import { useLocalStorage } from 'usehooks-ts';
+import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import {
   AppBar,
   Box,
@@ -10,7 +10,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
-
 import { FC, useState, useContext } from 'react';
 import WalkingDog from 'src/assets/dog-walking.png';
 
@@ -23,7 +22,8 @@ const ButtonAppBar: FC = () => {
   const [location, navigate] = useLocation();
 
   const [openConfim, setOpenConfim] = useState(false);
-  const [, setIsLoggedIn] = useLocalStorage('login', true);
+  const loggedIn: boolean | null = useReadLocalStorage('login');
+  const [, setIsLoggedIn] = useLocalStorage('login', loggedIn);
   const handleClose = () => {
     setOpenConfim(false);
   };

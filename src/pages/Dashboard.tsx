@@ -21,11 +21,12 @@ import { SearchSection } from 'src/components/SortFilterSection';
 import BackToTop from 'src/components/common/BackToTop';
 import { useFilter, usePaginate } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/DogCard';
+import { MOBILE_WIDTH_QUERY } from 'src/constants';
 
 const CardSkeleton: FC<{
   elemRef?: (node?: Element | null | undefined) => void;
 }> = ({ elemRef = null }) => {
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
   return (
     <>
       {Array.from({ length: 12 }, (item: string, key) => (
@@ -148,7 +149,7 @@ const Dashboard: FC = () => {
       });
     }
   };
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
   const appENV =
     import.meta.env.MODE === 'development' ? 'develop' : 'production';
 

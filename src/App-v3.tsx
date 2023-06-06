@@ -31,7 +31,11 @@ import {
   mobiledarkThemeOptions,
   darkBaseThemeOptions,
 } from './theme';
-import { COLOR_SCHEME_QUERY, ROUTE_CODES } from './constants';
+import {
+  COLOR_SCHEME_QUERY,
+  MOBILE_WIDTH_QUERY,
+  ROUTE_CODES,
+} from './constants';
 import ColorModeContext from './context/ColorMode';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -127,7 +131,7 @@ const SIGNIN = () => {
 };
 
 const App: FC = () => {
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
   const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
   const [mode, setMode] = useState<'light' | 'dark'>(
     isDarkOS ? 'dark' : 'light'

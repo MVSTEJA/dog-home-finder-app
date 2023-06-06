@@ -5,3 +5,4 @@ export const ROUTE_CODES = {
 };
 
 export const COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)';
+export const MOBILE_WIDTH_QUERY = '(min-width:600px)';

@@ -10,6 +10,7 @@ import {
   Paginate,
   Location,
 } from './types';
+import { ROUTE_CODES } from './constants';
 
 const client = axios.create({
   baseURL: 'https://frontend-take-home-service.fetch.com',
@@ -25,7 +26,7 @@ client.interceptors.response.use(
         onClose() {
           setTimeout(() => {
             localStorage.clear();
-            window.location.replace('/signin');
+            window.location.replace(ROUTE_CODES.HOME);
           }, 3000);
         },
       });

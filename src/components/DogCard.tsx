@@ -17,6 +17,7 @@ import {
 import { FC, memo } from 'react';
 import { Dog } from 'src/types';
 import GetHighlightedText from 'src/utils/highlight-text';
+import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import DogIcon from './common/DogIcon';
 
 export interface DogCardProps extends Dog {
@@ -106,7 +107,7 @@ const DogCard: FC<DogCardProps> = ({
 }: DogCardProps) => {
   const cardSelected = checked?.indexOf(value) !== -1;
 
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
 
   return (
     <Card
