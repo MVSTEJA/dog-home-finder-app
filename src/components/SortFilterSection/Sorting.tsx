@@ -144,6 +144,7 @@ const Sorting: FC = () => {
         handleClick={handleClickListItem}
         color="primary"
       >
+        {/* @ts-expect-error ineherent type issue. */}
         <SortByAlphaRoundedIcon color="primary.light" />
       </CustomIconBtn>
 

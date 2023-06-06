@@ -82,6 +82,7 @@ export const SearchSection: FC<SearchSectionProps> = ({
                   </Box>
                 }
                 onClick={handleClearSelection}
+                /* @ts-expect-error ineherent type issue */
                 startIcon={<CloseIcon color="primary.light" />}
               />
 

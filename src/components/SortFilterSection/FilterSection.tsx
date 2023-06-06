@@ -151,6 +151,7 @@ const FilterSection: FC = () => {
         handleClick={handleClickListItem}
         color="primary"
       >
+        {/* @ts-expect-error ineherent type issue. */}
         <TuneRoundedIcon color="primary.light" />
       </CustomIconBtn>
       <FilterDialogContainer
