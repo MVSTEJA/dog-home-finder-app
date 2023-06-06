@@ -19,13 +19,15 @@ import standingImage from 'src/assets/walking-a-dog.svg';
 import happyImage from 'src/assets/bye-pet.svg';
 import { MOBILE_WIDTH_QUERY, ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
-import { useLocalStorage } from 'usehooks-ts';
+import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
 
 const SignInSide: FC = () => {
   const [, navigate] = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage('login', true);
+  const loggedIn: boolean | null = useReadLocalStorage('login');
 
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage('login', loggedIn);
+  console.log({ loggedIn, isLoggedIn });
   const { mutate } = useMutation<string, AxiosError, User>({
     mutationFn: createLogin,
     onError: (err) => {

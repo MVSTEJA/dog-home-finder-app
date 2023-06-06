@@ -14,7 +14,7 @@ export interface ConfirmationOptions {
 }
 
 interface ConfirmationDialogProps extends ConfirmationOptions {
-  open: boolean;
+  open: boolean | null;
   onSubmit: () => void;
   onClose: () => void;
 }
@@ -28,7 +28,7 @@ const ConfirmationDialog = ({
   onClose,
 }: ConfirmationDialogProps) => {
   return (
-    <Dialog open={open}>
+    <Dialog open={open || false}>
       <DialogTitle fontSize="14px" id="alert-dialog-title">
         {title}
       </DialogTitle>
