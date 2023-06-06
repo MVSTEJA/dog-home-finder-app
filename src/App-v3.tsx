@@ -68,9 +68,6 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
   children,
 }: ProtectedRouteProps) => {
   if (!isLoggedIn) {
-    // toast.error('Please provide credentials in login to continue. ', {
-    //   toastId: 'redirectPath',
-    // });
     return <Redirect to={redirectPath} replace />;
   }
 
