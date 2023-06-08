@@ -19,15 +19,20 @@ import GetHighlightedText from 'src/utils/highlight-text';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import PetIcon from './common/DogIcon';
 
-export const PetCardContent: FC<Dog> = ({
+interface DogProps extends Omit<Dog, 'id' | 'content' | 'match' | 'zip_code'> {
+  searchValue?: string;
+  zipCode: string;
+}
+
+export const PetCardContent: FC<DogProps> = ({
   img,
   name,
-  matches,
   searchValue = '',
   age,
   breed,
   zipCode,
 }) => {
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
   return (
     <>
       <CardMedia
@@ -85,11 +90,10 @@ export const PetCardContent: FC<Dog> = ({
   );
 };
 
-export interface PetCardProps extends Dog {
+export interface PetCardProps extends DogProps {
   checked?: string[];
   value: string;
-
-  searchValue?: string;
+  setChecked: (value: string[]) => void;
 }
 const PetCard: FC<PetCardProps> = ({
   img,
@@ -98,7 +102,7 @@ const PetCard: FC<PetCardProps> = ({
   zipCode = '',
   checked = [''],
   value,
-  age = null,
+  age,
   searchValue = '',
   setChecked,
 }: PetCardProps) => {
@@ -170,7 +174,6 @@ const PetCard: FC<PetCardProps> = ({
         <PetCardContent
           img={img}
           name={name}
-          matches={matches}
           searchValue={searchValue}
           age={age}
           breed={breed}

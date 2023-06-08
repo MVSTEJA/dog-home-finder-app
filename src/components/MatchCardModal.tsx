@@ -105,8 +105,8 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
           <Stack
             justifyContent="center"
             alignItems="center"
-            width="50vh"
-            height="50vh"
+            width="40vh"
+            height="30vh"
           >
             <CircularProgress />
             <Typography variant="h6" textAlign="center" gutterBottom>
@@ -160,7 +160,6 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
                       age={matchCardData?.age}
                       name={matchCardData?.name}
                       zipCode={matchCardData?.zip_code}
-                      matches={matches}
                     />
                   </Box>
                 </Stack>

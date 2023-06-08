@@ -1,7 +1,7 @@
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
-import LoadingButton from '@mui/lab/LoadingButton';
-import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 
 import {
   Box,
@@ -16,15 +16,15 @@ import {
 import { AxiosError } from 'axios';
 import { FC, SyntheticEvent, useState } from 'react';
 
+import { toast } from 'react-hot-toast';
 import { createLogin } from 'src/api';
+import happyImage from 'src/assets/bye-pet.svg';
 import HappyDog from 'src/assets/dog.png';
 import standingImage from 'src/assets/walking-a-dog.svg';
-import happyImage from 'src/assets/bye-pet.svg';
+import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
 import { MOBILE_WIDTH_QUERY, ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
-import { toast } from 'react-hot-toast';
 
 const SignInSide: FC = () => {
   const [, navigate] = useLocation();
@@ -209,7 +209,7 @@ const SignInSide: FC = () => {
             onSubmit={handleSubmit}
             sx={{
               width: '100%',
-              height: '20vh',
+              height: '15vh',
             }}
           >
             <Box
@@ -228,6 +228,9 @@ const SignInSide: FC = () => {
                 id="name"
                 autoComplete="current-name"
                 autoFocus
+                sx={{
+                  m: 0,
+                }}
                 error={nameError !== ''}
                 helperText={nameError}
                 onInput={(evt) =>
@@ -254,7 +257,7 @@ const SignInSide: FC = () => {
                 error={emailError !== ''}
                 helperText={emailError}
                 sx={{
-                  height: '7vh',
+                  m: 0,
                 }}
                 onInput={(evt) =>
                   validateEmail((evt.target as HTMLInputElement)?.value)

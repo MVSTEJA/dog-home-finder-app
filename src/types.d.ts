@@ -1,25 +1,19 @@
-import * as z from 'zod';
+export type User = {
+  name: string;
+  email: string;
+};
 
-const DogObj = z.object({
-  content: z.string().min(1).optional,
-  done: z.boolean().optional,
-  id: z.string(),
-  img: z.string().optional,
-  name: z.string().optional,
-  age: z.number().optional,
-  zipCode: z.string().optional,
-  breed: z.string().optional,
-});
-
-const userMeta = z.object({
-  name: z.string(),
-  email: z.string(),
-});
-
-export type User = z.infer<typeof userMeta>;
-
-export type Dog = z.infer<typeof DogObj>;
-export type DogWithId = WithId<DogObj>;
+export type Dog = {
+  content: string;
+  done?: boolean;
+  id: string;
+  img: string;
+  name: string;
+  age: number;
+  breed: string;
+  match: string;
+  zip_code: string;
+};
 
 export type DogsSearchResponse = {
   resultIds: string[];

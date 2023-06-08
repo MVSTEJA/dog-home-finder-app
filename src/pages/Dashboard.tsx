@@ -247,7 +247,7 @@ const Dashboard: FC = () => {
             {data?.pages.map((group, i) => (
               // eslint-disable-next-line react/no-array-index-key
               <Fragment key={i}>
-                {group?.response.map((item, index) => {
+                {group?.response.map((item) => {
                   const lcSearchValue = searchValue.toLowerCase();
                   const lcMatch =
                     item.name.toLowerCase().includes(lcSearchValue) ||
@@ -266,7 +266,6 @@ const Dashboard: FC = () => {
                       }}
                     >
                       <MemoizedDogCard
-                        index={index}
                         img={item.img}
                         breed={item.breed}
                         name={item.name}
