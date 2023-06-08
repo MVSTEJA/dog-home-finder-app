@@ -1,8 +1,9 @@
-import { Autocomplete, Checkbox, TextField } from '@mui/material';
-import { Dispatch, FC, SetStateAction, useMemo } from 'react';
+import { Autocomplete, Checkbox, TextField, debounce } from '@mui/material';
+import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { MuiAutocompleteSelectAll } from 'mui-autocomplete-select-all';
 
 import { Breed } from 'src/types';
+import GetHighlightedText from 'src/utils/highlight-text';
 
 export interface BreedSelectProps {
   options: Breed[] | undefined;
@@ -11,7 +12,7 @@ export interface BreedSelectProps {
 }
 
 interface ProviderOptions {
-  onSelectAll: (_selectedAll: boolean) => undefined;
+  onSelectAll: (all: boolean) => undefined;
   selectedAll: boolean;
 }
 
@@ -21,7 +22,9 @@ const BreedSelect: FC<BreedSelectProps> = ({
   setBreeds = () => {},
 }: BreedSelectProps) => {
   const selectedAll = breeds.length === options.length;
+  const [inputValue, setInputValue] = useState('');
 
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const providerOptions: ProviderOptions = useMemo(
     () => ({
       onSelectAll: (all: boolean) => {
@@ -45,13 +48,16 @@ const BreedSelect: FC<BreedSelectProps> = ({
         ListboxComponent={MuiAutocompleteSelectAll.ListBox}
         disablePortal
         options={options}
+        onInput={debounce((evt) => {
+          setInputValue(evt.target.value);
+        }, 200)}
         renderInput={(params) => (
           <TextField placeholder="Search breed and select..." {...params} />
         )}
         renderOption={(props, option, { selected }) => (
           <li key={option.value} {...props}>
             <Checkbox checked={selected} />
-            {option.value}
+            <GetHighlightedText highlight={inputValue} text={option.value} />
           </li>
         )}
       />

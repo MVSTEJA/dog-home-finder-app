@@ -1,7 +1,7 @@
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, OutlinedInput } from '@mui/material';
+import { OutlinedInput, Stack } from '@mui/material';
 import {
   ChangeEvent,
   Dispatch,
@@ -20,7 +20,11 @@ const Search = styled('div')(({ theme }) => ({
   display: 'flex',
   marginLeft: 0,
   width: '100%',
-  borderColor: 'white',
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    borderColor: theme.palette.primary.light,
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
     width: 'auto',
@@ -39,7 +43,6 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
   color: 'inherit',
-  width: '100%',
   height: '100%',
   alignSelf: 'center',
   borderColor: 'transparent',
@@ -55,20 +58,23 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
 
     paddingLeft: `calc(1em + ${theme.spacing(3)})`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+
     [theme.breakpoints.up('sm')]: {
-      width: '100%',
+      width: '40ch',
+      '&:focus': {
+        width: '50ch',
+      },
     },
   },
 }));
 
-interface SearchInputProps {
+interface SearchSectionProps {
   setSearchValue: Dispatch<SetStateAction<string>>;
 }
 
-const SearchInput: FC<SearchInputProps> = ({
+const SearchSection: FC<SearchSectionProps> = ({
   setSearchValue,
-}: SearchInputProps) => {
+}: SearchSectionProps) => {
   const [search, setSearch] = useState<string>('');
   const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -80,11 +86,12 @@ const SearchInput: FC<SearchInputProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Stack direction="row" flexBasis="50%" justifyContent="flex-end">
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
+
         <StyledInputBase
           placeholder="Search by name, breed, age, zip"
           onChange={handleChange}
@@ -92,8 +99,8 @@ const SearchInput: FC<SearchInputProps> = ({
           autoFocus
         />
       </Search>
-    </Box>
+    </Stack>
   );
 };
 
-export default SearchInput;
+export default SearchSection;

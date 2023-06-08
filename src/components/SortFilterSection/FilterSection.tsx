@@ -1,7 +1,7 @@
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -9,13 +9,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Typography,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
 import { Dispatch, FC, useEffect, useRef, useState } from 'react';
 import { findAllBreeds } from 'src/api';
-import { FilterAction } from 'src/context/FilterProvider';
+import { FilterAction, initialFilter } from 'src/context/FilterProvider';
 import { useFilter, useFilterDispatch } from 'src/context/hooks';
 import { Breed, Filter, Place } from 'src/types';
 import CustomIconBtn from 'src/components/common/ActionableBtns';
@@ -49,10 +50,6 @@ const FilterDialogContainer: FC<FilterDialogContainerProps> = (
     }
   };
 
-  const handleCancel = () => {
-    onClose();
-  };
-
   const [breeds, setBreeds] = useState<Breed[]>(filterValue.breeds);
   const [place, setPlace] = useState<Place>(filterValue.place);
 
@@ -70,8 +67,12 @@ const FilterDialogContainer: FC<FilterDialogContainerProps> = (
       setPlace(filterValue.place);
     }
   };
+  const handleReset = () => {
+    setBreeds([]);
+
+    setPlace(initialFilter.place);
+  };
   useEffect(() => {
-    console.log({ filterValue });
     handleData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(filterValue)]);
@@ -90,9 +91,27 @@ const FilterDialogContainer: FC<FilterDialogContainerProps> = (
       {...other}
     >
       <DialogTitle>
-        <Box display="flex" alignItems="center" mb={1}>
-          <TuneRoundedIcon sx={{ mr: 1 }} />
-          <Box>Filter</Box>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={1}
+        >
+          <Box display="flex" alignItems="center">
+            <TuneRoundedIcon sx={{ mr: 1 }} />
+            Filter
+          </Box>
+          <IconButton
+            aria-label="close"
+            onClick={() => onClose()}
+            sx={{
+              position: 'relative',
+              right: 0,
+              marginRight: '0',
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
         </Box>
       </DialogTitle>
       <DialogContent
@@ -128,7 +147,7 @@ const FilterDialogContainer: FC<FilterDialogContainerProps> = (
         <LocationSelect place={place} setPlace={setPlace} />
       </DialogContent>
       <DialogActions sx={{ mr: 1, mb: 1 }}>
-        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={handleReset}>Reset</Button>
         <Button variant="contained" onClick={handleOk}>
           Submit
         </Button>
@@ -137,7 +156,9 @@ const FilterDialogContainer: FC<FilterDialogContainerProps> = (
   );
 };
 
-const FilterSection: FC = () => {
+const FilterSection: FC<{
+  handleClearSelection: () => void;
+}> = ({ handleClearSelection }) => {
   const [open, setOpen] = useState<boolean>(false);
   const filterValue = useFilter();
   const setFilterValue = useFilterDispatch();
@@ -178,7 +199,7 @@ const FilterSection: FC = () => {
         handleClick={handleClickListItem}
         color="secondary"
         sx={{ mr: 1 }}
-        /* @ts-expect-error inherent type issue. */
+        /* @ts-expect-error imported type issue. */
         startIcon={<TuneRoundedIcon color="secondary.light" />}
         btnText="Filter"
         selectedText={selectedText}
@@ -187,6 +208,7 @@ const FilterSection: FC = () => {
             ...filterValue,
             type: 'clear',
           });
+          handleClearSelection();
         }}
         showClose
       />

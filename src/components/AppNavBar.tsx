@@ -5,8 +5,8 @@ import {
   Box,
   Button,
   IconButton,
-  Paper,
   Toolbar,
+  alpha,
   useTheme,
 } from '@mui/material';
 import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
@@ -18,7 +18,7 @@ import ColorModeContext from 'src/context/ColorMode';
 import { appLogOut } from 'src/api';
 import ConfirmationDialog from './common/ConfirmationDialog';
 
-const ButtonAppBar: FC = () => {
+const AppNavBar: FC = () => {
   const [, navigate] = useLocation();
 
   const [openConfim, setOpenConfim] = useState(false);
@@ -55,8 +55,9 @@ const ButtonAppBar: FC = () => {
           zIndex: 1,
           left: 0,
           right: 0,
-          backgroundColor: appTheme.palette.background.default,
+          backgroundColor: alpha('#c0e9fa', 0),
           backgroundImage: 'none',
+          height: '10vh',
         }}
       >
         <Toolbar>
@@ -72,8 +73,12 @@ const ButtonAppBar: FC = () => {
             />
           </Box>
 
-          <Box component={Paper} justifyContent="center">
-            <IconButton onClick={toggleColorMode} color="inherit">
+          <Box justifyContent="center">
+            <IconButton
+              onClick={toggleColorMode}
+              sx={{ mr: 4 }}
+              color="inherit"
+            >
               {appTheme.palette.mode === 'dark' ? (
                 <LightModeOutlined />
               ) : (
@@ -100,4 +105,4 @@ const ButtonAppBar: FC = () => {
   );
 };
 
-export default ButtonAppBar;
+export default AppNavBar;

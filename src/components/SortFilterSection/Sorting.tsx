@@ -1,5 +1,5 @@
 import SortByAlphaRoundedIcon from '@mui/icons-material/SortByAlphaRounded';
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
+  IconButton,
   Radio,
   RadioGroup,
   SelectChangeEvent,
@@ -46,10 +47,6 @@ const ConfirmationDialogRaw: FC<ConfirmationDialogRawProps> = (
     }
   };
 
-  const handleCancel = () => {
-    onClose();
-  };
-
   const handleOk = () => {
     onClose(sortValue, sortByValue);
   };
@@ -75,10 +72,24 @@ const ConfirmationDialogRaw: FC<ConfirmationDialogRawProps> = (
           gutterBottom
           component="div"
           display="flex"
+          justifyContent="space-between"
           alignItems="center"
         >
-          <SortByAlphaRoundedIcon sx={{ mr: 1 }} />
-          <Box>Sort by </Box>
+          <Box display="flex" alignItems="center">
+            <SortByAlphaRoundedIcon sx={{ mr: 1 }} />
+            <Box>Sort by </Box>
+          </Box>
+          <IconButton
+            aria-label="close"
+            onClick={() => onClose()}
+            sx={{
+              position: 'relative',
+              right: 0,
+              marginRight: '0',
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -106,7 +117,6 @@ const ConfirmationDialogRaw: FC<ConfirmationDialogRawProps> = (
         </RadioGroup>
       </DialogContent>
       <DialogActions sx={{ mr: 1, mb: 1 }}>
-        <Button onClick={handleCancel}>Cancel</Button>
         <Button variant="contained" onClick={handleOk}>
           Submit
         </Button>
@@ -144,7 +154,7 @@ const Sorting: FC = () => {
         handleClick={handleClickListItem}
         color="secondary"
         sx={{ ml: 1 }}
-        /* @ts-expect-error inherent type issue. */
+        /* @ts-expect-error imported type issue. */
         startIcon={<SortByAlphaRoundedIcon color="secondary.light" />}
         btnText="Sort by"
         selectedText={sortValue.by}

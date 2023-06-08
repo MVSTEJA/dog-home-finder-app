@@ -4,9 +4,11 @@ import {
   CardActionArea,
   CardContent,
   Container,
+  FormHelperText,
   Grid,
   Paper,
   Skeleton,
+  Stack,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -17,10 +19,13 @@ import { FC, useState, useEffect, SyntheticEvent, Fragment } from 'react';
 import { findAllDogs } from 'src/api';
 
 import MatchCardModal from 'src/components/MatchCardModal';
-import { SearchSection } from 'src/components/SortFilterSection';
+import {
+  FindMatchSection,
+  SearchSection,
+} from 'src/components/SortFilterSection';
 import BackToTop from 'src/components/common/BackToTop';
 import { useFilter, usePaginate } from 'src/context/hooks';
-import MemoizedDogCard from 'src/components/DogCard';
+import MemoizedDogCard from 'src/components/PetCard';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
 
 const CardSkeleton: FC<{
@@ -73,19 +78,6 @@ const Dashboard: FC = () => {
 
   const paginateValue = usePaginate();
   const filterValue = useFilter();
-
-  const handleToggle = (value: string) => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
 
   const handleClearSelection = () => setChecked([]);
   const { ref: loadMoreref, inView } = useInView();
@@ -150,23 +142,18 @@ const Dashboard: FC = () => {
     }
   };
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
-  const appENV =
-    import.meta.env.MODE === 'development' ? 'develop' : 'production';
 
   return (
-    <Box
+    <Container
       component={Container}
       maxWidth="xl"
       sx={{
-        flexGrow: 1,
-        mt: 2,
-        zIndex: 0,
         mb: 4,
+        left: 0,
+        right: 0,
         p: 0,
-        // m: 0,
-        display: 'flex',
-        flexFlow: 'column',
-        position: 'relative',
+        position: 'fixed',
+        height: '90vh',
       }}
       onScroll={handleScroll}
     >
@@ -176,35 +163,63 @@ const Dashboard: FC = () => {
         modalOpen={modalOpen}
         allCards={data?.pages[0]?.response}
       />
-      <Grid container item xs={12}>
+      <Stack direction="row" alignItems="baseline" width="fit-content" mb={2}>
+        <Typography variant="h6">Search a pet</Typography>
+        <Typography variant="body2" sx={{ ml: 1 }}>
+          {' '}
+          (choose from filter and sort the results/ type in the search.)
+        </Typography>
+      </Stack>
+      <Stack>
         <Grid
           container
-          item
           component={Paper}
           sx={{
-            px: 2,
+            p: 2,
             mx: matches ? 0 : 1,
-            mb: 2,
+            display: 'flex',
           }}
         >
-          <Grid item xs={12} sx={{ p: 1 }}>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              Find a pet ({appENV})
-            </Typography>
-          </Grid>
           <SearchSection
             setSearchValue={setSearchValue}
-            checked={checked}
             handleClearSelection={handleClearSelection}
-            handleClickOpen={handleClickOpen}
           />
         </Grid>
+        <Stack direction="row">
+          <Box sx={{ visibility: 'hidden', width: '50%' }} />
+          <Stack
+            direction="row"
+            sx={{ justifyContent: 'flex-end', width: '50%' }}
+          >
+            <FormHelperText sx={{ pl: 2, mb: 3 }}>
+              (Note: This is an experimental search, It is slow. We are working
+              on it! )
+            </FormHelperText>
+          </Stack>
+        </Stack>
         <div id="back-to-top-anchor" />
+        <Stack
+          direction="row"
+          sx={{ mt: 2, alignItems: 'baseline', height: '4vh' }}
+        >
+          <Stack direction="row" alignItems="baseline" flexBasis="50%">
+            <Typography variant="h6">Find a match</Typography>
+            <Typography variant="body2" sx={{ ml: 1 }}>
+              {' '}
+              (choose from the cards below, and click "Find match")
+            </Typography>
+          </Stack>
+          <FindMatchSection
+            checked={checked}
+            handleClickOpen={handleClickOpen}
+            handleClearSelection={handleClearSelection}
+          />
+        </Stack>
         <Grid
           component={Paper}
           container
           sx={{
-            pt: 2,
+            py: 2,
             top: matches ? '15vh' : '20vh',
             mx: matches ? 0 : 1,
             width: '100%',
@@ -213,7 +228,7 @@ const Dashboard: FC = () => {
             flexFlow: 'column',
           }}
         >
-          <Paper
+          <Box
             sx={{
               height: '100%',
               display: 'grid',
@@ -224,7 +239,7 @@ const Dashboard: FC = () => {
             }}
           >
             {!(isInitialLoading || isFetching || isLoading) &&
-              data?.pages[0]?.response?.length === 0 && (
+              !data?.pages[0]?.response?.length && (
                 <Typography sx={{ p: 2, m: '0 auto' }}>
                   Sorry! No dogs were found matching your search criteria.
                 </Typography>
@@ -259,7 +274,7 @@ const Dashboard: FC = () => {
                         checked={checked}
                         value={item.id}
                         age={item.age}
-                        handleToggle={handleToggle}
+                        setChecked={setChecked}
                         searchValue={searchValue}
                       />
                     </Grid>
@@ -271,15 +286,15 @@ const Dashboard: FC = () => {
             {(isInitialLoading || isFetching || isLoading) && <CardSkeleton />}
 
             {hasNextPage && <CardSkeleton elemRef={loadMoreref} />}
-          </Paper>
+          </Box>
         </Grid>
-      </Grid>
+      </Stack>
 
       <BackToTop
         trigger={scrollTrigger}
         handleScrollToTop={handleScrollToTop}
       />
-    </Box>
+    </Container>
   );
 };
 

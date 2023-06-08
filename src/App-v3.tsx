@@ -12,17 +12,9 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { useReadLocalStorage } from 'usehooks-ts';
+import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 
-import {
-  FC,
-  ReactElement,
-  ReactNode,
-  Suspense,
-  lazy,
-  useMemo,
-  useState,
-} from 'react';
+import { FC, ReactElement, ReactNode, Suspense, lazy, useMemo } from 'react';
 import SignInSide from './pages/SignIn';
 import AppNavBar from './components/AppNavBar';
 import {
@@ -132,8 +124,11 @@ const SIGNIN = () => {
 const App: FC = () => {
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
   const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
-  const [mode, setMode] = useState<'light' | 'dark'>(
-    isDarkOS ? 'dark' : 'light'
+
+  const prevTheme = useReadLocalStorage<'light' | 'dark'>('app-theme');
+  const [mode, setMode] = useLocalStorage<'light' | 'dark'>(
+    'app-theme',
+    prevTheme || (isDarkOS ? 'dark' : 'light')
   );
 
   const colorMode = useMemo(
@@ -142,6 +137,7 @@ const App: FC = () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
       },
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -156,7 +152,6 @@ const App: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [mode, matches]
   );
-
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>

@@ -9,7 +9,6 @@ import {
   CardMedia,
   Checkbox,
   Grid,
-  Paper,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -18,17 +17,9 @@ import { FC, memo } from 'react';
 import { Dog } from 'src/types';
 import GetHighlightedText from 'src/utils/highlight-text';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
-import DogIcon from './common/DogIcon';
+import PetIcon from './common/DogIcon';
 
-export interface DogCardProps extends Dog {
-  index: number;
-  checked?: string[];
-  value: string;
-  handleToggle?: (value: string) => void;
-  searchValue?: string;
-}
-
-export const DogCardContent = ({
+export const PetCardContent = ({
   img,
   name,
   matches,
@@ -56,19 +47,20 @@ export const DogCardContent = ({
         sx={{
           display: 'flex',
           flexFlow: 'column',
-          height: matches ? '175px' : '125px',
+          height: matches ? '145px' : '125px',
           flex: 1,
         }}
       >
         <Grid container item flexBasis="100%">
           <Typography gutterBottom variant="body1" component="div">
-            <GetHighlightedText highlight={searchValue} text={name} />
+            <GetHighlightedText highlight={searchValue} text={name} /> (
             <GetHighlightedText highlight={searchValue} text={age.toString()} />
+            )
           </Typography>
         </Grid>
         <Grid container item flexBasis="50%">
           <Grid item xs={3}>
-            <DogIcon />
+            <PetIcon />
           </Grid>
           <Grid item xs={9} display="flex" justifyContent="flex-end">
             <Typography variant="body1" color="text.primary">
@@ -93,38 +85,48 @@ export const DogCardContent = ({
   );
 };
 
-const DogCard: FC<DogCardProps> = ({
-  index = 0,
+export interface PetCardProps extends Dog {
+  checked?: string[];
+  value: string;
+
+  searchValue?: string;
+}
+const PetCard: FC<PetCardProps> = ({
   img,
   breed = '',
   name = '',
   zipCode = '',
   checked = [''],
   value,
-  handleToggle = () => {},
   age = null,
   searchValue = '',
-}: DogCardProps) => {
+  setChecked,
+}: PetCardProps) => {
   const cardSelected = checked?.indexOf(value) !== -1;
 
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const handleToggle = (checkedValue: string) => {
+    const currentIndex = checked.indexOf(checkedValue);
+    const newChecked = [...checked];
 
+    if (currentIndex === -1) {
+      newChecked.push(checkedValue);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
   return (
     <Card
-      component={Paper}
       variant="outlined"
       className={cardSelected ? 'Mui-selected' : ''}
       sx={{
         width: matches ? 350 : 325,
+        border: 'none',
         mx: 'auto',
         position: 'relative',
         overflow: 'visible',
-        '--delay': index,
-        animationName: 'animateIn',
-        animationDuration: '100ms',
-        animationDelay: `calc(var(--delay, 0) * 20ms)`,
-        animationFillMode: 'both',
-        animationTimingFunction: 'ease-in-out',
       }}
     >
       {cardSelected && (
@@ -165,7 +167,7 @@ const DogCard: FC<DogCardProps> = ({
           justifyContent: 'flex-start',
         }}
       >
-        <DogCardContent
+        <PetCardContent
           img={img}
           name={name}
           matches={matches}
@@ -178,5 +180,5 @@ const DogCard: FC<DogCardProps> = ({
     </Card>
   );
 };
-const MemoizedDogCard = memo(DogCard);
-export default MemoizedDogCard;
+const MemoizedPetCard = memo(PetCard);
+export default MemoizedPetCard;

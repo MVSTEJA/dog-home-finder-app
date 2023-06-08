@@ -1,4 +1,4 @@
-import { Box, Button, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import {
   DefaultComponentProps,
   OverridableTypeMap,
@@ -39,7 +39,7 @@ const CustomIconBtn: FC<CustomIconBtnProps> = ({
           alignSelf: 'center',
         },
       }}
-      variant={iconState ? 'contained' : 'text'}
+      variant="contained"
       startIcon={startIcon}
       onClick={handleClick}
       {...props}
@@ -48,7 +48,6 @@ const CustomIconBtn: FC<CustomIconBtnProps> = ({
         selectedText && showClose ? (
           <Box
             component={Button}
-            variant="text"
             sx={{
               p: 0,
               minWidth: '20px',
@@ -60,12 +59,14 @@ const CustomIconBtn: FC<CustomIconBtnProps> = ({
               clearAction();
             }}
           >
-            <CloseIcon color={iconState ? 'primary' : 'secondary'} />
+            <CloseIcon />
           </Box>
         ) : null
       }
     >
-      {btnText} {selectedText ? ` \u00B7 ${selectedText}` : ''}
+      <Typography>
+        {btnText} {selectedText ? ` \u00B7 ${selectedText}` : ''}
+      </Typography>
     </Button>
   );
 };

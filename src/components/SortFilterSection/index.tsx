@@ -4,97 +4,112 @@ import {
   Divider,
   Grid,
   Paper,
+  Stack,
   Typography,
   useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { FC, Dispatch, SetStateAction } from 'react';
 import SearchInput from 'src/components/SearchInput';
+
 import Sorting from './Sorting';
 import Filter from './FilterSection';
 
-export const SortFilterSection: FC = () => {
+export const SortFilterSection: FC<{
+  handleClearSelection: () => void;
+}> = ({ handleClearSelection }) => {
   return (
     <Box
       sx={{
-        m: 1,
         minWidth: '120px',
         display: 'flex',
         justifyContent: 'space-between',
-        p: 1,
         alignItems: 'center',
       }}
     >
-      <Filter />
+      <Filter handleClearSelection={handleClearSelection} />
       <Divider flexItem sx={{ bgcolor: 'lightgrey' }} orientation="vertical" />
       <Sorting />
     </Box>
   );
 };
 
+export const FindMatchSection = ({
+  checked,
+  handleClickOpen,
+  handleClearSelection,
+}: {
+  checked: string[];
+  handleClickOpen: () => void;
+  handleClearSelection: () => void;
+}) => {
+  const theme = useTheme();
+  return (
+    <Stack
+      flexBasis="50%"
+      direction="row"
+      alignItems="center"
+      justifyContent="flex-end"
+    >
+      {checked.length > 0 && (
+        <Button
+          variant="contained"
+          onClick={handleClickOpen}
+          sx={{
+            '& .MuiButton-startIcon': {
+              mr: 0,
+            },
+          }}
+          endIcon={
+            <Box
+              component={Paper}
+              sx={{
+                display: 'flex',
+                backgroundColor: 'transparent',
+              }}
+              onClick={(evt) => {
+                evt.stopPropagation();
+                handleClearSelection();
+              }}
+            >
+              <CloseIcon
+                color={theme.palette.mode === 'dark' ? 'primary' : 'secondary'}
+              />
+            </Box>
+          }
+        >
+          <Typography>Find match</Typography>
+          <Typography mx={1}>{'\u00B7'}</Typography>
+          <Typography>{checked.length}</Typography>
+        </Button>
+      )}
+    </Stack>
+  );
+};
+
 interface SearchSectionProps {
   setSearchValue: Dispatch<SetStateAction<string>>;
-  checked: string[];
   handleClearSelection: () => void;
-  handleClickOpen: () => void;
 }
 export const SearchSection: FC<SearchSectionProps> = ({
   setSearchValue,
-  checked,
   handleClearSelection,
-  handleClickOpen,
 }) => {
-  const appTheme = useTheme();
   return (
-    <Grid item xs={12}>
-      <SearchInput setSearchValue={setSearchValue} />
-      <Box
+    <Grid container item xs={12}>
+      <Stack
+        direction="row"
         sx={{
-          display: 'flex',
-          justifyContent: '',
+          pl: 1,
+          justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          pb: 1,
+          flexBasis: '50%',
         }}
       >
-        <SortFilterSection />
-        <Box display="flex" justifyContent="flex-end">
-          {checked.length > 0 && (
-            <>
-              <Button
-                variant="text"
-                sx={{
-                  mr: 2,
-                  '& .MuiButton-startIcon': {
-                    mr: 0,
-                  },
-                }}
-                endIcon={
-                  <Box
-                    component={Paper}
-                    sx={{
-                      minHeight: '20px',
-                      minWidth: '25px',
-                      borderRadius: appTheme.shape.borderRadius / 2,
-                      bgcolor: appTheme.palette.primary.main,
-                      p: 0.5,
-                    }}
-                  >
-                    <Typography color="white">{checked.length}</Typography>
-                  </Box>
-                }
-                onClick={handleClearSelection}
-                /* @ts-expect-error ineherent type issue */
-                startIcon={<CloseIcon color="primary.light" />}
-              />
-
-              <Button variant="contained" onClick={handleClickOpen}>
-                Find match
-              </Button>
-            </>
-          )}
-        </Box>
-      </Box>
+        <SortFilterSection handleClearSelection={handleClearSelection} />
+      </Stack>
+      <SearchInput setSearchValue={setSearchValue} />
     </Grid>
   );
 };

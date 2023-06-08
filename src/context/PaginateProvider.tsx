@@ -27,7 +27,6 @@ const initialPaginate = {
     by: 'breed',
   },
 };
-// { name: 'Ascending', id: 'asc', by: 'breed' };
 
 function paginateReducer(paginate: Paginate, action: PaginateAction): Paginate {
   switch (action.type) {

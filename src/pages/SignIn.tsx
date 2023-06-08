@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
+import LoadingButton from '@mui/lab/LoadingButton';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 
 import {
   Box,
-  Button,
   Grid,
   Paper,
   TextField,
@@ -13,7 +14,7 @@ import {
 } from '@mui/material';
 import { AxiosError } from 'axios';
 import { FC, SyntheticEvent, useState } from 'react';
-import { toast } from 'react-toastify';
+
 import { createLogin } from 'src/api';
 import HappyDog from 'src/assets/dog.png';
 import standingImage from 'src/assets/walking-a-dog.svg';
@@ -22,24 +23,41 @@ import { MOBILE_WIDTH_QUERY, ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
+import Swal from 'sweetalert2';
 
 const SignInSide: FC = () => {
   const [, navigate] = useLocation();
+
   const loggedIn: boolean | null = useReadLocalStorage('login');
 
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('login', loggedIn);
 
-  const { mutate } = useMutation<string, AxiosError, User>({
+  const { mutate, isLoading, isSuccess } = useMutation<
+    string,
+    AxiosError,
+    User
+  >({
     mutationFn: createLogin,
     onError: (err) => {
-      toast.error(
-        err?.response
+      Swal.fire({
+        icon: 'error',
+        text: err?.response
           ? `${err?.response} request.`
-          : 'Invalid credentials provided'
-      );
+          : 'Invalid credentials provided',
+      });
     },
     onSuccess: () => {
       setIsLoggedIn(true);
+      Swal.fire({
+        icon: 'success',
+        text: 'Login success !',
+        target: '#custom-target',
+        customClass: {
+          container: 'position-absolute',
+        },
+        toast: true,
+        position: 'top',
+      });
       navigate(ROUTE_CODES.HOME);
     },
   });
@@ -48,7 +66,6 @@ const SignInSide: FC = () => {
   const [emailError, setEmailError] = useState('');
 
   const validateEmail = (email: string) => {
-    console.log(email);
     if (email === '') {
       setEmailError('Please enter an email');
       return false;
@@ -69,7 +86,6 @@ const SignInSide: FC = () => {
     return true;
   };
 
-  console.log(nameError, emailError);
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
 
@@ -81,8 +97,6 @@ const SignInSide: FC = () => {
     const { email, name } = target;
     if (!validateName(name.value)) return;
     if (!validateEmail(email.value)) return;
-
-    toast.success('Login success !');
 
     mutate({
       email: email.value,
@@ -132,13 +146,10 @@ const SignInSide: FC = () => {
           <Box
             component={Paper}
             sx={{
-              backgroundColor:
-                theme.palette.mode === 'dark'
-                  ? theme.palette.secondary.main
-                  : theme.palette.secondary.main,
+              backgroundColor: theme.palette.secondary.main,
               textAlign: 'left',
               p: 1,
-              color: 'white',
+              color: 'primary.light',
             }}
           >
             <Typography variant="h6" textAlign="center" gutterBottom>
@@ -170,19 +181,15 @@ const SignInSide: FC = () => {
         item
         xs={12}
         sm={4}
-        component={Paper}
-        elevation={6}
-        square
         sx={{
-          boxShadow: 'none',
-          minHeight: matches ? '25vh' : '50vh',
           position: 'relative',
         }}
       >
         <Box
+          component={Paper}
+          elevation={0}
           sx={{
-            my: 4,
-            mx: 4,
+            p: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -247,14 +254,24 @@ const SignInSide: FC = () => {
               }
             />
 
-            <Button
+            <LoadingButton
               fullWidth
               type="submit"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              loading={isLoading}
+              loadingPosition="end"
+              endIcon={
+                isSuccess ? (
+                  // @ts-expect-error this is complex
+                  <CheckCircleOutlineRoundedIcon color="secondary.light" />
+                ) : (
+                  ''
+                )
+              }
             >
               Sign In
-            </Button>
+            </LoadingButton>
           </Box>
         </Box>
       </Grid>

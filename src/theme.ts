@@ -1,18 +1,34 @@
 import { ThemeOptions, alpha } from '@mui/material';
-import { cloneDeep, merge } from 'lodash-es';
+import { deepmerge } from '@mui/utils';
 
 export const lightThemeOptions: ThemeOptions = {
+  typography: {
+    fontFamily: 'Lexend',
+  },
+  shape: {
+    borderRadius: 12,
+  },
   palette: {
     mode: 'light',
 
+    // primary: {
+    //   main: '#890075',
+    // },
+    // secondary: {
+    //   main: '#ffb402',
+    // },
     primary: {
-      main: '#890075',
+      main: '#006c48',
     },
     secondary: {
-      main: '#ffb402',
+      main: '#ffd9e2',
     },
     background: {
-      default: '#F5EFE7',
+      default: '#fbfdf8',
+      paper: '#dce5dd',
+    },
+    common: {
+      white: '#dce5dd',
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
@@ -21,16 +37,13 @@ export const lightThemeOptions: ThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          fontFamily: ['Lexend'],
-          backgroundColor: '#F5EFE7',
+          backgroundColor: '#fbfdf8',
         },
       },
     },
     MuiTypography: {
       styleOverrides: {
-        root: {
-          fontFamily: ['Lexend'],
-        },
+        root: {},
       },
     },
 
@@ -45,17 +58,26 @@ export const lightThemeOptions: ThemeOptions = {
       defaultProps: {
         elevation: 0,
       },
-      styleOverrides: {
-        root: {
-          fontFamily: ['Lexend'],
-          borderRadius: 12,
-        },
-      },
     },
     MuiCard: {
+      defaultProps: {
+        variant: 'outlined',
+      },
       styleOverrides: {
         root: {
-          backgroundColor: '#F5EFE7',
+          backgroundColor: '#fbfdf8',
+          '&.Mui-selected': {
+            border: '0',
+            boxShadow: '0 0 0 2px #006c48',
+          },
+          '&.Mui-selected:hover': {
+            border: '0',
+            boxShadow: '0 0 0 2px #006c48',
+          },
+          '&:hover': {
+            border: '0',
+            boxShadow: '0 0 0 1px #006c48',
+          },
         },
       },
     },
@@ -79,24 +101,25 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: '12px',
         },
       },
     },
     MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: '12px',
         },
       },
     },
     MuiInputBase: {
       styleOverrides: {
         root: {
-          backgroundColor: alpha('#fff', 0.15),
+          backgroundColor: alpha('#dce5dd', 0.15),
           '&:hover': {
-            backgroundColor: alpha('#fff', 0.25),
+            backgroundColor: alpha('#dce5dd', 0.25),
           },
         },
       },
@@ -137,7 +160,6 @@ export const lightThemeOptions: ThemeOptions = {
     MuiChip: {
       styleOverrides: {
         outlined: {
-          backgroundColor: 'rgba(137, 0, 117, 0.08)',
           borderColor: 'transparent',
         },
       },
@@ -185,7 +207,7 @@ export const darkThemeOptions: ThemeOptions = {
       styleOverrides: {
         text: {
           color: '#333',
-          backgroundColor: '#CCC2DC',
+          backgroundColor: '#dce5dd',
         },
       },
     },
@@ -197,10 +219,17 @@ export const darkThemeOptions: ThemeOptions = {
         root: {
           backgroundColor: '#1C1B1F',
           '&.Mui-selected': {
-            border: '1px solid',
+            border: '0',
+            boxShadow: '0 0 0 2px #abbe6f',
           },
+          '&.Mui-selected:hover': {
+            border: '0',
+            boxShadow: '0 0 0 2px #abbe6f',
+          },
+
           '&:hover': {
-            border: '1px solid',
+            border: '0',
+            boxShadow: '0 0 0 1px #abbe6f',
           },
         },
       },
@@ -219,7 +248,7 @@ export const darkThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           '&.MuiSvgIcon-colorPrimary': {
-            color: '#ffffff',
+            color: '#dce5dd',
           },
         },
       },
@@ -227,12 +256,17 @@ export const darkThemeOptions: ThemeOptions = {
   },
 };
 
-export const darkBaseThemeOptions: ThemeOptions = merge(
-  cloneDeep(lightThemeOptions),
-  cloneDeep(darkThemeOptions)
+export const darkBaseThemeOptions: ThemeOptions = deepmerge(
+  lightThemeOptions,
+  darkThemeOptions
 );
 export const mobileOnlyThemeOptions: ThemeOptions = {
   components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: false,
+      },
+    },
     MuiButton: {
       defaultProps: {
         size: 'small',
@@ -261,14 +295,14 @@ export const mobileOnlyThemeOptions: ThemeOptions = {
   },
 };
 
-export const mobileLightThemeOptions: ThemeOptions = merge(
-  cloneDeep(lightThemeOptions),
-  cloneDeep(mobileOnlyThemeOptions)
+export const mobileLightThemeOptions: ThemeOptions = deepmerge(
+  lightThemeOptions,
+  mobileOnlyThemeOptions
 );
 
-export const mobiledarkThemeOptions: ThemeOptions = merge(
-  cloneDeep(darkBaseThemeOptions),
-  cloneDeep(mobileOnlyThemeOptions)
+export const mobiledarkThemeOptions: ThemeOptions = deepmerge(
+  darkBaseThemeOptions,
+  mobileOnlyThemeOptions
 );
 
 declare module '@mui/material/styles' {

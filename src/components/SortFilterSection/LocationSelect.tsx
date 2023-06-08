@@ -1,5 +1,4 @@
 import { Autocomplete, TextField } from '@mui/material';
-import cloneDeep from 'lodash-es/cloneDeep';
 
 import {
   ChangeEvent,
@@ -46,9 +45,7 @@ const LocationSelect: FC<LocationSelectProps> = ({
     value: google.maps.places.AutocompletePrediction
   ) => {
     if (value) {
-      const termsCityStateCountry = cloneDeep(value.terms)
-        .reverse()
-        .slice(0, 3);
+      const termsCityStateCountry = value?.terms?.reverse().slice(0, 3);
       termsCityStateCountry.shift();
       const [{ value: state }, { value: city }] = termsCityStateCountry;
 
@@ -72,10 +69,9 @@ const LocationSelect: FC<LocationSelectProps> = ({
     }
   };
 
-  console.log({ place });
   return (
     <Autocomplete
-      inputValue={place.description}
+      inputValue={place.description || place.city}
       options={placePredictions}
       getOptionLabel={(option) => option.description}
       // @ts-expect-error this is complex
@@ -89,7 +85,6 @@ const LocationSelect: FC<LocationSelectProps> = ({
           name="places"
           id="places-input"
           variant="outlined"
-          value={place.description}
         />
       )}
     />

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { toast } from 'react-toastify';
 import qs from 'qs';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 import {
   User,
   Dog,
@@ -21,14 +21,20 @@ client.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.data === 'Unauthorized') {
-      toast.error(`${err.response?.data} request, logging off`, {
-        toastId: err.response?.data,
-        onClose() {
-          setTimeout(() => {
-            localStorage.clear();
-            window.location.replace(ROUTE_CODES.HOME);
-          }, 3000);
+      Swal.fire({
+        icon: 'error',
+        text: `${err.response?.data} request, logging off`,
+        target: '#custom-target',
+        customClass: {
+          container: 'position-absolute',
         },
+        toast: true,
+        position: 'top-right',
+      }).then(() => {
+        setTimeout(() => {
+          localStorage.removeItem('login');
+          window.location.replace(ROUTE_CODES.HOME);
+        }, 3000);
       });
     }
   }
@@ -132,7 +138,6 @@ export async function findLocations(): Promise<Location> {
   return data;
 }
 
-export async function appLogOut(): Promise<Location> {
-  const { data }: AxiosResponse = await client.get<Location>('/auth/logout');
-  return data;
+export async function appLogOut() {
+  await client.post<Location>('/auth/logout');
 }

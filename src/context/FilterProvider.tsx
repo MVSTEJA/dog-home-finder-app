@@ -1,3 +1,4 @@
+import { deepmerge } from '@mui/utils';
 import { Dispatch, ReactNode, createContext, useReducer } from 'react';
 import { Breed, Filter, Place } from 'src/types';
 
@@ -7,11 +8,12 @@ export interface FilterAction {
   place: Place;
 }
 
-const initialFilter = {
+export const initialFilter = {
   breeds: [],
   place: {
     city: '',
     state: '',
+    description: '',
   },
 };
 
@@ -26,6 +28,7 @@ function filterReducer(filter: Filter, action: FilterAction): Filter {
     }
     case 'clear': {
       return {
+        ...deepmerge(filter.place, initialFilter.place, { clone: false }),
         ...filter,
         ...initialFilter,
       };
