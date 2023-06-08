@@ -1,13 +1,18 @@
 ## [vite](https://vitejs.dev/) + [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/) Starter
 
-This setup includes:
-* [vite](https://vitejs.dev/)
-* [eslint](https://eslint.org/), [typescript-eslint](https://typescript-eslint.io/), [eslint-airbnb-config](https://github.com/airbnb/javascript), [prettier](https://prettier.io/)
-* [vitest](https://vitest.dev/), [jsdom](https://github.com/jsdom/jsdom), [@testing-library](https://testing-library.com/)
-* [react-router v6](https://reactrouter.com/en/main)
+# Pre - requisite software :
 
-# References
+1. Git
+2. npm
+3. node
+4. (optional) yarn
 
-* https://markus.oberlehner.net/blog/using-testing-library-jest-dom-with-vitest/
-* https://testing-library.com/docs/queries/about#priority
-* https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
+# Steps to setup (On your CLI):
+
+1. Go to your development directory
+2. git clone https://github.com/MVSTEJA/pet-finder.git
+3. cd pet-finder
+4. npm install / yarn
+5. 
+  a) To run development server - npm run dev / yarn run dev
+  b) To run prodiction preview - npm run preview / yarn run preview
