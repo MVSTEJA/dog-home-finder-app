@@ -2,9 +2,6 @@
 
 import { createRoot } from 'react-dom/client';
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '@sweetalert2/theme-material-ui/material-ui.scss';
 import './index.css';
 
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -34,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <FilterProvider>
             <PaginateProvider>
               <App />
-              <ToastContainer theme="dark" />
             </PaginateProvider>
           </FilterProvider>
         </QueryClientProvider>
