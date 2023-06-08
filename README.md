@@ -1,34 +1,38 @@
 
-# Pre - requisite software :
+## Pre - requisite software :
 
 1. Git
 2. npm
 3. node
 4. (optional) yarn
 
-# Steps to setup & Run (On your CLI):
+## Steps to setup & Run (On your CLI):
 
-Go to your development directory
-```console
+## Cloning
+
+```bash
+# Go to your development directory
 $ cd ~/dev  
-```
-clone this repo
-```console
+
+# clone this repo
 $ git clone https://github.com/MVSTEJA/pet-finder.git
-```
-Go to the cloned directory
-```console
+
+# Go to the cloned directory
 $ cd pet-finder
 ```
-Install node modules, by either running either of these commands.
-```console
+
+## Installation
+
+```bash
+# Install node modules, by either running either of these commands.
 $ npm install / yarn
 ```
-To run development server - 
-```console 
+
+## Running the app
+```bash
+# To run development server - 
 $ npm run dev / yarn run dev
-```
-To run production preview - 
-```console
+
+# To run production preview - 
 $ npm run preview / yarn run preview
 ```
