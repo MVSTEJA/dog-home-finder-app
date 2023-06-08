@@ -7,6 +7,7 @@ import {
   Box,
   Grid,
   Paper,
+  Stack,
   TextField,
   Typography,
   useMediaQuery,
@@ -181,13 +182,11 @@ const SignInSide: FC = () => {
           position: 'relative',
         }}
       >
-        <Box
+        <Stack
           component={Paper}
           elevation={0}
           sx={{
             p: 4,
-            display: 'flex',
-            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
           }}
@@ -204,21 +203,18 @@ const SignInSide: FC = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
+          <Stack
             component="form"
             noValidate
             onSubmit={handleSubmit}
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
               width: '100%',
+              height: '20vh',
             }}
           >
             <Box
               sx={{
-                height: '10vh',
+                flexBasis: '45%',
                 width: '100%',
               }}
             >
@@ -241,7 +237,7 @@ const SignInSide: FC = () => {
             </Box>
             <Box
               sx={{
-                height: '10vh',
+                flexBasis: '45%',
                 width: '100%',
               }}
             >
@@ -258,7 +254,7 @@ const SignInSide: FC = () => {
                 error={emailError !== ''}
                 helperText={emailError}
                 sx={{
-                  height: '10vh',
+                  height: '7vh',
                 }}
                 onInput={(evt) =>
                   validateEmail((evt.target as HTMLInputElement)?.value)
@@ -269,7 +265,7 @@ const SignInSide: FC = () => {
               fullWidth
               type="submit"
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ flexBasis: '10%' }}
               loading={isLoading}
               loadingPosition="end"
               endIcon={
@@ -283,8 +279,8 @@ const SignInSide: FC = () => {
             >
               Sign In
             </LoadingButton>
-          </Box>
-        </Box>
+          </Stack>
+        </Stack>
       </Grid>
       <Grid
         item
