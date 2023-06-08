@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import qs from 'qs';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+
+import { toast } from 'react-hot-toast';
 import {
   User,
   Dog,
@@ -21,21 +22,13 @@ client.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.data === 'Unauthorized') {
-      Swal.fire({
-        icon: 'error',
-        text: `${err.response?.data} request, logging off`,
-        target: '#custom-target',
-        customClass: {
-          container: 'position-absolute',
-        },
-        toast: true,
+      toast.error(`${err.response?.data} request, logging off`, {
         position: 'top-right',
-      }).then(() => {
-        setTimeout(() => {
-          localStorage.removeItem('login');
-          window.location.replace(ROUTE_CODES.HOME);
-        }, 3000);
       });
+      setTimeout(() => {
+        localStorage.removeItem('login');
+        window.location.replace(ROUTE_CODES.HOME);
+      }, 3000);
     }
   }
 );

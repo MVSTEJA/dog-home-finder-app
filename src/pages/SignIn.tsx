@@ -23,7 +23,7 @@ import { MOBILE_WIDTH_QUERY, ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
-import Swal from 'sweetalert2';
+import { toast } from 'react-hot-toast';
 
 const SignInSide: FC = () => {
   const [, navigate] = useLocation();
@@ -39,31 +39,27 @@ const SignInSide: FC = () => {
   >({
     mutationFn: createLogin,
     onError: (err) => {
-      Swal.fire({
-        icon: 'error',
-        text: err?.response
+      toast.error(
+        err?.response
           ? `${err?.response} request.`
           : 'Invalid credentials provided',
-      });
+        {
+          position: 'top-right',
+        }
+      );
     },
     onSuccess: () => {
       setIsLoggedIn(true);
-      Swal.fire({
-        icon: 'success',
-        text: 'Login success !',
-        target: '#custom-target',
-        customClass: {
-          container: 'position-absolute',
-        },
-        toast: true,
-        position: 'top',
+      toast.success('Login success !', {
+        position: 'top-center',
       });
+
       navigate(ROUTE_CODES.HOME);
     },
   });
 
-  const [nameError, setNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [nameError, setNameError] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
 
   const validateEmail = (email: string) => {
     if (email === '') {
@@ -105,7 +101,7 @@ const SignInSide: FC = () => {
   };
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
 
-  const [openConfim, setOpenConfim] = useState(isLoggedIn);
+  const [openConfim, setOpenConfim] = useState<boolean | null>(isLoggedIn);
   const handleClose = () => {
     setOpenConfim(false);
   };

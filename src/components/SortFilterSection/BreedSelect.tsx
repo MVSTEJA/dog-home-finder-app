@@ -22,7 +22,7 @@ const BreedSelect: FC<BreedSelectProps> = ({
   setBreeds = () => {},
 }: BreedSelectProps) => {
   const selectedAll = breeds.length === options.length;
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string>('');
 
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   const providerOptions: ProviderOptions = useMemo(

@@ -21,7 +21,7 @@ import ConfirmationDialog from './common/ConfirmationDialog';
 const AppNavBar: FC = () => {
   const [, navigate] = useLocation();
 
-  const [openConfim, setOpenConfim] = useState(false);
+  const [openConfim, setOpenConfim] = useState<boolean>(false);
   const loggedIn: boolean | null = useReadLocalStorage('login');
   const [, setIsLoggedIn] = useLocalStorage('login', loggedIn);
   const handleClose = () => {

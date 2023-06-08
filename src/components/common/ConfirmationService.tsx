@@ -1,11 +1,20 @@
-import { createContext, ReactNode, useState, useRef, useCallback } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useState,
+  useRef,
+  useCallback,
+  FC,
+} from 'react';
 import ConfirmationDialog, { ConfirmationOptions } from './ConfirmationDialog';
 
 const ConfirmationServiceContext = createContext<
   (options: ConfirmationOptions) => Promise<void>
 >(Promise.reject);
 
-const ConfirmationServiceProvider = ({ children }: { children: ReactNode }) => {
+const ConfirmationServiceProvider: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [confirmationState, setConfirmationState] =
     useState<ConfirmationOptions | null>(null);
 

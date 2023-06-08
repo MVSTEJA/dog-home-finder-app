@@ -6,6 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
+import { FC } from 'react';
 
 export interface ConfirmationOptions {
   variant?: 'danger' | 'info';
@@ -19,14 +20,14 @@ interface ConfirmationDialogProps extends ConfirmationOptions {
   onClose: () => void;
 }
 
-const ConfirmationDialog = ({
+const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   open,
   description = '',
   variant = 'info',
   title = '',
   onSubmit,
   onClose,
-}: ConfirmationDialogProps) => {
+}) => {
   return (
     <Dialog open={open || false}>
       <DialogTitle fontSize="14px" id="alert-dialog-title">

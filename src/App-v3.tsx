@@ -15,6 +15,7 @@ import {
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 
 import { FC, ReactElement, ReactNode, Suspense, lazy, useMemo } from 'react';
+import { Toaster } from 'react-hot-toast';
 import SignInSide from './pages/SignIn';
 import AppNavBar from './components/AppNavBar';
 import {
@@ -74,7 +75,7 @@ const darkTheme = createTheme(darkBaseThemeOptions);
 const mobileLightTheme = createTheme(mobileLightThemeOptions);
 const mobileDarkTheme = createTheme(mobiledarkThemeOptions);
 
-const HOME = () => {
+const HOME: FC = () => {
   const loggedIn: boolean | null = useReadLocalStorage('login');
   return (
     <ProtectedRoute isLoggedIn={loggedIn}>
@@ -99,7 +100,7 @@ const HOME = () => {
   );
 };
 
-const SIGNIN = () => {
+const SIGNIN: FC = () => {
   return (
     <Suspense
       fallback={
@@ -157,6 +158,8 @@ const App: FC = () => {
       <ThemeProvider theme={theme}>
         <StyledEngineProvider injectFirst>
           <CssBaseline />
+
+          <Toaster />
 
           <Layout>
             <Switch>

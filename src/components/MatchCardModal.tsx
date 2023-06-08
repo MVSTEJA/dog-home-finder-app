@@ -12,7 +12,6 @@ import {
   Stack,
   Typography,
   useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { FC, useCallback, useEffect, useState } from 'react';
@@ -41,7 +40,7 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
   allCards,
 }: MatchCardModalProps) => {
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
-  const [isLargeExploding, setIsLargeExploding] = useState(false);
+  const [isLargeExploding, setIsLargeExploding] = useState<boolean>(false);
   const { data, mutate, isLoading } = useMutation({
     mutationKey: ['petMatch'],
     mutationFn: (checked: string[]) => findMatch(checked),
@@ -86,8 +85,6 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
 
     handleClose();
   };
-
-  const theme = useTheme();
 
   return (
     <Dialog

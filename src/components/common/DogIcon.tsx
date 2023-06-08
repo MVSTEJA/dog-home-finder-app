@@ -1,6 +1,7 @@
 import { SvgIcon, SvgIconProps, useTheme } from '@mui/material';
+import { FC } from 'react';
 
-const DogIcon = (props: SvgIconProps) => {
+const DogIcon: FC<SvgIconProps> = ({ ...props }) => {
   const theme = useTheme();
 
   const color =

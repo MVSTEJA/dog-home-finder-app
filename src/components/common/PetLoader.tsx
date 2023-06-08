@@ -1,19 +1,19 @@
 import { Box } from '@mui/material';
 
-import { Ref } from 'react';
+import { FC, Ref } from 'react';
 import PetImage from 'src/assets/golden-retriever-unscreen.gif';
 import AnimatedFigure from './AnimatedFigure';
 
-const PetLoader = ({
-  width = '100px',
-  height = '',
-  position = 'relative',
-  refProp = null,
-}: {
+const PetLoader: FC<{
   width?: string;
   height?: string;
   position?: string;
   refProp?: Ref<unknown>;
+}> = ({
+  width = '100px',
+  height = '',
+  position = 'relative',
+  refProp = null,
 }) => {
   return (
     <Box

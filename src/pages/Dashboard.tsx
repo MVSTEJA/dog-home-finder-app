@@ -200,7 +200,7 @@ const Dashboard: FC = () => {
         <div id="back-to-top-anchor" />
         <Stack
           direction="row"
-          sx={{ mt: 2, alignItems: 'baseline', height: '4vh' }}
+          sx={{ mt: 2, mb: 1, alignItems: 'baseline', height: '5vh' }}
         >
           <Stack direction="row" alignItems="baseline" flexBasis="50%">
             <Typography variant="h6">Find a match</Typography>

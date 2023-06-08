@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
-import { FC, ReactElement } from 'react';
+import { FC } from 'react';
 
 const GetHighlightedText: FC<{ text: string; highlight: string }> = ({
   text,
   highlight,
-}): ReactElement => {
+}) => {
   // Split on highlight term and include term into parts, ignore case
   const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
 

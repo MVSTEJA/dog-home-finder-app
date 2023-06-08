@@ -19,7 +19,7 @@ import GetHighlightedText from 'src/utils/highlight-text';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import PetIcon from './common/DogIcon';
 
-export const PetCardContent = ({
+export const PetCardContent: FC<Dog> = ({
   img,
   name,
   matches,
@@ -27,7 +27,7 @@ export const PetCardContent = ({
   age,
   breed,
   zipCode,
-}: Dog) => {
+}) => {
   return (
     <>
       <CardMedia
