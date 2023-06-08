@@ -216,40 +216,55 @@ const SignInSide: FC = () => {
               width: '100%',
             }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="name"
-              label="Name"
-              type="name"
-              id="name"
-              autoComplete="current-name"
-              autoFocus
-              error={nameError !== ''}
-              helperText={nameError}
-              onInput={(evt) =>
-                validateName((evt.target as HTMLInputElement)?.value)
-              }
-            />
-
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              type="email"
-              inputMode="email"
-              error={emailError !== ''}
-              helperText={emailError}
-              onInput={(evt) =>
-                validateEmail((evt.target as HTMLInputElement)?.value)
-              }
-            />
-
+            <Box
+              sx={{
+                height: '10vh',
+                width: '100%',
+              }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="name"
+                label="Name"
+                type="name"
+                id="name"
+                autoComplete="current-name"
+                autoFocus
+                error={nameError !== ''}
+                helperText={nameError}
+                onInput={(evt) =>
+                  validateName((evt.target as HTMLInputElement)?.value)
+                }
+              />
+            </Box>
+            <Box
+              sx={{
+                height: '10vh',
+                width: '100%',
+              }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                type="email"
+                inputMode="email"
+                error={emailError !== ''}
+                helperText={emailError}
+                sx={{
+                  height: '10vh',
+                }}
+                onInput={(evt) =>
+                  validateEmail((evt.target as HTMLInputElement)?.value)
+                }
+              />
+            </Box>
             <LoadingButton
               fullWidth
               type="submit"
