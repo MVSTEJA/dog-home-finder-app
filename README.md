@@ -1,4 +1,3 @@
-## [vite](https://vitejs.dev/) + [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/) Starter
 
 # Pre - requisite software :
 
@@ -7,12 +6,29 @@
 3. node
 4. (optional) yarn
 
-# Steps to setup (On your CLI):
+# Steps to setup & Run (On your CLI):
 
-1. Go to your development directory
-2. git clone https://github.com/MVSTEJA/pet-finder.git
-3. cd pet-finder
-4. npm install / yarn
-5. 
-  a) To run development server - npm run dev / yarn run dev
-  b) To run prodiction preview - npm run preview / yarn run preview
+Go to your development directory
+```console
+$ cd ~/dev  
+```
+clone this repo
+```console
+$ git clone https://github.com/MVSTEJA/pet-finder.git
+```
+Go to the cloned directory
+```console
+$ cd pet-finder
+```
+Install node modules, by either running either of these commands.
+```console
+$ npm install / yarn
+```
+To run development server - 
+```console 
+$ npm run dev / yarn run dev
+```
+To run production preview - 
+```console
+$ npm run preview / yarn run preview
+```
