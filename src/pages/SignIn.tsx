@@ -14,7 +14,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { AxiosError } from 'axios';
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useState, FormEvent } from 'react';
 
 import { toast } from 'react-hot-toast';
 import { createLogin } from 'src/api';
@@ -26,90 +26,34 @@ import { MOBILE_WIDTH_QUERY, ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 
-const SignInSide: FC = () => {
-  const [, navigate] = useLocation();
+export interface SignInSideFormProps {
+  isLoggedIn: boolean | null;
+  openConfim: boolean | null;
+  handleBackNav: () => void;
+  handleClose: () => void;
+  handleSubmit: (event: SyntheticEvent) => void;
+  nameError: string;
+  emailError: string;
+  handleNameInput: (evt: FormEvent) => void;
+  handleEmailInput: (evt: FormEvent) => void;
+  isSuccess: boolean;
+  isLoading: boolean;
+}
 
-  const loggedIn: boolean | null = useReadLocalStorage('login');
-
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage('login', loggedIn);
-
-  const { mutate, isLoading, isSuccess } = useMutation<
-    string,
-    AxiosError,
-    User
-  >({
-    mutationFn: createLogin,
-    onError: (err) => {
-      toast.error(
-        err?.response
-          ? `${err?.response} request.`
-          : 'Invalid credentials provided',
-        {
-          position: 'top-right',
-        }
-      );
-    },
-    onSuccess: () => {
-      setIsLoggedIn(true);
-      toast.success('Login success !', {
-        position: 'top-center',
-      });
-
-      navigate(ROUTE_CODES.HOME);
-    },
-  });
-
-  const [nameError, setNameError] = useState<string>('');
-  const [emailError, setEmailError] = useState<string>('');
-
-  const validateEmail = (email: string) => {
-    if (email === '') {
-      setEmailError('Please enter an email');
-      return false;
-    }
-    if (!email?.match(/[-.\w]+@([\w-]+\.)+[\w-]+/g)) {
-      setEmailError('Please provide valid email');
-      return false;
-    }
-    setEmailError('');
-    return true;
-  };
-  const validateName = (name: string) => {
-    if (name === '') {
-      setNameError('Please provide a name');
-      return false;
-    }
-    setNameError('');
-    return true;
-  };
-
-  const handleSubmit = (event: SyntheticEvent) => {
-    event.preventDefault();
-
-    const target = event.target as typeof event.target & {
-      email: { value: string };
-      name: { value: string };
-    };
-
-    const { email, name } = target;
-    if (!validateName(name.value)) return;
-    if (!validateEmail(email.value)) return;
-
-    mutate({
-      email: email.value,
-      name: name.value,
-    });
-  };
+export const SignInSideForm: FC<SignInSideFormProps> = ({
+  isLoggedIn = false,
+  openConfim = false,
+  handleBackNav,
+  handleClose,
+  handleSubmit,
+  nameError,
+  emailError,
+  handleNameInput,
+  handleEmailInput,
+  isSuccess,
+  isLoading,
+}) => {
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
-
-  const [openConfim, setOpenConfim] = useState<boolean | null>(isLoggedIn);
-  const handleClose = () => {
-    setOpenConfim(false);
-  };
-
-  const handleBackNav = async () => {
-    navigate(ROUTE_CODES.HOME);
-  };
   const theme = useTheme();
 
   return (
@@ -189,6 +133,7 @@ const SignInSide: FC = () => {
             p: 4,
             alignItems: 'center',
             justifyContent: 'center',
+            minHeight: '30vh',
           }}
         >
           <Box
@@ -209,6 +154,7 @@ const SignInSide: FC = () => {
             onSubmit={handleSubmit}
             sx={{
               width: '100%',
+              minHeight: '200px',
               height: '15vh',
             }}
           >
@@ -231,11 +177,10 @@ const SignInSide: FC = () => {
                 sx={{
                   m: 0,
                 }}
+                placeholder="abc"
                 error={nameError !== ''}
                 helperText={nameError}
-                onInput={(evt) =>
-                  validateName((evt.target as HTMLInputElement)?.value)
-                }
+                onInput={handleNameInput}
               />
             </Box>
             <Box
@@ -251,6 +196,7 @@ const SignInSide: FC = () => {
                 id="email"
                 label="Email Address"
                 name="email"
+                placeholder="abc@xyz.com"
                 autoComplete="email"
                 type="email"
                 inputMode="email"
@@ -259,9 +205,7 @@ const SignInSide: FC = () => {
                 sx={{
                   m: 0,
                 }}
-                onInput={(evt) =>
-                  validateEmail((evt.target as HTMLInputElement)?.value)
-                }
+                onBlur={handleEmailInput}
               />
             </Box>
             <LoadingButton
@@ -304,4 +248,117 @@ const SignInSide: FC = () => {
   );
 };
 
-export default SignInSide;
+const SignInSideContainer: FC = () => {
+  const [, navigate] = useLocation();
+
+  const loggedIn: boolean | null = useReadLocalStorage('login');
+
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage('login', loggedIn);
+
+  const { mutate, isLoading, isSuccess } = useMutation<
+    string,
+    AxiosError,
+    User
+  >({
+    mutationFn: createLogin,
+    onError: (err) => {
+      toast.error(
+        err?.response
+          ? `${err?.response} request.`
+          : 'Invalid credentials provided',
+        {
+          id: 'credentials',
+          position: 'top-right',
+        }
+      );
+    },
+    onSuccess: () => {
+      setIsLoggedIn(true);
+      toast.success('Login success !', {
+        position: 'top-center',
+      });
+
+      navigate(ROUTE_CODES.HOME);
+    },
+  });
+
+  const [nameError, setNameError] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+
+  const validateEmail = (email: string) => {
+    if (email === '' || !email) {
+      return 'Please enter an email';
+    }
+    if (!email?.match(/[-.\w]+@([\w-]+\.)+[\w-]+/g)) {
+      return 'Please provide valid email';
+    }
+    return '';
+  };
+  const validateName = (name: string) => {
+    if (name === '' || !name) {
+      return 'Please provide a name';
+    }
+
+    return '';
+  };
+
+  const handleSubmit = (event: SyntheticEvent) => {
+    event.preventDefault();
+
+    const target = event.target as typeof event.target & {
+      email: { value: string };
+      name: { value: string };
+    };
+
+    const { email = { value: '' }, name = { value: '' } } = target;
+
+    const [nameErrorVal, emailErrorVal] = [
+      validateName(name.value),
+      validateEmail(email.value),
+    ];
+
+    if (nameErrorVal || emailErrorVal) {
+      setNameError(nameErrorVal);
+      setEmailError(emailErrorVal);
+      return;
+    }
+
+    mutate({
+      email: email.value,
+      name: name.value,
+    });
+  };
+
+  const [openConfim, setOpenConfim] = useState<boolean | null>(isLoggedIn);
+  const handleClose = () => {
+    setOpenConfim(false);
+  };
+
+  const handleBackNav = async () => {
+    navigate(ROUTE_CODES.HOME);
+  };
+
+  const handleEmailInput = (evt: FormEvent) => {
+    setEmailError(validateEmail((evt.target as HTMLInputElement).value));
+  };
+  const handleNameInput = (evt: FormEvent) => {
+    setNameError(validateName((evt.target as HTMLInputElement)?.value));
+  };
+  return (
+    <SignInSideForm
+      isLoggedIn={isLoggedIn}
+      openConfim={openConfim}
+      handleBackNav={handleBackNav}
+      handleClose={handleClose}
+      handleSubmit={handleSubmit}
+      nameError={nameError}
+      emailError={emailError}
+      handleNameInput={handleNameInput}
+      handleEmailInput={handleEmailInput}
+      isSuccess={isSuccess}
+      isLoading={isLoading}
+    />
+  );
+};
+
+export default SignInSideContainer;

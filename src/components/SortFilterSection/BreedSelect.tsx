@@ -1,9 +1,9 @@
 import { Autocomplete, Checkbox, TextField, debounce } from '@mui/material';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
-import { MuiAutocompleteSelectAll } from 'mui-autocomplete-select-all';
 
 import { Breed } from 'src/types';
 import GetHighlightedText from 'src/utils/highlight-text';
+import MuiAutocompleteSelectAll from 'src/components/common/MuiAutocompleteSelectAll';
 
 export interface BreedSelectProps {
   options: Breed[] | undefined;
@@ -40,9 +40,13 @@ const BreedSelect: FC<BreedSelectProps> = ({
     <MuiAutocompleteSelectAll.Provider value={providerOptions}>
       <Autocomplete
         value={breeds}
-        onChange={(_, newValue) => setBreeds(newValue)}
+        onChange={(_, newValue) => {
+          setBreeds(newValue);
+        }}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
         disableCloseOnSelect
         multiple
+        data-testid="autocomplete-search"
         limitTags={3}
         ListboxComponent={MuiAutocompleteSelectAll.ListBox}
         disablePortal

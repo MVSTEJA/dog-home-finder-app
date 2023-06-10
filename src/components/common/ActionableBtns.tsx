@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, alpha, useTheme } from '@mui/material';
 import {
   DefaultComponentProps,
   OverridableTypeMap,
@@ -47,11 +47,14 @@ const CustomIconBtn: FC<CustomIconBtnProps> = ({
       endIcon={
         selectedText && showClose ? (
           <Box
-            component={Button}
             sx={{
               p: 0,
-              minWidth: '20px',
-              backgroundColor: 'transparent',
+              borderRadius: 12,
+              height: '25px',
+              '&:hover': {
+                backgroundColor: alpha(theme.palette.common.white, 0.25),
+                opacity: 0.2,
+              },
             }}
             onClick={(evt) => {
               evt.preventDefault();
@@ -64,7 +67,7 @@ const CustomIconBtn: FC<CustomIconBtnProps> = ({
         ) : null
       }
     >
-      <Typography>
+      <Typography sx={{ width: 'max-content' }}>
         {btnText} {selectedText ? ` \u00B7 ${selectedText}` : ''}
       </Typography>
     </Button>

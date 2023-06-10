@@ -2,7 +2,7 @@
 /// <reference types="vite/client" />
 /// <reference types="vitest" />
 
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
@@ -14,9 +14,9 @@ export default defineConfig({
     },
   },
 
-  plugins: [
-    react({
-      jsxImportSource: '@welldone-software/why-did-you-render',
-    }),
-  ],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['src/__tests__/setup.ts'],
+    globals: true,
+  },
 });

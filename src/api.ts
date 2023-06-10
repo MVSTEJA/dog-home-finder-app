@@ -23,6 +23,7 @@ client.interceptors.response.use(
   (err) => {
     if (err.response?.data === 'Unauthorized') {
       toast.error(`${err.response?.data} request, logging off`, {
+        id: 'unauthorized',
         position: 'top-right',
       });
       setTimeout(() => {

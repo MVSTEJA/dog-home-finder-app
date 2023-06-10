@@ -60,7 +60,7 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
     transition: theme.transitions.create('width'),
 
     [theme.breakpoints.up('sm')]: {
-      width: '40ch',
+      width: '30ch',
       '&:focus': {
         width: '50ch',
       },
@@ -86,7 +86,7 @@ const SearchSection: FC<SearchSectionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
   return (
-    <Stack direction="row" flexBasis="50%" justifyContent="flex-end">
+    <Stack direction="row" flexBasis="75%" justifyContent="flex-start" p={2}>
       <Search>
         <SearchIconWrapper>
           <SearchIcon />

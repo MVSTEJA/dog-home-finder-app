@@ -14,7 +14,7 @@ import {
 
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 
-import { FC, ReactElement, ReactNode, Suspense, lazy, useMemo } from 'react';
+import { FC, ReactElement, ReactNode, Suspense, useMemo } from 'react';
 import { Toaster } from 'react-hot-toast';
 import SignInSide from './pages/SignIn';
 import AppNavBar from './components/AppNavBar';
@@ -30,8 +30,7 @@ import {
   ROUTE_CODES,
 } from './constants';
 import ColorModeContext from './context/ColorMode';
-
-const Dashboard = lazy(() => import('./pages/Dashboard'));
+import DashboardNav from './pages/DashboardNavTabs';
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -79,23 +78,7 @@ const HOME: FC = () => {
   const loggedIn: boolean | null = useReadLocalStorage('login');
   return (
     <ProtectedRoute isLoggedIn={loggedIn}>
-      <Suspense
-        fallback={
-          <Box
-            sx={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        }
-      >
-        <Dashboard />
-      </Suspense>
+      <DashboardNav />
     </ProtectedRoute>
   );
 };

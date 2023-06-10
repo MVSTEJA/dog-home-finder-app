@@ -2,35 +2,48 @@ import {
   Box,
   Button,
   Divider,
-  Grid,
   Paper,
   Stack,
   Typography,
+  Zoom,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { FC, Dispatch, SetStateAction } from 'react';
-import SearchInput from 'src/components/SearchInput';
+import { FC } from 'react';
 
+import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import Sorting from './Sorting';
 import Filter from './FilterSection';
 
 export const SortFilterSection: FC<{
   handleClearSelection: () => void;
 }> = ({ handleClearSelection }) => {
+  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
   return (
-    <Box
-      sx={{
-        minWidth: '120px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
+    <Stack
+      component={Paper}
+      direction="row"
+      justifyContent="flex-start"
+      sx={{ p: 2, mx: matches ? 0 : 1 }}
     >
-      <Filter handleClearSelection={handleClearSelection} />
-      <Divider flexItem sx={{ bgcolor: 'lightgrey' }} orientation="vertical" />
-      <Sorting />
-    </Box>
+      <Box
+        sx={{
+          minWidth: '120px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Filter handleClearSelection={handleClearSelection} />
+        <Divider
+          flexItem
+          sx={{ bgcolor: 'lightgrey' }}
+          orientation="vertical"
+        />
+        <Sorting />
+      </Box>
+    </Stack>
   );
 };
 
@@ -45,71 +58,74 @@ export const FindMatchSection = ({
 }) => {
   const theme = useTheme();
   return (
-    <Stack
-      flexBasis="50%"
-      direction="row"
-      alignItems="center"
-      justifyContent="flex-end"
+    <Zoom
+      in={checked.length > 0}
+      style={{ transitionDelay: checked ? '250ms' : '0ms' }}
     >
-      {checked.length > 0 && (
-        <Button
-          variant="contained"
-          onClick={handleClickOpen}
-          sx={{
-            '& .MuiButton-startIcon': {
-              mr: 0,
-            },
-          }}
-          endIcon={
-            <Box
-              component={Paper}
-              sx={{
-                display: 'flex',
-                backgroundColor: 'transparent',
-              }}
-              onClick={(evt) => {
-                evt.stopPropagation();
-                handleClearSelection();
-              }}
-            >
-              <CloseIcon
-                color={theme.palette.mode === 'dark' ? 'primary' : 'secondary'}
-              />
-            </Box>
-          }
-        >
-          <Typography>Find match</Typography>
-          <Typography mx={1}>{'\u00B7'}</Typography>
-          <Typography>{checked.length}</Typography>
-        </Button>
-      )}
-    </Stack>
+      <Stack
+        flexBasis="50%"
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-end"
+      >
+        {checked.length > 0 && (
+          <Button
+            variant="contained"
+            onClick={handleClickOpen}
+            sx={{
+              '& .MuiButton-startIcon': {
+                mr: 0,
+              },
+            }}
+            endIcon={
+              <Box
+                component={Paper}
+                sx={{
+                  display: 'flex',
+                  backgroundColor: 'transparent',
+                }}
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  handleClearSelection();
+                }}
+              >
+                <CloseIcon
+                  color={
+                    theme.palette.mode === 'dark' ? 'primary' : 'secondary'
+                  }
+                />
+              </Box>
+            }
+          >
+            <Typography>Find match</Typography>
+            <Typography mx={1}>{'\u00B7'}</Typography>
+            <Typography>{checked.length}</Typography>
+          </Button>
+        )}
+      </Stack>
+    </Zoom>
   );
 };
 
-interface SearchSectionProps {
-  setSearchValue: Dispatch<SetStateAction<string>>;
+interface FilterSortSectionProps {
   handleClearSelection: () => void;
 }
-export const SearchSection: FC<SearchSectionProps> = ({
-  setSearchValue,
+
+export const FilterSortSection: FC<FilterSortSectionProps> = ({
   handleClearSelection,
 }) => {
   return (
-    <Grid container item xs={12}>
-      <Stack
-        direction="row"
-        sx={{
-          pl: 1,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          flexBasis: '50%',
-        }}
-      >
-        <SortFilterSection handleClearSelection={handleClearSelection} />
-      </Stack>
-      <SearchInput setSearchValue={setSearchValue} />
-    </Grid>
+    <Stack
+      direction="row"
+      sx={{
+        pl: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        flexBasis: '75%',
+      }}
+    >
+      <SortFilterSection handleClearSelection={handleClearSelection} />
+    </Stack>
   );
 };
