@@ -2,15 +2,15 @@ import {
   Box,
   Container,
   Grid,
+  Pagination,
   Paper,
   Stack,
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
+import { useQuery } from '@tanstack/react-query';
 
-import { FC, useState, useEffect, SyntheticEvent, Fragment } from 'react';
+import { FC, useState } from 'react';
 import { findAllDogs } from 'src/api';
 
 import MatchCardModal from 'src/components/MatchCardModal';
@@ -18,30 +18,21 @@ import {
   FindMatchSection,
   SortFilterSection,
 } from 'src/components/SortFilterSection';
-import BackToTop from 'src/components/common/BackToTop';
-import { useFilter, usePaginate } from 'src/context/hooks';
+import { useFilter, usePaginate, usePaginateDispatch } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/PetCard';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
-import DashboardCardSkeleton from 'src/components/common/DashboardCardSkeleton';
 
 const FilterSortDashboard: FC = () => {
   const [checked, setChecked] = useState<string[]>([]);
 
   const paginateValue = usePaginate();
+  const setPaginateValue = usePaginateDispatch();
   const filterValue = useFilter();
 
   const handleClearSelection = () => setChecked([]);
-  const { ref: loadMoreref, inView } = useInView();
 
-  const {
-    data,
-    isFetching,
-    hasNextPage,
-    isLoading,
-    fetchNextPage,
-    isInitialLoading,
-  } = useInfiniteQuery({
-    queryKey: ['findAllDogs', filterValue, paginateValue.sort],
+  const { isLoading, data, isFetching, isInitialLoading } = useQuery({
+    queryKey: ['findAllDogs', filterValue, paginateValue.from],
     queryFn: ({ pageParam }) => {
       return findAllDogs({
         nextQuery: pageParam,
@@ -49,17 +40,8 @@ const FilterSortDashboard: FC = () => {
         paginate: paginateValue,
       });
     },
-    getNextPageParam: (currentParam) => currentParam.next,
+    keepPreviousData: true,
   });
-
-  useEffect(() => {
-    if (inView) {
-      setTimeout(() => {
-        fetchNextPage();
-      }, 200);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -70,26 +52,6 @@ const FilterSortDashboard: FC = () => {
     setModalOpen(false);
   };
 
-  const [scrollTrigger, setScrollTrigger] = useState<boolean>(false);
-
-  const handleScroll = (event: SyntheticEvent) => {
-    if (event.currentTarget.scrollTop > document.documentElement.clientHeight) {
-      setScrollTrigger(true);
-    } else {
-      setScrollTrigger(false);
-    }
-  };
-
-  const handleScrollToTop = () => {
-    const anchor = document.querySelector('#back-to-top-anchor');
-
-    if (anchor) {
-      anchor.scrollIntoView({
-        block: 'center',
-        behavior: 'smooth',
-      });
-    }
-  };
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
 
   return (
@@ -102,15 +64,12 @@ const FilterSortDashboard: FC = () => {
         right: 0,
         p: 0,
         position: 'fixed',
-        height: '90vh',
       }}
-      onScroll={handleScroll}
     >
       <MatchCardModal
         cardChecked={checked}
         handleClose={handleClose}
         modalOpen={modalOpen}
-        allCards={data?.pages[0]?.response}
       />
       <Stack direction="row" alignItems="baseline" width="fit-content" mb={1}>
         <Typography variant="h6">Search for pet(s)</Typography>
@@ -154,14 +113,13 @@ const FilterSortDashboard: FC = () => {
             top: matches ? '15vh' : '20vh',
             mx: matches ? 0 : 1,
             width: '100%',
-            overflowY: 'scroll',
-            maxHeight: matches ? '75vh' : '70vh',
+            overflow: 'hidden',
+            maxHeight: matches ? '65vh' : '60vh',
             flexFlow: 'column',
           }}
         >
           <Box
             sx={{
-              height: '100%',
               display: 'grid',
               gap: 3,
               gridTemplateColumns: `repeat(auto-fit, minmax(${
@@ -170,52 +128,58 @@ const FilterSortDashboard: FC = () => {
             }}
           >
             {!(isInitialLoading || isFetching || isLoading) &&
-              !data?.pages[0]?.response?.length && (
+              !data?.response?.length && (
                 <Typography sx={{ p: 2, m: '0 auto' }}>
                   Sorry! No dogs were found matching your search criteria.
                 </Typography>
               )}
-            {data?.pages.map((group, i) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Fragment key={i}>
-                {group?.response.map((item) => {
-                  return (
-                    <Grid
-                      key={item.id}
-                      item
-                      sx={{
-                        width: '100%',
-                      }}
-                    >
-                      <MemoizedDogCard
-                        img={item.img}
-                        breed={item.breed}
-                        name={item.name}
-                        zipCode={item.zip_code}
-                        checked={checked}
-                        value={item.id}
-                        age={item.age}
-                        setChecked={setChecked}
-                      />
-                    </Grid>
-                  );
-                })}
-              </Fragment>
-            ))}
 
-            {(isInitialLoading || isFetching || isLoading) && (
-              <DashboardCardSkeleton />
-            )}
-
-            {hasNextPage && <DashboardCardSkeleton elemRef={loadMoreref} />}
+            {data?.response.map((item) => {
+              return (
+                <Grid
+                  key={item.id}
+                  item
+                  sx={{
+                    width: '100%',
+                  }}
+                >
+                  <MemoizedDogCard
+                    img={item.img}
+                    breed={item.breed}
+                    name={item.name}
+                    zipCode={item.zip_code}
+                    checked={checked}
+                    value={item.id}
+                    age={item.age}
+                    setChecked={setChecked}
+                  />
+                </Grid>
+              );
+            })}
           </Box>
         </Grid>
+        <Stack
+          direction="row"
+          sx={{
+            mt: 2,
+            justifyContent: 'center',
+          }}
+          spacing={2}
+        >
+          <Pagination
+            count={10}
+            variant="outlined"
+            color="secondary"
+            page={paginateValue?.from || 1}
+            onChange={(_, page) => {
+              setPaginateValue({
+                type: 'next_page',
+                from: Number(page),
+              });
+            }}
+          />
+        </Stack>
       </Stack>
-
-      <BackToTop
-        trigger={scrollTrigger}
-        handleScrollToTop={handleScrollToTop}
-      />
     </Container>
   );
 };

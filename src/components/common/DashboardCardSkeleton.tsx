@@ -12,11 +12,13 @@ import { useMediaQuery } from 'usehooks-ts';
 
 const DashboardCardSkeleton: FC<{
   elemRef?: (node?: Element | null | undefined) => void;
-}> = ({ elemRef = null }) => {
+  loaderSize?: number;
+}> = ({ elemRef = null, loaderSize = 12 }) => {
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  console.log({ loaderSize });
   return (
     <>
-      {Array.from({ length: 12 }, (item: string, key) => (
+      {Array.from({ length: loaderSize }, (item: string, key) => (
         <Grid key={item + key.toString()}>
           <Card
             sx={{

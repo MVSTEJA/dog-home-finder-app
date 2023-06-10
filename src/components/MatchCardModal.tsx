@@ -18,7 +18,6 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { findMatch } from 'src/api';
 
 import DogDelivery from 'src/assets/being-happy-1.svg';
-import { Dog } from 'src/types';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import ConfettiExplosion, { ConfettiProps } from 'react-confetti-explosion';
 import queryClient from 'src/queryClient';
@@ -30,18 +29,20 @@ interface MatchCardModalProps {
   handleClose: () => void;
   modalOpen: boolean;
   cardChecked: string[];
-  allCards: Dog[] | undefined;
 }
 
 const MatchCardModal: FC<MatchCardModalProps> = ({
   handleClose,
   modalOpen,
   cardChecked,
-  allCards,
 }: MatchCardModalProps) => {
   const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
   const [isLargeExploding, setIsLargeExploding] = useState<boolean>(false);
-  const { data, mutate, isLoading } = useMutation({
+  const {
+    data: matchCardData,
+    mutate,
+    isLoading,
+  } = useMutation({
     mutationKey: ['petMatch'],
     mutationFn: (checked: string[]) => findMatch(checked),
     onSuccess: () => {
@@ -63,10 +64,6 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
-
-  const matchCardData = allCards?.filter((cardData) => {
-    return cardData.id === data?.match;
-  })[0];
 
   const largeProps: ConfettiProps = {
     force: 0.8,
@@ -100,7 +97,9 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
           padding: 0,
         }}
       >
-        {isLargeExploding && <ConfettiExplosion {...largeProps} />}
+        {isLargeExploding && matchCardData && !isLoading && (
+          <ConfettiExplosion {...largeProps} />
+        )}
         {isLoading ? (
           <Stack
             justifyContent="center"

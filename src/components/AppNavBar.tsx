@@ -57,7 +57,6 @@ const AppNavBar: FC = () => {
           right: 0,
           backgroundColor: alpha('#c0e9fa', 0),
           backgroundImage: 'none',
-          height: '10vh',
         }}
       >
         <Toolbar>

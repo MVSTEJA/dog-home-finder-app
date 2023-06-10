@@ -102,15 +102,12 @@ const DashboardSearch: FC = () => {
         right: 0,
         p: 0,
         position: 'fixed',
-        height: '90vh',
       }}
-      onScroll={handleScroll}
     >
       <MatchCardModal
         cardChecked={checked}
         handleClose={handleClose}
         modalOpen={modalOpen}
-        allCards={data?.pages[0]?.response}
       />
       <Stack direction="row" alignItems="baseline" width="fit-content" mb={1}>
         <Typography variant="h6">Search for pet(s)</Typography>
@@ -171,6 +168,7 @@ const DashboardSearch: FC = () => {
             maxHeight: matches ? '75vh' : '70vh',
             flexFlow: 'column',
           }}
+          onScroll={handleScroll}
         >
           <Box
             sx={{

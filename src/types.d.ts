@@ -5,7 +5,6 @@ export type User = {
 
 export type Dog = {
   content: string;
-  done?: boolean;
   id: string;
   img: string;
   name: string;
@@ -53,7 +52,7 @@ interface Sort {
 }
 interface Paginate {
   fromCount?: number;
-  size?: number;
+  size: number;
   from?: number;
   sort: Sort;
 }
@@ -76,4 +75,11 @@ interface Location {
   city: string;
   state: string;
   county: string;
+}
+
+export interface AllDogsResponse {
+  response: Dog[];
+  totalPages: number;
+  next: string;
+  prev: string;
 }

@@ -38,7 +38,7 @@ const DashboardNavTabs = () => {
           '& .MuiTabs-indicatorSpan': {},
         }}
       >
-        <Tooltip title="Go to Filter/Sort page">
+        <Tooltip title="Filter/Sort page">
           <Tab
             sx={{
               borderTopLeftRadius: 12,
@@ -52,7 +52,7 @@ const DashboardNavTabs = () => {
             iconPosition="bottom"
           />
         </Tooltip>
-        <Tooltip title="Go to Search Page(Experimental)">
+        <Tooltip title="Search Page(Experimental)">
           <Tab
             sx={{
               borderTopRightRadius: 12,
