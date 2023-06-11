@@ -6,7 +6,6 @@ import {
   Paper,
   Stack,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
@@ -18,7 +17,7 @@ import MatchCardModal from 'src/components/MatchCardModal';
 import { SortFilterSection } from 'src/components/SortFilterSection';
 import { useFilter, usePaginate, usePaginateDispatch } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/PetCard';
-import { MOBILE_WIDTH_QUERY, PAGE_SIZE } from 'src/constants';
+import { PAGE_SIZE } from 'src/constants';
 import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';
 
 const FilterSortDashboard: FC = () => {
@@ -54,6 +53,8 @@ const FilterSortDashboard: FC = () => {
   const appTheme = useTheme();
 
   const matches = appTheme.breakpoints.up('sm');
+
+  const count = Number((data?.totalPages || 0 / PAGE_SIZE).toFixed());
   return (
     <Container
       component={Container}
@@ -167,7 +168,7 @@ const FilterSortDashboard: FC = () => {
           spacing={2}
         >
           <Pagination
-            count={Number((data?.totalPages || 0 / PAGE_SIZE).toFixed())}
+            count={count}
             variant="outlined"
             color="secondary"
             page={paginateValue?.from || 1}

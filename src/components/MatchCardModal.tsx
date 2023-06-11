@@ -11,7 +11,6 @@ import {
   IconButton,
   Stack,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
@@ -19,7 +18,6 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { findMatch } from 'src/api';
 
 import DogDelivery from 'src/assets/being-happy-1.svg';
-import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import ConfettiExplosion, { ConfettiProps } from 'react-confetti-explosion';
 import queryClient from 'src/queryClient';
 

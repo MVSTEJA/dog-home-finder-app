@@ -10,7 +10,6 @@ import {
   Stack,
   TextField,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { AxiosError } from 'axios';
@@ -22,7 +21,7 @@ import happyImage from 'src/assets/bye-pet.svg';
 import HappyDog from 'src/assets/dog.png';
 import standingImage from 'src/assets/walking-a-dog.svg';
 import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
-import { MOBILE_WIDTH_QUERY, ROUTE_CODES } from 'src/constants';
+import { ROUTE_CODES } from 'src/constants';
 import { User } from 'src/types';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 

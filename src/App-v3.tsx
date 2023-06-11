@@ -25,11 +25,7 @@ import {
   mobiledarkThemeOptions,
   darkBaseThemeOptions,
 } from './theme';
-import {
-  COLOR_SCHEME_QUERY,
-  MOBILE_WIDTH_QUERY,
-  ROUTE_CODES,
-} from './constants';
+import { COLOR_SCHEME_QUERY, ROUTE_CODES } from './constants';
 import ColorModeContext from './context/ColorMode';
 import DashboardNav from './pages/DashboardNavTabs';
 

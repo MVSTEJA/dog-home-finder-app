@@ -5,7 +5,6 @@ import {
   Paper,
   Stack,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -19,7 +18,6 @@ import MatchCardModal from 'src/components/MatchCardModal';
 import BackToTop from 'src/components/common/BackToTop';
 import { useFilter, usePaginate } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/PetCard';
-import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import SearchSection from 'src/components/SearchInput';
 import DashboardCardSkeleton from 'src/components/common/DashboardCardSkeleton';
 import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';

@@ -2,7 +2,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { Suspense, lazy, useState } from 'react';
-import { Box, CircularProgress, Tooltip, alpha, useTheme } from '@mui/material';
+import { Box, CircularProgress, Tooltip, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Dashboard = lazy(() => import('src/pages/FilterSortDashboard'));
@@ -39,32 +39,10 @@ const DashboardNavTabs = () => {
         }}
       >
         <Tooltip title="Filter/Sort page">
-          <Tab
-            sx={{
-              borderTopLeftRadius: 12,
-              borderBottomLeftRadius: 12,
-              backgroundColor: alpha(theme.palette.common.white, 1),
-              '&:hover': {
-                backgroundColor: alpha(theme.palette.common.white, 0.75),
-              },
-            }}
-            icon={<TuneRoundedIcon />}
-            iconPosition="bottom"
-          />
+          <Tab icon={<TuneRoundedIcon />} iconPosition="bottom" />
         </Tooltip>
         <Tooltip title="Search Page(Experimental)">
-          <Tab
-            sx={{
-              borderTopRightRadius: 12,
-              borderBottomRightRadius: 12,
-              backgroundColor: alpha(theme.palette.common.white, 1),
-              '&:hover': {
-                backgroundColor: alpha(theme.palette.common.white, 0.75),
-              },
-            }}
-            icon={<SearchIcon />}
-            iconPosition="bottom"
-          />
+          <Tab icon={<SearchIcon />} iconPosition="bottom" />
         </Tooltip>
       </Tabs>
       <Suspense

@@ -10,14 +10,12 @@ import {
   Checkbox,
   Grid,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 
 import { FC, memo } from 'react';
 import { Dog } from 'src/types';
 import GetHighlightedText from 'src/utils/highlight-text';
-import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import PetIcon from './common/DogIcon';
 
 interface DogProps extends Omit<Dog, 'id' | 'content' | 'match' | 'zip_code'> {

@@ -8,8 +8,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { FC } from 'react';
-import { MOBILE_WIDTH_QUERY } from 'src/constants';
-import { useMediaQuery } from 'usehooks-ts';
 
 const DashboardCardSkeleton: FC<{
   elemRef?: (node?: Element | null | undefined) => void;
@@ -17,7 +15,7 @@ const DashboardCardSkeleton: FC<{
 }> = ({ elemRef = null, loaderSize = 12 }) => {
   const appTheme = useTheme();
   const matches = appTheme.breakpoints.up('sm');
-  console.log({ loaderSize });
+
   return (
     <>
       {Array.from({ length: loaderSize }, (item: string, key) => (

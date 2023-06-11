@@ -1,7 +1,7 @@
-import { alpha, styled, useTheme } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 
 import SearchIcon from '@mui/icons-material/Search';
-import { OutlinedInput, Stack, useMediaQuery } from '@mui/material';
+import { OutlinedInput, Stack } from '@mui/material';
 import {
   ChangeEvent,
   Dispatch,
@@ -12,7 +12,6 @@ import {
   useState,
 } from 'react';
 import { useDebounce } from 'usehooks-ts';
-import { MOBILE_WIDTH_QUERY, TAB_WIDTH_QUERY } from 'src/constants';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -41,38 +40,34 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-const StyledInputBase = styled(OutlinedInput)(({ theme }) => {
-  const appTheme = useTheme();
+const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
+  color: 'inherit',
+  height: '100%',
+  alignSelf: 'center',
+  borderColor: 'transparent',
 
-  return {
-    color: 'inherit',
-    height: '100%',
-    alignSelf: 'center',
+  boxShadow:
+    'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 2px 10px 0px',
+  borderRadius: theme.shape.borderRadius * 12,
+  '& .MuiOutlinedInput-notchedOutline': {
     borderColor: 'transparent',
+  },
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
 
-    boxShadow:
-      'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 2px 10px 0px',
-    borderRadius: theme.shape.borderRadius * 12,
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'transparent',
+    paddingLeft: `calc(1em + ${theme.spacing(3)})`,
+    transition: theme.transitions.create('width'),
+    width: '30ch',
+    '&:focus': {
+      width: '35ch',
     },
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-
-      paddingLeft: `calc(1em + ${theme.spacing(3)})`,
-      transition: theme.transitions.create('width'),
-      width: '30ch',
+    [theme.breakpoints.up('md')]: {
       '&:focus': {
-        width: '35ch',
-      },
-      [theme.breakpoints.up('md')]: {
-        '&:focus': {
-          width: '50ch',
-        },
+        width: '50ch',
       },
     },
-  };
-});
+  },
+}));
 
 interface SearchSectionProps {
   setSearchValue: Dispatch<SetStateAction<string>>;

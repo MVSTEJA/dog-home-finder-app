@@ -1,9 +1,9 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import qs from 'qs';
 
 import { toast } from 'react-hot-toast';
-import { ROUTE_CODES, URLs } from './constants';
+import { PAGE_SIZE, ROUTE_CODES, URLs } from './constants';
 import {
   AllDogsResponse,
   Dog,
@@ -43,6 +43,60 @@ export async function createLogin(params: User): Promise<string> {
   return data;
 }
 
+export const buildfindAllDogsQuery = async ({
+  nextQuery,
+  filter,
+  paginate,
+}: {
+  nextQuery: string;
+  filter?: Filter | undefined;
+  paginate?: Paginate | undefined;
+}) => {
+  const locationQueryURL = URLs.fetchByLocations;
+
+  let zipCodes = [];
+
+  if (filter?.place) {
+    const {
+      data: { results: locations },
+    }: AxiosResponse = await client.post<DogsSearchResponse>(locationQueryURL, {
+      city: filter?.place.city,
+      states: [filter?.place.state],
+    });
+
+    zipCodes = locations.map((lc: Location) => lc.zip_code);
+  }
+
+  let queryConfig = {};
+
+  const getFrom = (next: string, from: number) => {
+    if (next) {
+      const { from: fromValue } = qs.parse(next);
+      return {
+        from: fromValue,
+      };
+    }
+    return { from: from * (paginate?.size || PAGE_SIZE) };
+  };
+  const { from } = getFrom(nextQuery, paginate?.from || 0);
+
+  queryConfig = {
+    params: {
+      breeds: filter?.breeds.map((breed) => breed.value),
+      zipCodes,
+      sort: `${paginate?.sort?.by}:${paginate?.sort?.id}`,
+      from,
+      size: paginate?.size,
+    },
+    // dping this as faced encoding issues.
+    paramsSerializer: (params: any) => qs.stringify(params, { encode: false }),
+  };
+
+  return {
+    queryConfig,
+  };
+};
+
 export async function findAllDogs({
   nextQuery,
   filter,
@@ -59,48 +113,12 @@ export async function findAllDogs({
   filter?: Filter | undefined;
   paginate?: Paginate | undefined;
 }): Promise<AllDogsResponse | null> {
-  const locationQueryURL = URLs.fetchByLocations;
-
-  let zipCodes = [];
-
-  if (filter?.place) {
-    const {
-      data: { results: locations },
-    }: AxiosResponse = await client.post<DogsSearchResponse>(locationQueryURL, {
-      city: filter?.place.city,
-      states: [filter?.place.state],
-    });
-
-    zipCodes = locations.map((lc: Location) => lc.zip_code);
-  }
-
+  const { queryConfig } = await buildfindAllDogsQuery({
+    nextQuery,
+    filter,
+    paginate,
+  });
   const dogSearchQueryURL = URLs.searchDogs;
-  let queryConfig: AxiosRequestConfig = {};
-
-  console.log({ nextQuery });
-  const getFrom = (next: string, from?: number) => {
-    if (next) {
-      const { from: fromValue } = qs.parse(next);
-      return {
-        from: fromValue,
-      };
-    }
-    return { from: (from || 0) * paginate.size };
-  };
-  const { from } = getFrom(nextQuery, paginate.from);
-
-  queryConfig = {
-    params: {
-      breeds: filter?.breeds.map((breed) => breed.value),
-      zipCodes,
-      sort: `${paginate?.sort?.by}:${paginate?.sort?.id}`,
-      from: from || 0,
-      size: paginate.size,
-    },
-    // dping this as faced encoding issues.
-    paramsSerializer: (params) => qs.stringify(params, { encode: false }),
-  };
-
   const {
     data: { resultIds, next, prev, total },
   }: AxiosResponse = await client.get<DogsSearchResponse>(
