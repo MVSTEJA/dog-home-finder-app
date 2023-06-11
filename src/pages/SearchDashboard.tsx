@@ -16,18 +16,16 @@ import { findAllDogs } from 'src/api';
 import MatchCardModal from 'src/components/MatchCardModal';
 
 import BackToTop from 'src/components/common/BackToTop';
-import { useFilter, usePaginate } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/PetCard';
 import SearchSection from 'src/components/SearchInput';
 import DashboardCardSkeleton from 'src/components/common/DashboardCardSkeleton';
 import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';
 import SelectCardsLabel from 'src/components/SelectCardsLabel';
+import { initialFilter } from 'src/context/FilterProvider';
+import { initialPaginate } from 'src/context/PaginateProvider';
 
 const DashboardSearch: FC = () => {
   const [checked, setChecked] = useState<string[]>([]);
-
-  const paginateValue = usePaginate();
-  const filterValue = useFilter();
 
   const handleClearSelection = () => setChecked([]);
   const { ref: loadMoreref, inView } = useInView();
@@ -40,12 +38,12 @@ const DashboardSearch: FC = () => {
     fetchNextPage,
     isInitialLoading,
   } = useInfiniteQuery({
-    queryKey: ['findAllDogs', (paginateValue.size = 25)],
+    queryKey: ['findAllDogs', (initialPaginate.size = 25)],
     queryFn: ({ pageParam }) => {
       return findAllDogs({
         nextQuery: pageParam,
-        filter: filterValue,
-        paginate: paginateValue,
+        filter: initialFilter,
+        paginate: initialPaginate,
       });
     },
     getNextPageParam: (currentParam) => currentParam?.next,
@@ -214,9 +212,9 @@ const DashboardSearch: FC = () => {
               </Fragment>
             ))}
 
-            {(isInitialLoading || isFetching || isLoading) && (
+            {/* {(isInitialLoading || isFetching || isLoading) && (
               <DashboardCardSkeleton />
-            )}
+            )} */}
 
             {hasNextPage && <DashboardCardSkeleton elemRef={loadMoreref} />}
           </Box>

@@ -11,7 +11,7 @@ interface PaginateAction {
   by?: string;
 }
 
-const initialPaginate = {
+export const initialPaginate = {
   size: PAGE_SIZE,
   from: 0,
   fromCount: 1,
