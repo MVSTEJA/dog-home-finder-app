@@ -53,8 +53,8 @@ export const SignInSideForm: FC<SignInSideFormProps> = ({
   isSuccess,
   isLoading,
 }) => {
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
-  const theme = useTheme();
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
 
   return (
     <Grid
@@ -87,7 +87,7 @@ export const SignInSideForm: FC<SignInSideFormProps> = ({
           <Box
             component={Paper}
             sx={{
-              backgroundColor: theme.palette.secondary.main,
+              backgroundColor: appTheme.palette.secondary.main,
               textAlign: 'left',
               p: 1,
               color: 'primary.light',

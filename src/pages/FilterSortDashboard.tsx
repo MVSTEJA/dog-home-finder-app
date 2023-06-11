@@ -7,6 +7,7 @@ import {
   Stack,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
@@ -14,13 +15,11 @@ import { FC, useState } from 'react';
 import { findAllDogs } from 'src/api';
 
 import MatchCardModal from 'src/components/MatchCardModal';
-import {
-  FindMatchSection,
-  SortFilterSection,
-} from 'src/components/SortFilterSection';
+import { SortFilterSection } from 'src/components/SortFilterSection';
 import { useFilter, usePaginate, usePaginateDispatch } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/PetCard';
-import { MOBILE_WIDTH_QUERY } from 'src/constants';
+import { MOBILE_WIDTH_QUERY, PAGE_SIZE } from 'src/constants';
+import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';
 
 const FilterSortDashboard: FC = () => {
   const [checked, setChecked] = useState<string[]>([]);
@@ -52,8 +51,9 @@ const FilterSortDashboard: FC = () => {
     setModalOpen(false);
   };
 
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
 
+  const matches = appTheme.breakpoints.up('sm');
   return (
     <Container
       component={Container}
@@ -167,7 +167,7 @@ const FilterSortDashboard: FC = () => {
           spacing={2}
         >
           <Pagination
-            count={10}
+            count={Number((data?.totalPages || 0 / PAGE_SIZE).toFixed())}
             variant="outlined"
             color="secondary"
             page={paginateValue?.from || 1}

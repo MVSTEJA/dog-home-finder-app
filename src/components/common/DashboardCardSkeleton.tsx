@@ -5,6 +5,7 @@ import {
   Skeleton,
   CardContent,
   Box,
+  useTheme,
 } from '@mui/material';
 import { FC } from 'react';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
@@ -14,7 +15,8 @@ const DashboardCardSkeleton: FC<{
   elemRef?: (node?: Element | null | undefined) => void;
   loaderSize?: number;
 }> = ({ elemRef = null, loaderSize = 12 }) => {
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
   console.log({ loaderSize });
   return (
     <>

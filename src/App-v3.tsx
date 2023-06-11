@@ -10,6 +10,7 @@ import {
   Toolbar,
   createTheme,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
@@ -106,7 +107,9 @@ const SIGNIN: FC = () => {
 };
 
 const App: FC = () => {
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
+
   const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
 
   const prevTheme = useReadLocalStorage<'light' | 'dark'>('app-theme');

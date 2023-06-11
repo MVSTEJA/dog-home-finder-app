@@ -12,6 +12,7 @@ import {
   Stack,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { FC, useCallback, useEffect, useState } from 'react';
@@ -36,7 +37,8 @@ const MatchCardModal: FC<MatchCardModalProps> = ({
   modalOpen,
   cardChecked,
 }: MatchCardModalProps) => {
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
   const [isLargeExploding, setIsLargeExploding] = useState<boolean>(false);
   const {
     data: matchCardData,

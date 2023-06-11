@@ -7,7 +7,9 @@ export const ROUTE_CODES = {
 export const COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)';
 export const MOBILE_WIDTH_QUERY = '(min-width:600px)';
 
-export const PAGE_SIZE = 9;
+export const TAB_WIDTH_QUERY = '(min-width:768600px)';
+
+export const PAGE_SIZE = 12;
 export const PAGE_SIZE_SEARCH = 25;
 
 export const URLs = {

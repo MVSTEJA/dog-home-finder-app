@@ -6,6 +6,7 @@ import {
   Stack,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
@@ -14,13 +15,15 @@ import { FC, useState, useEffect, SyntheticEvent, Fragment } from 'react';
 import { findAllDogs } from 'src/api';
 
 import MatchCardModal from 'src/components/MatchCardModal';
-import { FindMatchSection } from 'src/components/SortFilterSection';
+
 import BackToTop from 'src/components/common/BackToTop';
 import { useFilter, usePaginate } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/PetCard';
 import { MOBILE_WIDTH_QUERY } from 'src/constants';
 import SearchSection from 'src/components/SearchInput';
 import DashboardCardSkeleton from 'src/components/common/DashboardCardSkeleton';
+import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';
+import SelectCardsLabel from 'src/components/SelectCardsLabel';
 
 const DashboardSearch: FC = () => {
   const [checked, setChecked] = useState<string[]>([]);
@@ -47,7 +50,7 @@ const DashboardSearch: FC = () => {
         paginate: paginateValue,
       });
     },
-    getNextPageParam: (currentParam) => currentParam.next,
+    getNextPageParam: (currentParam) => currentParam?.next,
   });
 
   useEffect(() => {
@@ -90,7 +93,8 @@ const DashboardSearch: FC = () => {
       });
     }
   };
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
 
   return (
     <Container
@@ -122,7 +126,6 @@ const DashboardSearch: FC = () => {
           xs={12}
           sx={{
             mb: 4,
-            mx: matches ? 0 : 1,
           }}
         >
           <Stack
@@ -144,18 +147,7 @@ const DashboardSearch: FC = () => {
         </Grid>
 
         <div id="back-to-top-anchor" />
-        <Stack
-          direction="row"
-          sx={{ mt: 2, mb: 1, alignItems: 'baseline', height: '5vh' }}
-        >
-          <Stack direction="row" alignItems="baseline" flexBasis="50%">
-            <Typography variant="h6">Select from below cards</Typography>
-            <Typography variant="body2" sx={{ ml: 1 }}>
-              {' '}
-              (and click "Find match")
-            </Typography>
-          </Stack>
-        </Stack>
+        <SelectCardsLabel />
         <Grid
           component={Paper}
           container
@@ -165,7 +157,7 @@ const DashboardSearch: FC = () => {
             mx: matches ? 0 : 1,
             width: '100%',
             overflowY: 'scroll',
-            maxHeight: matches ? '75vh' : '70vh',
+            maxHeight: '70vh',
             flexFlow: 'column',
           }}
           onScroll={handleScroll}

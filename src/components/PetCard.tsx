@@ -11,6 +11,7 @@ import {
   Grid,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import { FC, memo } from 'react';
@@ -32,7 +33,8 @@ export const PetCardContent: FC<DogProps> = ({
   breed,
   zipCode,
 }) => {
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
   return (
     <>
       <CardMedia
@@ -108,7 +110,8 @@ const PetCard: FC<PetCardProps> = ({
 }: PetCardProps) => {
   const cardSelected = checked?.indexOf(value) !== -1;
 
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
   const handleToggle = (checkedValue: string) => {
     const currentIndex = checked.indexOf(checkedValue);
     const newChecked = [...checked];

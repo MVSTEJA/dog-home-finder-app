@@ -58,9 +58,9 @@ export async function findAllDogs({
   nextQuery: string;
   filter?: Filter | undefined;
   paginate?: Paginate | undefined;
-}): Promise<AllDogsResponse> {
+}): Promise<AllDogsResponse | null> {
   const locationQueryURL = URLs.fetchByLocations;
-  // const locationQueryURL = URLs.searchDogs;
+
   let zipCodes = [];
 
   if (filter?.place) {
@@ -74,7 +74,6 @@ export async function findAllDogs({
     zipCodes = locations.map((lc: Location) => lc.zip_code);
   }
 
-  // const dogSearchQueryURL = '/dogs/search';
   const dogSearchQueryURL = URLs.searchDogs;
   let queryConfig: AxiosRequestConfig = {};
 
