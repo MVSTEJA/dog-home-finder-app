@@ -30,7 +30,7 @@ const FilterSortDashboard: FC = () => {
   const handleClearSelection = () => setChecked([]);
 
   const { isLoading, data, isFetching, isInitialLoading } = useQuery({
-    queryKey: ['findAllDogs', filterValue, paginateValue.from],
+    queryKey: ['findAllDogs', filterValue, paginateValue],
     queryFn: ({ pageParam }) => {
       return findAllDogs({
         nextQuery: pageParam,
@@ -61,10 +61,7 @@ const FilterSortDashboard: FC = () => {
       maxWidth="xl"
       sx={{
         mb: 4,
-        left: 0,
-        right: 0,
         p: 0,
-        position: 'fixed',
       }}
     >
       <MatchCardModal
@@ -114,8 +111,7 @@ const FilterSortDashboard: FC = () => {
             top: matches ? '15vh' : '20vh',
             mx: matches ? 0 : 1,
             width: '100%',
-            overflow: 'hidden',
-            maxHeight: matches ? '65vh' : '60vh',
+            overflow: 'visible',
             flexFlow: 'column',
           }}
         >

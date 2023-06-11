@@ -6,7 +6,6 @@ import {
   Button,
   IconButton,
   Toolbar,
-  alpha,
   useTheme,
 } from '@mui/material';
 import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
@@ -55,8 +54,9 @@ const AppNavBar: FC = () => {
           zIndex: 1,
           left: 0,
           right: 0,
-          backgroundColor: alpha('#c0e9fa', 0),
+          backgroundColor: '#fbfdf8',
           backgroundImage: 'none',
+          opacity: 1,
         }}
       >
         <Toolbar>

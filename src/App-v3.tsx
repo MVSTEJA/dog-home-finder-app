@@ -15,10 +15,9 @@ import {
 
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 
-import { FC, ReactElement, ReactNode, Suspense, useMemo } from 'react';
+import { FC, ReactElement, ReactNode, Suspense, lazy, useMemo } from 'react';
 import { Toaster } from 'react-hot-toast';
-import SignInSide from './pages/SignIn';
-import AppNavBar from './components/AppNavBar';
+
 import {
   lightThemeOptions,
   mobileLightThemeOptions,
@@ -27,7 +26,11 @@ import {
 } from './theme';
 import { COLOR_SCHEME_QUERY, ROUTE_CODES } from './constants';
 import ColorModeContext from './context/ColorMode';
+
 import DashboardNav from './pages/DashboardNavTabs';
+import AppNavBar from './components/AppNavBar';
+
+const SignInSide = lazy(() => import('src/pages/SignIn'));
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (

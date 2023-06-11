@@ -40,7 +40,7 @@ const DashboardSearch: FC = () => {
     fetchNextPage,
     isInitialLoading,
   } = useInfiniteQuery({
-    queryKey: ['findAllDogs', filterValue, paginateValue.sort],
+    queryKey: ['findAllDogs', (paginateValue.size = 25)],
     queryFn: ({ pageParam }) => {
       return findAllDogs({
         nextQuery: pageParam,
