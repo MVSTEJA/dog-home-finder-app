@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
 import { FC, useState, useContext } from 'react';
-import WalkingDog from 'src/assets/dog-walking.png';
+import WalkingDog from 'src/assets/dog-walking.svg';
 
 import { ROUTE_CODES } from 'src/constants';
 import ColorModeContext from 'src/context/ColorMode';

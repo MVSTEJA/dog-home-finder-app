@@ -2,7 +2,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { Suspense, lazy, useState } from 'react';
-import { Box, CircularProgress, Tooltip, useTheme } from '@mui/material';
+import { Box, CircularProgress, Tooltip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Dashboard = lazy(() => import('src/pages/FilterSortDashboard'));
@@ -16,7 +16,6 @@ const DashboardNavTabs = () => {
     setValue(newValue);
   };
 
-  const theme = useTheme();
   return (
     <>
       <Tabs

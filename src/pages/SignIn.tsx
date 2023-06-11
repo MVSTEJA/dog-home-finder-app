@@ -18,7 +18,7 @@ import { FC, SyntheticEvent, useState, FormEvent } from 'react';
 import { toast } from 'react-hot-toast';
 import { createLogin } from 'src/api';
 import happyImage from 'src/assets/bye-pet.svg';
-import HappyDog from 'src/assets/dog.png';
+import HappyDog from 'src/assets/dog.svg';
 import standingImage from 'src/assets/walking-a-dog.svg';
 import ConfirmationDialog from 'src/components/common/ConfirmationDialog';
 import { ROUTE_CODES } from 'src/constants';
