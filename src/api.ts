@@ -17,6 +17,7 @@ import {
 const client = axios.create({
   baseURL: 'https://frontend-take-home-service.fetch.com',
   withCredentials: true,
+  headers: { 'Access-Control-Allow-Origin': '*' },
 });
 
 client.interceptors.response.use(
@@ -49,8 +50,8 @@ export const buildfindAllDogsQuery = async ({
   paginate,
 }: {
   nextQuery: string;
-  filter?: Filter | undefined;
-  paginate?: Paginate | undefined;
+  filter?: Filter | null;
+  paginate?: Paginate | null;
 }) => {
   const locationQueryURL = URLs.fetchByLocations;
 
@@ -61,7 +62,7 @@ export const buildfindAllDogsQuery = async ({
       data: { results: locations },
     }: AxiosResponse = await client.post<DogsSearchResponse>(locationQueryURL, {
       city: filter?.place.city,
-      states: [filter?.place.state],
+      states: filter?.place.state ? [filter?.place.state] : [],
     });
 
     zipCodes = locations.map((lc: Location) => lc.zip_code);
@@ -89,7 +90,7 @@ export const buildfindAllDogsQuery = async ({
       size: paginate?.size,
     },
     // dping this as faced encoding issues.
-    paramsSerializer: (params: any) => qs.stringify(params, { encode: false }),
+    // paramsSerializer: (params: any) => qs.stringify(params, { encode: false }),
   };
 
   return {
@@ -110,14 +111,15 @@ export async function findAllDogs({
   },
 }: {
   nextQuery: string;
-  filter?: Filter | undefined;
-  paginate?: Paginate | undefined;
+  filter?: Filter | null;
+  paginate?: Paginate | null;
 }): Promise<AllDogsResponse | null> {
   const { queryConfig } = await buildfindAllDogsQuery({
     nextQuery,
     filter,
     paginate,
   });
+
   const dogSearchQueryURL = URLs.searchDogs;
   const {
     data: { resultIds, next, prev, total },

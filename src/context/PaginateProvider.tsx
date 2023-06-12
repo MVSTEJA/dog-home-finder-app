@@ -1,6 +1,7 @@
 import { Dispatch, ReactNode, createContext, useReducer } from 'react';
 import { PAGE_SIZE } from 'src/constants';
 import { Paginate } from 'src/types';
+import { getURLParams } from 'src/utils/url-params';
 
 interface PaginateAction {
   size?: number;
@@ -13,12 +14,12 @@ interface PaginateAction {
 
 export const initialPaginate = {
   size: PAGE_SIZE,
-  from: 0,
+  from: Number(getURLParams('page')) || 0,
   fromCount: 1,
   sort: {
-    name: 'asc',
-    id: 'asc',
-    by: 'breed',
+    name: getURLParams('sortId') || 'breed',
+    id: getURLParams('sortId') || 'asc',
+    by: getURLParams('sortBy') || 'breed',
   },
 };
 

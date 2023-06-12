@@ -2,8 +2,10 @@
  * Returns param name from a URL.
  * @param {string} name
  */
-export const getURLParams = (name: string) => {
-  return new URLSearchParams(window.location.search).get(name);
+export const getURLParams = (name: string): string => {
+  return (
+    new URLSearchParams(window.location.search).get(name)?.toString() || ''
+  );
 };
 
 /**
@@ -18,3 +20,5 @@ export const setURLParams = (
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.set(paramName, value.toString());
 };
+
+export const convertToArray = (str: string) => str.split(',');

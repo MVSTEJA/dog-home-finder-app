@@ -1,6 +1,7 @@
 import { deepmerge } from '@mui/utils';
 import { Dispatch, ReactNode, createContext, useReducer } from 'react';
 import { Breed, Filter, Place } from 'src/types';
+import { convertToArray, getURLParams } from 'src/utils/url-params';
 
 export interface FilterAction {
   type: string;
@@ -8,12 +9,18 @@ export interface FilterAction {
   place: Place;
 }
 
+const initialBreeds = getURLParams('breeds');
 export const initialFilter = {
-  breeds: [],
+  breeds: initialBreeds
+    ? convertToArray(initialBreeds)?.map((x) => ({
+        value: x,
+        label: x,
+      }))
+    : [],
   place: {
-    city: '',
-    state: '',
-    description: '',
+    city: getURLParams('city') || '',
+    state: getURLParams('state') || '',
+    description: getURLParams('description') || '',
   },
 };
 

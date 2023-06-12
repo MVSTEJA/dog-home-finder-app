@@ -185,10 +185,12 @@ const FilterSection: FC<{
   if (breedLength > 0) {
     selectedText += `${breedLength?.toString()}`;
   }
-  if (filterValue?.place?.description) {
+  if (filterValue?.place?.description || filterValue?.place?.city) {
     selectedText += breedLength > 0 ? ', ' : '';
     selectedText += `${
-      filterValue?.place?.description ? filterValue?.place?.description : ''
+      filterValue?.place?.description
+        ? filterValue?.place?.description
+        : filterValue?.place?.city
     }`;
   }
 

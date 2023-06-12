@@ -96,7 +96,6 @@ const SearchSection: FC<SearchSectionProps> = ({
     setSearchValue(debouncedSearchTerm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
-  console.log({ debouncedSearchTerm });
 
   const handleClearSearch = () => {
     setSearch('');
