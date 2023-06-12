@@ -102,7 +102,7 @@ export async function findAllDogs({
   nextQuery,
   filter,
   paginate = {
-    from: 0,
+    from: 1,
     size: 0,
     sort: {
       name: '',

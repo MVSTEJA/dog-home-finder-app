@@ -14,7 +14,7 @@ interface PaginateAction {
 
 export const searchInitialPaginate = {
   size: PAGE_SIZE_SEARCH,
-  from: 0,
+  from: 1,
   fromCount: 1,
   sort: {
     name: 'asc',

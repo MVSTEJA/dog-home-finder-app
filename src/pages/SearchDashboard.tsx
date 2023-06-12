@@ -28,11 +28,8 @@ import SearchSection from 'src/components/SearchInput';
 import DashboardCardSkeleton from 'src/components/common/DashboardCardSkeleton';
 import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';
 import SelectCardsLabel from 'src/components/SelectCardsLabel';
-import { initialFilter, searchInitialFilter } from 'src/context/FilterProvider';
-import {
-  initialPaginate,
-  searchInitialPaginate,
-} from 'src/context/PaginateProvider';
+import { searchInitialFilter } from 'src/context/FilterProvider';
+import { searchInitialPaginate } from 'src/context/PaginateProvider';
 
 const DashboardSearch: FC = () => {
   const [checked, setChecked] = useState<string[]>([]);
