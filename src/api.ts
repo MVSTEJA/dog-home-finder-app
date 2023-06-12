@@ -1,21 +1,23 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import qs from 'qs';
 
 import { toast } from 'react-hot-toast';
+import { PAGE_SIZE, ROUTE_CODES, URLs } from './constants';
 import {
-  User,
+  AllDogsResponse,
   Dog,
   DogsSearchResponse,
   Filter,
-  Paginate,
   Location,
+  Paginate,
+  User,
 } from './types';
-import { ROUTE_CODES } from './constants';
 
 const client = axios.create({
   baseURL: 'https://frontend-take-home-service.fetch.com',
   withCredentials: true,
+  headers: { 'Access-Control-Allow-Origin': '*' },
 });
 
 client.interceptors.response.use(
@@ -23,6 +25,7 @@ client.interceptors.response.use(
   (err) => {
     if (err.response?.data === 'Unauthorized') {
       toast.error(`${err.response?.data} request, logging off`, {
+        id: 'unauthorized',
         position: 'top-right',
       });
       setTimeout(() => {
@@ -41,28 +44,17 @@ export async function createLogin(params: User): Promise<string> {
   return data;
 }
 
-export interface AllDogsResponse {
-  response: Dog[];
-  next: string;
-  prev: string;
-}
-
-export async function findAllDogs({
+export const buildfindAllDogsQuery = async ({
   nextQuery,
   filter,
-  paginate = {
-    from: 0,
-    sort: {
-      name: '',
-      id: '',
-    },
-  },
+  paginate,
 }: {
   nextQuery: string;
-  filter?: Filter | undefined;
-  paginate?: Paginate | undefined;
-}): Promise<AllDogsResponse> {
-  const locationQueryURL = '/locations/search';
+  filter?: Filter | null;
+  paginate?: Paginate | null;
+}) => {
+  const locationQueryURL = URLs.fetchByLocations;
+
   let zipCodes = [];
 
   if (filter?.place) {
@@ -70,38 +62,75 @@ export async function findAllDogs({
       data: { results: locations },
     }: AxiosResponse = await client.post<DogsSearchResponse>(locationQueryURL, {
       city: filter?.place.city,
-      states: [filter?.place.state],
+      states: filter?.place.state ? [filter?.place.state] : [],
     });
 
     zipCodes = locations.map((lc: Location) => lc.zip_code);
   }
 
-  const dogSearchQueryURL = '/dogs/search';
-  let queryConfig: AxiosRequestConfig = {};
+  let queryConfig = {};
 
-  const { from } = qs.parse(nextQuery);
+  const getFrom = (next: string, from: number) => {
+    if (next) {
+      const { from: fromValue } = qs.parse(next);
+      return {
+        from: fromValue,
+      };
+    }
+    return { from: from * (paginate?.size || PAGE_SIZE) };
+  };
+  const { from } = getFrom(nextQuery, paginate?.from || 0);
 
   queryConfig = {
     params: {
       breeds: filter?.breeds.map((breed) => breed.value),
       zipCodes,
       sort: `${paginate?.sort?.by}:${paginate?.sort?.id}`,
-      from: from || 0,
-      size: 25,
+      from,
+      size: paginate?.size,
     },
     // dping this as faced encoding issues.
-    paramsSerializer: (params) => qs.stringify(params, { encode: false }),
+    // paramsSerializer: (params: any) => qs.stringify(params, { encode: false }),
   };
 
+  return {
+    queryConfig,
+  };
+};
+
+export async function findAllDogs({
+  nextQuery,
+  filter,
+  paginate = {
+    from: 1,
+    size: 0,
+    sort: {
+      name: '',
+      id: '',
+    },
+  },
+}: {
+  nextQuery: string;
+  filter?: Filter | null;
+  paginate?: Paginate | null;
+}): Promise<AllDogsResponse | null> {
+  const { queryConfig } = await buildfindAllDogsQuery({
+    nextQuery,
+    filter,
+    paginate,
+  });
+
+  const dogSearchQueryURL = URLs.searchDogs;
   const {
-    data: { resultIds, next, prev },
+    data: { resultIds, next, prev, total },
   }: AxiosResponse = await client.get<DogsSearchResponse>(
     dogSearchQueryURL,
     queryConfig
   );
-  const { data } = await client.post<Dog[]>('/dogs', resultIds);
+  const { data } = await client.post<Dog[]>(URLs.fetchDogData, resultIds);
   return {
     response: data,
+    totalPages: total,
     next,
     prev,
   };
@@ -109,7 +138,7 @@ export async function findAllDogs({
 
 export async function findAllBreeds(filterValue: Filter): Promise<Filter> {
   const { data }: AxiosResponse<string[]> = await client.get<string[]>(
-    '/dogs/breeds'
+    URLs.fetchBreeds
   );
 
   return {
@@ -122,15 +151,24 @@ export async function findAllBreeds(filterValue: Filter): Promise<Filter> {
 }
 
 export async function findMatch(ids: string[]): Promise<Dog> {
-  const { data }: AxiosResponse = await client.post<Dog>('/dogs/match', ids);
-  return data;
+  const { data: machtedData }: AxiosResponse = await client.post<Dog>(
+    URLs.findMatch,
+    ids
+  );
+
+  const { data } = await client.post<Dog[]>(URLs.fetchDogData, [
+    machtedData.match,
+  ]);
+  return data[0];
 }
 
 export async function findLocations(): Promise<Location> {
-  const { data }: AxiosResponse = await client.get<Location>('/locations');
+  const { data }: AxiosResponse = await client.get<Location>(
+    URLs.fetchLocations
+  );
   return data;
 }
 
 export async function appLogOut() {
-  await client.post<Location>('/auth/logout');
+  await client.post<Location>(URLs.logout);
 }

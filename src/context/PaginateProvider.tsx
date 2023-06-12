@@ -1,32 +1,43 @@
 import { Dispatch, ReactNode, createContext, useReducer } from 'react';
+import { PAGE_SIZE, PAGE_SIZE_SEARCH } from 'src/constants';
 import { Paginate } from 'src/types';
+import { getURLParams } from 'src/utils/url-params';
 
 interface PaginateAction {
+  size?: number;
+  from?: number;
+  fromCount?: number;
   type: string;
   id?: string;
   by?: string;
 }
-export const PaginateContext = createContext<Paginate>({
-  size: 25,
-  from: 0,
+
+export const searchInitialPaginate = {
+  size: PAGE_SIZE_SEARCH,
+  from: 1,
   fromCount: 1,
   sort: {
-    name: '',
-    id: '',
-    by: '',
-  },
-});
-export const PaginateDispatchContext = createContext<Dispatch<PaginateAction>>(
-  () => null
-);
-
-const initialPaginate = {
-  sort: {
-    name: 'Ascending',
+    name: 'asc',
     id: 'asc',
     by: 'breed',
   },
 };
+export const initialPaginate = {
+  size: PAGE_SIZE,
+  from: Number(getURLParams('page')) || 0,
+  fromCount: 1,
+  sort: {
+    name: getURLParams('sortId') || 'breed',
+    id: getURLParams('sortId') || 'asc',
+    by: getURLParams('sortBy') || 'breed',
+  },
+};
+
+export const PaginateDispatchContext = createContext<Dispatch<PaginateAction>>(
+  () => null
+);
+
+export const PaginateContext = createContext<Paginate>(initialPaginate);
 
 function paginateReducer(paginate: Paginate, action: PaginateAction): Paginate {
   switch (action.type) {
@@ -49,6 +60,12 @@ function paginateReducer(paginate: Paginate, action: PaginateAction): Paginate {
           name: 'Descending',
           by: action.by,
         },
+      };
+    }
+    case 'next_page': {
+      return {
+        ...paginate,
+        from: action.from,
       };
     }
 

@@ -10,28 +10,27 @@ import {
   Toolbar,
   createTheme,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 
 import { FC, ReactElement, ReactNode, Suspense, lazy, useMemo } from 'react';
 import { Toaster } from 'react-hot-toast';
-import SignInSide from './pages/SignIn';
-import AppNavBar from './components/AppNavBar';
+
 import {
   lightThemeOptions,
   mobileLightThemeOptions,
   mobiledarkThemeOptions,
   darkBaseThemeOptions,
 } from './theme';
-import {
-  COLOR_SCHEME_QUERY,
-  MOBILE_WIDTH_QUERY,
-  ROUTE_CODES,
-} from './constants';
+import { COLOR_SCHEME_QUERY, ROUTE_CODES } from './constants';
 import ColorModeContext from './context/ColorMode';
 
-const Dashboard = lazy(() => import('./pages/Dashboard'));
+import DashboardNav from './pages/DashboardNavTabs';
+import AppNavBar from './components/AppNavBar';
+
+const SignInSide = lazy(() => import('src/pages/SignIn'));
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -79,23 +78,7 @@ const HOME: FC = () => {
   const loggedIn: boolean | null = useReadLocalStorage('login');
   return (
     <ProtectedRoute isLoggedIn={loggedIn}>
-      <Suspense
-        fallback={
-          <Box
-            sx={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        }
-      >
-        <Dashboard />
-      </Suspense>
+      <DashboardNav />
     </ProtectedRoute>
   );
 };
@@ -123,7 +106,9 @@ const SIGNIN: FC = () => {
 };
 
 const App: FC = () => {
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
+
   const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY);
 
   const prevTheme = useReadLocalStorage<'light' | 'dark'>('app-theme');

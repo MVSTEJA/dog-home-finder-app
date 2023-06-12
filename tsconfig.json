@@ -26,7 +26,8 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*", ""]
-    }
+    },
+    "types": ["vitest/globals"]
   },
   "include": ["vite.config.ts", ".eslintrc.cjs", "src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }],

@@ -42,11 +42,16 @@ const LocationSelect: FC<LocationSelectProps> = ({
   };
   const handleInput = (
     _: SyntheticEvent<Element, Event>,
+    // @ts-expect-error this is complex
     value: google.maps.places.AutocompletePrediction
   ) => {
     if (value) {
-      const termsCityStateCountry = value?.terms?.reverse().slice(0, 3);
-      termsCityStateCountry.shift();
+      let termsCityStateCountry = value?.terms;
+      if (value?.terms.length >= 3) {
+        termsCityStateCountry = value?.terms?.reverse().slice(0, 3);
+        termsCityStateCountry.shift();
+      }
+
       const [{ value: state }, { value: city }] = termsCityStateCountry;
 
       setPlace({
@@ -74,7 +79,6 @@ const LocationSelect: FC<LocationSelectProps> = ({
       inputValue={place.description || place.city}
       options={placePredictions}
       getOptionLabel={(option) => option.description}
-      // @ts-expect-error this is complex
       onChange={handleInput}
       loading={isPlacePredictionsLoading}
       renderInput={(params) => (

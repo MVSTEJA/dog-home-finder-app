@@ -17,7 +17,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Dispatch, FC, useEffect, useRef, useState } from 'react';
 import { findAllBreeds } from 'src/api';
 import { FilterAction, initialFilter } from 'src/context/FilterProvider';
-import { useFilter, useFilterDispatch } from 'src/context/hooks';
+import {
+  useFilter,
+  useFilterDispatch,
+  usePaginateDispatch,
+} from 'src/context/hooks';
 import { Breed, Filter, Place } from 'src/types';
 import CustomIconBtn from 'src/components/common/ActionableBtns';
 import BreedSelect from './BreedSelect';
@@ -162,6 +166,7 @@ const FilterSection: FC<{
   const [open, setOpen] = useState<boolean>(false);
   const filterValue = useFilter();
   const setFilterValue = useFilterDispatch();
+  const setPaginateValue = usePaginateDispatch();
   const handleClickListItem = () => {
     setOpen(true);
   };
@@ -170,6 +175,10 @@ const FilterSection: FC<{
     setOpen(false);
 
     if (value) {
+      setPaginateValue({
+        type: 'next_page',
+        from: 1,
+      });
       setFilterValue({
         ...filterValue,
         type: 'mutate',
@@ -185,10 +194,12 @@ const FilterSection: FC<{
   if (breedLength > 0) {
     selectedText += `${breedLength?.toString()}`;
   }
-  if (filterValue?.place?.description) {
+  if (filterValue?.place?.description || filterValue?.place?.city) {
     selectedText += breedLength > 0 ? ', ' : '';
     selectedText += `${
-      filterValue?.place?.description ? filterValue?.place?.description : ''
+      filterValue?.place?.description
+        ? filterValue?.place?.description
+        : filterValue?.place?.city
     }`;
   }
 
@@ -204,6 +215,10 @@ const FilterSection: FC<{
         btnText="Filter"
         selectedText={selectedText}
         clearAction={() => {
+          setPaginateValue({
+            type: 'next_page',
+            from: 1,
+          });
           setFilterValue({
             ...filterValue,
             type: 'clear',

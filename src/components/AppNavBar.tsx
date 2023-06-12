@@ -1,21 +1,24 @@
 import { useLocation } from 'wouter';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
+
 import {
   AppBar,
   Box,
   Button,
   IconButton,
   Toolbar,
-  alpha,
   useTheme,
 } from '@mui/material';
 import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
 import { FC, useState, useContext } from 'react';
-import WalkingDog from 'src/assets/dog-walking.png';
+
+import WalkingDog from 'src/assets/dog-walking.svg';
 
 import { ROUTE_CODES } from 'src/constants';
 import ColorModeContext from 'src/context/ColorMode';
 import { appLogOut } from 'src/api';
+
+import { getURLParams } from 'src/utils/url-params';
 import ConfirmationDialog from './common/ConfirmationDialog';
 
 const AppNavBar: FC = () => {
@@ -55,9 +58,9 @@ const AppNavBar: FC = () => {
           zIndex: 1,
           left: 0,
           right: 0,
-          backgroundColor: alpha('#c0e9fa', 0),
+          backgroundColor: '#fbfdf8',
           backgroundImage: 'none',
-          height: '10vh',
+          opacity: 1,
         }}
       >
         <Toolbar>
@@ -66,7 +69,7 @@ const AppNavBar: FC = () => {
             <img
               src={WalkingDog}
               onClick={() => {
-                navigate(ROUTE_CODES.HOME);
+                navigate(`${ROUTE_CODES.HOME}?page=${getURLParams('page')}`);
               }}
               height="50px"
               alt="d-gwalking"

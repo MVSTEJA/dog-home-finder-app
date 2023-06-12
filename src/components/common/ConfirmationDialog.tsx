@@ -14,7 +14,7 @@ export interface ConfirmationOptions {
   description?: string;
 }
 
-interface ConfirmationDialogProps extends ConfirmationOptions {
+export interface ConfirmationDialogProps extends ConfirmationOptions {
   open: boolean | null;
   onSubmit: () => void;
   onClose: () => void;

@@ -1,83 +1,38 @@
 import {
   Box,
-  Card,
-  CardActionArea,
-  CardContent,
   Container,
-  FormHelperText,
   Grid,
   Paper,
-  Skeleton,
   Stack,
   Typography,
-  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-import { FC, useState, useEffect, SyntheticEvent, Fragment } from 'react';
+import {
+  FC,
+  useState,
+  useEffect,
+  SyntheticEvent,
+  Fragment,
+  useRef,
+} from 'react';
 import { findAllDogs } from 'src/api';
 
 import MatchCardModal from 'src/components/MatchCardModal';
-import {
-  FindMatchSection,
-  SearchSection,
-} from 'src/components/SortFilterSection';
+
 import BackToTop from 'src/components/common/BackToTop';
-import { useFilter, usePaginate } from 'src/context/hooks';
 import MemoizedDogCard from 'src/components/PetCard';
-import { MOBILE_WIDTH_QUERY } from 'src/constants';
+import SearchSection from 'src/components/SearchInput';
+import DashboardCardSkeleton from 'src/components/common/DashboardCardSkeleton';
+import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';
+import SelectCardsLabel from 'src/components/SelectCardsLabel';
+import { searchInitialFilter } from 'src/context/FilterProvider';
+import { searchInitialPaginate } from 'src/context/PaginateProvider';
 
-const CardSkeleton: FC<{
-  elemRef?: (node?: Element | null | undefined) => void;
-}> = ({ elemRef = null }) => {
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
-  return (
-    <>
-      {Array.from({ length: 12 }, (item: string, key) => (
-        <Grid key={item + key.toString()}>
-          <Card
-            sx={{
-              width: matches ? 350 : 325,
-              margin: '0 auto',
-            }}
-          >
-            {key === 1 && <div ref={elemRef || null} />}
-            <CardActionArea
-              sx={{
-                display: 'flex',
-                flexDirection: matches ? 'row' : 'column',
-              }}
-            >
-              <Skeleton
-                variant="rectangular"
-                sx={{
-                  flex: 1,
-                  width: '100%',
-                  minHeight: '175px',
-                }}
-              />
-
-              <CardContent sx={{ flex: 1, p: 2, width: '100%' }}>
-                <Box>
-                  <Skeleton width="75%" height="50px" />
-                  <Skeleton width="50%" />
-                  <Skeleton width="50%" />
-                </Box>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-      ))}
-    </>
-  );
-};
-
-const Dashboard: FC = () => {
+const DashboardSearch: FC = () => {
   const [checked, setChecked] = useState<string[]>([]);
-
-  const paginateValue = usePaginate();
-  const filterValue = useFilter();
 
   const handleClearSelection = () => setChecked([]);
   const { ref: loadMoreref, inView } = useInView();
@@ -90,15 +45,15 @@ const Dashboard: FC = () => {
     fetchNextPage,
     isInitialLoading,
   } = useInfiniteQuery({
-    queryKey: ['findAllDogs', filterValue, paginateValue.sort],
+    queryKey: ['findAllDogs', searchInitialFilter, searchInitialPaginate],
     queryFn: ({ pageParam }) => {
       return findAllDogs({
         nextQuery: pageParam,
-        filter: filterValue,
-        paginate: paginateValue,
+        filter: searchInitialFilter,
+        paginate: searchInitialPaginate,
       });
     },
-    getNextPageParam: (currentParam) => currentParam.next,
+    getNextPageParam: (currentParam) => currentParam?.next,
   });
 
   useEffect(() => {
@@ -131,17 +86,18 @@ const Dashboard: FC = () => {
     }
   };
 
-  const handleScrollToTop = () => {
-    const anchor = document.querySelector('#back-to-top-anchor');
+  const scrollIntoViewRef = useRef<HTMLInputElement>(null);
 
-    if (anchor) {
-      anchor.scrollIntoView({
+  const handleScrollToTop = () => {
+    if (scrollIntoViewRef.current) {
+      scrollIntoViewRef.current.scrollIntoView({
         block: 'center',
         behavior: 'smooth',
       });
     }
   };
-  const matches = useMediaQuery(MOBILE_WIDTH_QUERY);
+  const appTheme = useTheme();
+  const matches = appTheme.breakpoints.up('sm');
 
   return (
     <Container
@@ -153,68 +109,47 @@ const Dashboard: FC = () => {
         right: 0,
         p: 0,
         position: 'fixed',
-        height: '90vh',
       }}
-      onScroll={handleScroll}
     >
       <MatchCardModal
         cardChecked={checked}
         handleClose={handleClose}
         modalOpen={modalOpen}
-        allCards={data?.pages[0]?.response}
       />
-      <Stack direction="row" alignItems="baseline" width="fit-content" mb={2}>
-        <Typography variant="h6">Search a pet</Typography>
-        <Typography variant="body2" sx={{ ml: 1 }}>
-          {' '}
-          (choose from filter and sort the results/ type in the search.)
+      <Stack direction="row" alignItems="baseline" width="fit-content" mb={1}>
+        <Typography variant="h6">Search for pet(s)</Typography>
+        <Typography variant="subtitle2" sx={{ ml: 1 }}>
+          (Note: This is an experimental search, It is slow. We are working on
+          fixing it! )
         </Typography>
       </Stack>
       <Stack>
         <Grid
           container
-          component={Paper}
+          xs={12}
           sx={{
-            p: 2,
-            mx: matches ? 0 : 1,
-            display: 'flex',
+            mb: 4,
           }}
         >
-          <SearchSection
-            setSearchValue={setSearchValue}
-            handleClearSelection={handleClearSelection}
-          />
-        </Grid>
-        <Stack direction="row">
-          <Box sx={{ visibility: 'hidden', width: '50%' }} />
           <Stack
+            component={Paper}
             direction="row"
-            sx={{ justifyContent: 'flex-end', width: '50%' }}
+            sx={{
+              flexBasis: '50%',
+            }}
           >
-            <FormHelperText sx={{ pl: 2, mb: 3 }}>
-              (Note: This is an experimental search, It is slow. We are working
-              on it! )
-            </FormHelperText>
+            <SearchSection setSearchValue={setSearchValue} />
           </Stack>
-        </Stack>
-        <div id="back-to-top-anchor" />
-        <Stack
-          direction="row"
-          sx={{ mt: 2, mb: 1, alignItems: 'baseline', height: '5vh' }}
-        >
-          <Stack direction="row" alignItems="baseline" flexBasis="50%">
-            <Typography variant="h6">Find a match</Typography>
-            <Typography variant="body2" sx={{ ml: 1 }}>
-              {' '}
-              (choose from the cards below, and click "Find match")
-            </Typography>
-          </Stack>
-          <FindMatchSection
-            checked={checked}
-            handleClickOpen={handleClickOpen}
-            handleClearSelection={handleClearSelection}
-          />
-        </Stack>
+          {checked.length > 0 && (
+            <FindMatchSection
+              checked={checked}
+              handleClickOpen={handleClickOpen}
+              handleClearSelection={handleClearSelection}
+            />
+          )}
+        </Grid>
+
+        <SelectCardsLabel />
         <Grid
           component={Paper}
           container
@@ -224,10 +159,12 @@ const Dashboard: FC = () => {
             mx: matches ? 0 : 1,
             width: '100%',
             overflowY: 'scroll',
-            maxHeight: matches ? '75vh' : '70vh',
+            maxHeight: '70vh',
             flexFlow: 'column',
           }}
+          onScroll={handleScroll}
         >
+          <div id="back-to-top-anchor" ref={scrollIntoViewRef} />
           <Box
             sx={{
               height: '100%',
@@ -282,9 +219,12 @@ const Dashboard: FC = () => {
               </Fragment>
             ))}
 
-            {(isInitialLoading || isFetching || isLoading) && <CardSkeleton />}
-
-            {hasNextPage && <CardSkeleton elemRef={loadMoreref} />}
+            {(isInitialLoading || isFetching || isLoading) && (
+              <DashboardCardSkeleton />
+            )}
+            {hasNextPage && (
+              <DashboardCardSkeleton elemRef={loadMoreref} loaderSize={16} />
+            )}
           </Box>
         </Grid>
       </Stack>
@@ -297,4 +237,4 @@ const Dashboard: FC = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardSearch;

@@ -11,17 +11,11 @@ export const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
 
-    // primary: {
-    //   main: '#890075',
-    // },
-    // secondary: {
-    //   main: '#ffb402',
-    // },
     primary: {
       main: '#006c48',
     },
     secondary: {
-      main: '#ffd9e2',
+      main: '#ffdcc1',
     },
     background: {
       default: '#fbfdf8',
@@ -43,7 +37,10 @@ export const lightThemeOptions: ThemeOptions = {
     },
     MuiTypography: {
       styleOverrides: {
-        root: {},
+        root: {
+          wordWrap: 'break-word',
+          wordBreak: 'break-all',
+        },
       },
     },
 
@@ -86,10 +83,10 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: 'rgba(137, 0, 117, 0.12)',
+            backgroundColor: alpha('#dce5dd', 0.15),
           },
           '&.Mui-selected': {
-            backgroundColor: 'rgba(137, 0, 117, 0.12)',
+            backgroundColor: alpha('#dce5dd', 0.15),
           },
         },
       },
@@ -117,9 +114,10 @@ export const lightThemeOptions: ThemeOptions = {
     MuiInputBase: {
       styleOverrides: {
         root: {
-          backgroundColor: alpha('#dce5dd', 0.15),
+          borderRadius: 12,
+          backgroundColor: alpha('#006c48', 0.15),
           '&:hover': {
-            backgroundColor: alpha('#dce5dd', 0.25),
+            backgroundColor: alpha('#006c48', 0.25),
           },
         },
       },
@@ -161,6 +159,13 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         outlined: {
           borderColor: 'transparent',
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          color: 'white',
         },
       },
     },
