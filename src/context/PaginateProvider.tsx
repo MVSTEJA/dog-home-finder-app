@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, createContext, useReducer } from 'react';
-import { PAGE_SIZE } from 'src/constants';
+import { PAGE_SIZE, PAGE_SIZE_SEARCH } from 'src/constants';
 import { Paginate } from 'src/types';
 import { getURLParams } from 'src/utils/url-params';
 
@@ -12,6 +12,16 @@ interface PaginateAction {
   by?: string;
 }
 
+export const searchInitialPaginate = {
+  size: PAGE_SIZE_SEARCH,
+  from: 0,
+  fromCount: 1,
+  sort: {
+    name: 'asc',
+    id: 'asc',
+    by: 'breed',
+  },
+};
 export const initialPaginate = {
   size: PAGE_SIZE,
   from: Number(getURLParams('page')) || 0,

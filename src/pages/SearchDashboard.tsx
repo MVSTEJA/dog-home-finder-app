@@ -28,8 +28,11 @@ import SearchSection from 'src/components/SearchInput';
 import DashboardCardSkeleton from 'src/components/common/DashboardCardSkeleton';
 import FindMatchSection from 'src/components/SortFilterSection/FindMatchSections';
 import SelectCardsLabel from 'src/components/SelectCardsLabel';
-import { initialFilter } from 'src/context/FilterProvider';
-import { initialPaginate } from 'src/context/PaginateProvider';
+import { initialFilter, searchInitialFilter } from 'src/context/FilterProvider';
+import {
+  initialPaginate,
+  searchInitialPaginate,
+} from 'src/context/PaginateProvider';
 
 const DashboardSearch: FC = () => {
   const [checked, setChecked] = useState<string[]>([]);
@@ -45,12 +48,12 @@ const DashboardSearch: FC = () => {
     fetchNextPage,
     isInitialLoading,
   } = useInfiniteQuery({
-    queryKey: ['findAllDogs', (initialPaginate.size = 25)],
+    queryKey: ['findAllDogs', searchInitialFilter, searchInitialPaginate],
     queryFn: ({ pageParam }) => {
       return findAllDogs({
         nextQuery: pageParam,
-        filter: initialFilter,
-        paginate: initialPaginate,
+        filter: searchInitialFilter,
+        paginate: searchInitialPaginate,
       });
     },
     getNextPageParam: (currentParam) => currentParam?.next,

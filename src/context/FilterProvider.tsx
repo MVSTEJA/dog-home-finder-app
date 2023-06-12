@@ -10,6 +10,14 @@ export interface FilterAction {
 }
 
 const initialBreeds = getURLParams('breeds');
+export const searchInitialFilter = {
+  breeds: [],
+  place: {
+    city: '',
+    state: '',
+    description: '',
+  },
+};
 export const initialFilter = {
   breeds: initialBreeds
     ? convertToArray(initialBreeds)?.map((x) => ({
