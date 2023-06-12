@@ -37,7 +37,10 @@ export const lightThemeOptions: ThemeOptions = {
     },
     MuiTypography: {
       styleOverrides: {
-        root: {},
+        root: {
+          wordWrap: 'break-word',
+          wordBreak: 'break-all',
+        },
       },
     },
 
@@ -156,6 +159,13 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         outlined: {
           borderColor: 'transparent',
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          color: 'white',
         },
       },
     },

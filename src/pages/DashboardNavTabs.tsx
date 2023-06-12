@@ -10,7 +10,7 @@ const DashboardSearch = lazy(() => import('src/pages/SearchDashboard'));
 
 const TabContent = [<Dashboard key={0} />, <DashboardSearch key={1} />];
 const DashboardNavTabs = () => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number>(0);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

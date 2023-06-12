@@ -9,10 +9,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-
 import { FC, useState } from 'react';
-import { findAllDogs } from 'src/api';
+import { useUrlSearchParams } from 'use-url-search-params';
 
+import { findAllDogs } from 'src/api';
 import MatchCardModal from 'src/components/MatchCardModal';
 import { SortFilterSection } from 'src/components/SortFilterSection';
 import { useFilter, usePaginate, usePaginateDispatch } from 'src/context/hooks';
@@ -26,20 +26,31 @@ const FilterSortDashboard: FC = () => {
   const paginateValue = usePaginate();
   const setPaginateValue = usePaginateDispatch();
   const filterValue = useFilter();
+  const [params, setParams] = useUrlSearchParams({
+    page: paginateValue?.from || 1,
+  });
 
+  const pageNumber = Number(params.page);
   const handleClearSelection = () => setChecked([]);
 
   const { isLoading, data, isFetching, isInitialLoading } = useQuery({
-    queryKey: ['findAllDogs', filterValue, paginateValue],
+    queryKey: [
+      'findAllDogs',
+      filterValue,
+      { ...paginateValue, from: pageNumber },
+    ],
     queryFn: ({ pageParam }) => {
       return findAllDogs({
         nextQuery: pageParam,
         filter: filterValue,
-        paginate: paginateValue,
+        paginate: { ...paginateValue, from: pageNumber },
       });
     },
     keepPreviousData: true,
   });
+
+  const totalPages = data?.totalPages || 0;
+  const count = Number(((totalPages - 1 || 0) / PAGE_SIZE).toFixed());
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -54,7 +65,6 @@ const FilterSortDashboard: FC = () => {
 
   const matches = appTheme.breakpoints.up('sm');
 
-  const count = Number((data?.totalPages || 0 / PAGE_SIZE).toFixed());
   return (
     <Container
       component={Container}
@@ -167,8 +177,11 @@ const FilterSortDashboard: FC = () => {
             count={count}
             variant="outlined"
             color="secondary"
-            page={paginateValue?.from || 1}
+            page={pageNumber || 1}
             onChange={(_, page) => {
+              setParams({
+                page: Number(page),
+              });
               setPaginateValue({
                 type: 'next_page',
                 from: Number(page),
