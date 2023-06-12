@@ -10,7 +10,14 @@ import {
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-import { FC, useState, useEffect, SyntheticEvent, Fragment } from 'react';
+import {
+  FC,
+  useState,
+  useEffect,
+  SyntheticEvent,
+  Fragment,
+  useRef,
+} from 'react';
 import { findAllDogs } from 'src/api';
 
 import MatchCardModal from 'src/components/MatchCardModal';
@@ -79,11 +86,11 @@ const DashboardSearch: FC = () => {
     }
   };
 
-  const handleScrollToTop = () => {
-    const anchor = document.querySelector('#back-to-top-anchor');
+  const scrollIntoViewRef = useRef<HTMLInputElement>(null);
 
-    if (anchor) {
-      anchor.scrollIntoView({
+  const handleScrollToTop = () => {
+    if (scrollIntoViewRef.current) {
+      scrollIntoViewRef.current.scrollIntoView({
         block: 'center',
         behavior: 'smooth',
       });
@@ -142,7 +149,6 @@ const DashboardSearch: FC = () => {
           )}
         </Grid>
 
-        <div id="back-to-top-anchor" />
         <SelectCardsLabel />
         <Grid
           component={Paper}
@@ -158,6 +164,7 @@ const DashboardSearch: FC = () => {
           }}
           onScroll={handleScroll}
         >
+          <div id="back-to-top-anchor" ref={scrollIntoViewRef} />
           <Box
             sx={{
               height: '100%',
@@ -212,11 +219,12 @@ const DashboardSearch: FC = () => {
               </Fragment>
             ))}
 
-            {/* {(isInitialLoading || isFetching || isLoading) && (
+            {(isInitialLoading || isFetching || isLoading) && (
               <DashboardCardSkeleton />
-            )} */}
-
-            {hasNextPage && <DashboardCardSkeleton elemRef={loadMoreref} />}
+            )}
+            {hasNextPage && (
+              <DashboardCardSkeleton elemRef={loadMoreref} loaderSize={16} />
+            )}
           </Box>
         </Grid>
       </Stack>

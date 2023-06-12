@@ -22,12 +22,13 @@ const BackToTop: FC<BackToTopProps> = ({
           className="mui-fixed"
           sx={{
             position: `fixed`,
-            bottom: 16,
-            right: 16,
+            bottom: 100,
+            right: 100,
             zIndex: `99`,
           }}
         >
           <Fab
+            color="secondary"
             size="large"
             aria-label="backToTop"
             onClick={handleClick}

@@ -2,6 +2,9 @@ import { alpha, styled } from '@mui/material/styles';
 
 import SearchIcon from '@mui/icons-material/Search';
 import { OutlinedInput, Stack } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+
 import {
   ChangeEvent,
   Dispatch,
@@ -12,6 +15,7 @@ import {
   useState,
 } from 'react';
 import { useDebounce } from 'usehooks-ts';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -45,16 +49,19 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
   height: '100%',
   alignSelf: 'center',
   borderColor: 'transparent',
-
   boxShadow:
     'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 2px 10px 0px',
   borderRadius: theme.shape.borderRadius * 12,
   '& .MuiOutlinedInput-notchedOutline': {
     borderColor: 'transparent',
   },
+  [theme.breakpoints.up('md')]: {
+    '&.Mui-expanded .MuiInputBase-input': {
+      width: '50ch',
+    },
+  },
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-
     paddingLeft: `calc(1em + ${theme.spacing(3)})`,
     transition: theme.transitions.create('width'),
     width: '30ch',
@@ -63,6 +70,9 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
     },
     [theme.breakpoints.up('md')]: {
       '&:focus': {
+        width: '50ch',
+      },
+      '&.Mui-expanded .MuiInputBase-input': {
         width: '50ch',
       },
     },
@@ -86,6 +96,12 @@ const SearchSection: FC<SearchSectionProps> = ({
     setSearchValue(debouncedSearchTerm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
+  console.log({ debouncedSearchTerm });
+
+  const handleClearSearch = () => {
+    setSearch('');
+    setSearchValue('');
+  };
   return (
     <Stack direction="row" flexBasis="50%" justifyContent="flex-start" p={2}>
       <Search>
@@ -94,10 +110,24 @@ const SearchSection: FC<SearchSectionProps> = ({
         </SearchIconWrapper>
 
         <StyledInputBase
+          value={search}
           placeholder="Search by name, breed, age, zip"
           onChange={handleChange}
           inputProps={{ 'aria-label': 'search' }}
           autoFocus
+          className={`${debouncedSearchTerm?.length > 0 ? 'Mui-expanded' : ''}`}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle clear"
+                onClick={handleClearSearch}
+                onMouseDown={handleClearSearch}
+                edge="end"
+              >
+                {search ? <ClearRoundedIcon /> : ''}
+              </IconButton>
+            </InputAdornment>
+          }
         />
       </Search>
     </Stack>
