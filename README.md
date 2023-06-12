@@ -25,14 +25,14 @@ $ cd pet-finder
 
 ```bash
 # Install node modules, by either running either of these commands.
-$ npm install / yarn
+$ npm install (or) yarn
 ```
 
 ## Running the app
 ```bash
 # To run development server - 
-$ npm run dev / yarn run dev
+$ npm run dev (or) yarn run dev
 
 # To run production preview - 
-$ npm run preview / yarn run preview
+$ npm run preview (or) yarn run preview
 ```
