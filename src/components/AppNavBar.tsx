@@ -58,7 +58,7 @@ const AppNavBar: FC = () => {
           zIndex: 1,
           left: 0,
           right: 0,
-          backgroundColor: '#fbfdf8',
+          backgroundColor: appTheme.palette.background.default,
           backgroundImage: 'none',
           opacity: 1,
         }}
