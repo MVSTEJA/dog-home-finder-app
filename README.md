@@ -36,3 +36,8 @@ $ npm run dev (or) yarn run dev
 # To run production preview - 
 $ npm run preview (or) yarn run preview
 ```
+
+## Running unit-tests
+```bash
+$ npm run test (or) yarn run test
+```
